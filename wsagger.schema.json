@@ -1,0 +1,89 @@
+{
+   "$schema": "http://json-schema.org/draft-04/schema#",
+   "title": "wsagger.json",
+   "type": "object",
+   "required": ["wsagger", "info", "scenarios"],
+   "properties": {
+      "wsagger": {
+         "type": "string",
+         "description": "Wsagger internal ID"
+      },
+      "info": {
+         "type": "object",
+         "required": ["version", "title"],
+         "properties": {
+            "description": {
+               "type": "string"
+            },
+            "version": {
+               "type": "string"
+            },
+            "title":  {
+               "type": "string"
+            }
+         }
+      },
+      "scenarios": {
+         "title": "API test scenarios array",
+         "type": "array",
+         "items": {
+            "title": "API test scenario",
+            "type": "object",
+            "required": ["name", "parameters", "flow"],
+            "properties": {
+               "name": {
+                  "type": "string"
+               },
+               "summary": {
+                  "type": "string"
+               },
+               "condition": {
+                  "type": "string"
+               },
+               "operationId": {
+                  "type": "string"
+               },
+               "parameters": {
+                  "type": "array",
+                  "items": {
+                     "type": "object",
+                     "required": ["name", "description"],
+                     "properties": {
+                        "in": {
+                           "type": "string"
+                        },
+                        "name": {
+                           "type": "string"
+                        },
+                        "description": {
+                           "type": "string"
+                        },
+                        "type": {
+                           "type": "string"
+                        }
+                     }
+                  }  
+               },
+               "flow": {
+                  "type": "array",
+                  "items": {
+                     "type": "object",
+                     "required": ["action", "event", "data"],
+                     "properties": {
+                        "action": {
+                           "type": "string"
+                        },
+                        "event": {
+                           "type": "string"
+                        },
+                        "data": {
+                           "type": ""
+                        }
+                     }   
+                  } 
+               }
+            }
+         }   
+      }
+   }
+}   

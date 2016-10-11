@@ -1,0 +1,4 @@
+.env
+_deploy
+node_modules
+*.log

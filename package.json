@@ -1,0 +1,14 @@
+{
+  "name": "WSagger",
+  "version": "0.0.2",
+  "description": "WSagger",
+  "main": "",
+  "private": false,
+  "dependencies": {
+    "ajv": "^4.7.7"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Pavlo Dzikovsky (GBK Soft)",
+  "license": "MIT"
+}

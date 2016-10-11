@@ -1,0 +1,96 @@
+{
+   "wsagger": "0.0.2",
+   "info": {
+      "description": "API for GBK chat",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+   },
+   "scenarios": [
+       {
+          "name": "connect to socket.io",
+          "summary": " ",
+          "parameters": [
+             {             
+                "in": "@formData",
+                "name": "namespace",
+                "description": "connect to socket.io",
+                "type": "string"
+             }
+          ],
+          "operationId": "connect",
+          "flow": [
+             ["connect", "socket.io", {"token": "@"}]
+          ],
+       },
+
+       {
+          "name": "sendBroadcastMessage",
+          "summary": " ",
+          "parameters": [
+             { 
+               "in": "@formData",
+               "name": "messageText",
+               "description": "broadcast message text",
+               "type": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+              ["request", "sendMessage", {"messageText": "@", "type": "broadcast"}]
+          ]
+       },
+
+       {
+          "name": "sendGroupMessage",
+          "summary": " ",
+          "parameters": [
+             {
+                "in": "@formData",
+                "name": "messageText",
+                "description": "group message text",
+                "type": "string"
+             },
+             {
+                "in": "@formData",
+                "name": "groupId",
+                "description": "group id",
+                "type": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+              ["request", "changeGroup", {"groupId": "@"}],
+              ["request", "sendMessage", {"messageText": "@", "type": "group", "groupId": "@"}],
+              ["response", "message",    {"messageText": "@", "groupId": "@"}]
+          ]
+       },
+
+       {
+          "name": "sendUserMessage",
+          "summary": " ",
+          "parameters": [
+             {
+                "in": "@formData",
+                "name": "messageText",
+                "description": "user message text",
+                "type": "string"
+             },
+             {
+                "in": "@formData",
+                "name": "recipientId",
+                "description": "recipient id",
+                "type": "string"
+             }
+          ],
+          "operationId": "",
+          "condition": "connect",
+          "flow": [
+              ["request", "sendMessage", {"messageText": "@", "type": "user", "recipientId": "@"}]
+          ]
+       }
+   
+   ]
+}
+
