@@ -1,9 +1,15 @@
+  
+
+
+       
 ## WSagger — валідація
 
 Схема живе в файлі wsagger.schema.json
 Приклад для валідації живе в файлі wsagger.json
 
 Запуск валідатора: ./node validate.js
+
+В схемі є деякі "порожні поля" — parameter.data, parameter.dataType, flow.data, flow.dataType — тобто для них поки що дозволені які завгодно значення. Кінцева їх валідація, думаю, простіше зробиться в рантаймі (data згідно відповідного dataType). Але можна намагатись допиляти все це засобами "JSON Schema".    
 
 
 ## WSagger — інтерфейс
@@ -15,7 +21,7 @@
 
 * вибрати файл опису інтерфейсу (який небудь wsagger.json) по URL або завантаженням з диска
 * отримати токен для авторизації на WS-сервері - по REST API
-
+     
 
 ### Файл опису інтерфейсу
 
@@ -28,58 +34,126 @@
           "version": "1.0.0",
           "title": "GBKSOFT chat API"
        },
-       "schemes": ["socket.io"],
        "scenarios": []
     }
 
 
 ### Сценарії
 
-Сценарій (елемент списку "scenarios") — це обʼєкт наступної структури (для прикладу):
+Сценарій (елемент списку "scenarios") — це масив наступної структури (для прикладу):
+    [
        {
           "name": "connect to socket.io",
-          "summary": " ",                                       // вербальний опис
+          "summary": " ",
           "parameters": [
              {             
-                "in": "@formData",                              // слід взяти дані з форми  
+                "in": "formData",
                 "name": "namespace",
-                "description": "connect to socket.io",          // вербальний опис
-                "type": "string"
+                "description": "connect to socket.io",
+                "dataType": "string"
              }
           ],
-          "operationId": "WS connect",                          // буде зафіксовано при успішному виконанні flow
+          "operationId": "connect",
           "flow": [
-              ["connect", "socket.io", {"token": "@"}]          // конект до socket.io
-          ],
+             {
+                "action": "connect", 
+                "key": "socket.io", 
+                "data": {"token": "@"},
+                "dataType": "object"
+             }
+          ]
        },
-
-
+       {
+          "name": "sendBroadcastMessage",
+          "summary": " ",
+          "parameters": [
+             { 
+               "in": "formData",
+               "name": "messageText",
+               "description": "broadcast message text",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"messageText": "@", "type": "broadcast"},
+                "dataType": "object"
+             }
+          ]
+       },
        {
           "name": "sendGroupMessage",
           "summary": " ",
           "parameters": [
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "messageText",
                 "description": "group message text",
-                "type": "string"
+                "dataType": "string"
              },
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "groupId",
                 "description": "group id",
-                "type": "string"
+                "dataType": "string"
              }
           ],
-          "condition": "connect",                                // сценарій чинний тільки якщо зафіксовано успіх з "WS connect"
+          "condition": "connect",
           "operationId": "",
           "flow": [
-              ["request", "changeGroup", {"groupId": "@"}],
-              ["request", "sendMessage", {"messageText": "@", "type": "group", "groupId": "@"}],
-              ["response", "message",    {"messageText": "@", "groupId": "@"}]
+             {
+                "action": "request", 
+                "key": "changeGroup", 
+                "data": {"groupId": "@"},
+                "dataType": "object"
+             },
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"groupId": "@"},
+                "dataType": "object"
+             },
+             {
+                "action": "response", 
+                "key": "message", 
+                "data": {"messageText": "@", "groupId": "@"},
+                "dataType": "object"
+             }
           ]
        },
-
+       {
+          "name": "sendUserMessage",
+          "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "user message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "recipientId",
+                "description": "recipient id",
+                "dataType": "string"
+             }
+          ],
+          "operationId": "",
+          "condition": "connect",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"messageText": "@", "type": "user", "recipientId": "@"},
+                "dataType": "object"
+             }
+          ]
+       }   
+    ]
 
 
 ### Виконання сценаріїв

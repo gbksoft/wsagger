@@ -14,7 +14,7 @@
                 "in": "formData",
                 "name": "namespace",
                 "description": "connect to socket.io",
-                "type": "string"
+                "dataType": "string"
              }
           ],
           "operationId": "connect",
@@ -22,7 +22,8 @@
              {
                 "action": "connect", 
                 "key": "socket.io", 
-                "data": {"token": "@"}
+                "data": {"token": "@"},
+                "dataType": "object"
              }
           ]
        },
@@ -34,7 +35,7 @@
                "in": "formData",
                "name": "messageText",
                "description": "broadcast message text",
-               "type": "string"
+                "dataType": "string"
              }
           ],
           "condition": "connect",
@@ -43,7 +44,8 @@
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "broadcast"}
+                "data": {"messageText": "@", "type": "broadcast"},
+                "dataType": "object"
              }
           ]
        },
@@ -55,13 +57,13 @@
                 "in": "formData",
                 "name": "messageText",
                 "description": "group message text",
-                "type": "string"
+                "dataType": "string"
              },
              {
                 "in": "formData",
                 "name": "groupId",
                 "description": "group id",
-                "type": "string"
+                "dataType": "string"
              }
           ],
           "condition": "connect",
@@ -70,17 +72,20 @@
              {
                 "action": "request", 
                 "key": "changeGroup", 
-                "data": {"groupId": "@"}
+                "data": {"groupId": "@"},
+                "dataType": "object"
              },
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": {"groupId": "@"}
+                "data": {"groupId": "@"},
+                "dataType": "object"
              },
              {
                 "action": "response", 
                 "key": "message", 
-                "data": {"messageText": "@", "groupId": "@"}
+                "data": {"messageText": "@", "groupId": "@"},
+                "dataType": "object"
              }
           ]
        },
@@ -92,13 +97,13 @@
                 "in": "formData",
                 "name": "messageText",
                 "description": "user message text",
-                "type": "string"
+                "dataType": "string"
              },
              {
                 "in": "formData",
                 "name": "recipientId",
                 "description": "recipient id",
-                "type": "string"
+                "dataType": "string"
              }
           ],
           "operationId": "",
@@ -107,7 +112,8 @@
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "user", "recipientId": "@"}
+                "data": {"messageText": "@", "type": "user", "recipientId": "@"},
+                "dataType": "object"
              }
           ]
        }   

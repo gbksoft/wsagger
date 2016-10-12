@@ -60,7 +60,7 @@
                         },
                         "data": {
                         },
-                        "type": {
+                        "dataType": {
                         }
                      }
                   }  
@@ -78,6 +78,8 @@
                            "type": "string"
                         },
                         "data": {
+                        },
+                        "dataType": {
                         }
                      }   
                   } 
