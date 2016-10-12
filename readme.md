@@ -1,3 +1,11 @@
+## WSagger — валідація
+
+Схема живе в файлі wsagger.schema.json
+Приклад для валідації живе в файлі wsagger.json
+
+Запуск валідатора: ./node validate.js
+
+
 ## WSagger — інтерфейс
 
 

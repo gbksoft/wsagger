@@ -47,19 +47,20 @@
                   "type": "array",
                   "items": {
                      "type": "object",
-                     "required": ["name", "description"],
+                     "required": ["name", "description", "in"],
                      "properties": {
-                        "in": {
-                           "type": "string"
-                        },
                         "name": {
                            "type": "string"
                         },
                         "description": {
                            "type": "string"
                         },
+                        "in": { 
+                           "enum": ["formData", "data"] 
+                        },
+                        "data": {
+                        },
                         "type": {
-                           "type": "string"
                         }
                      }
                   }  
@@ -68,16 +69,15 @@
                   "type": "array",
                   "items": {
                      "type": "object",
-                     "required": ["action", "event", "data"],
+                     "required": ["action", "key", "data"],
                      "properties": {
                         "action": {
                            "type": "string"
                         },
-                        "event": {
+                        "key": {
                            "type": "string"
                         },
                         "data": {
-                           "type": ""
                         }
                      }   
                   } 

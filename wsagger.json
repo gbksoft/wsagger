@@ -11,7 +11,7 @@
           "summary": " ",
           "parameters": [
              {             
-                "in": "@formData",
+                "in": "formData",
                 "name": "namespace",
                 "description": "connect to socket.io",
                 "type": "string"
@@ -19,16 +19,19 @@
           ],
           "operationId": "connect",
           "flow": [
-             ["connect", "socket.io", {"token": "@"}]
-          ],
+             {
+                "action": "connect", 
+                "key": "socket.io", 
+                "data": {"token": "@"}
+             }
+          ]
        },
-
        {
           "name": "sendBroadcastMessage",
           "summary": " ",
           "parameters": [
              { 
-               "in": "@formData",
+               "in": "formData",
                "name": "messageText",
                "description": "broadcast message text",
                "type": "string"
@@ -37,22 +40,25 @@
           "condition": "connect",
           "operationId": "",
           "flow": [
-              ["request", "sendMessage", {"messageText": "@", "type": "broadcast"}]
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"messageText": "@", "type": "broadcast"}
+             }
           ]
        },
-
        {
           "name": "sendGroupMessage",
           "summary": " ",
           "parameters": [
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "messageText",
                 "description": "group message text",
                 "type": "string"
              },
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "groupId",
                 "description": "group id",
                 "type": "string"
@@ -61,24 +67,35 @@
           "condition": "connect",
           "operationId": "",
           "flow": [
-              ["request", "changeGroup", {"groupId": "@"}],
-              ["request", "sendMessage", {"messageText": "@", "type": "group", "groupId": "@"}],
-              ["response", "message",    {"messageText": "@", "groupId": "@"}]
+             {
+                "action": "request", 
+                "key": "changeGroup", 
+                "data": {"groupId": "@"}
+             },
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"groupId": "@"}
+             },
+             {
+                "action": "response", 
+                "key": "message", 
+                "data": {"messageText": "@", "groupId": "@"}
+             }
           ]
        },
-
        {
           "name": "sendUserMessage",
           "summary": " ",
           "parameters": [
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "messageText",
                 "description": "user message text",
                 "type": "string"
              },
              {
-                "in": "@formData",
+                "in": "formData",
                 "name": "recipientId",
                 "description": "recipient id",
                 "type": "string"
@@ -87,10 +104,13 @@
           "operationId": "",
           "condition": "connect",
           "flow": [
-              ["request", "sendMessage", {"messageText": "@", "type": "user", "recipientId": "@"}]
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": {"messageText": "@", "type": "user", "recipientId": "@"}
+             }
           ]
-       }
-   
-   ]
+       }   
+    ]
 }
 
