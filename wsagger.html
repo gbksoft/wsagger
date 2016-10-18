@@ -7,27 +7,30 @@
 </head>
 <body>
 
-<div id="titulus">
+<div id="titulus" class="container-fluid">
     <div id="status"></div>
-    <table id="connect" width=300>
-        <tr>
-            <td>Token:</td>
-            <td align=right><input class='form-control' id="login"></td>
-        </tr>
-        <tr>
-            <td colspan=2 align=center>
-                <input type="submit" class="btn btn-success" style="width:300px;" value="Connect to WS"
-                                              onclick="Connect(); return false;">
-            </td>
-        </tr>
-    </table>
+
+    <div class="row">
+        <div class="col-xs-12 col-md-7">
+            <!-- TOKEN -->
+            <input class='form-control' id="login" placeholder="Enter token:">
+        </div>
+        <div class="col-xs-12 col-md-5">
+            <!-- CONNECT to WS -->
+            <input type="submit" class="btn btn-success btn-block" value="Connect to WS"
+                                onclick="Connect(); return false;">
+        </div>
+    </div>
+
     &nbsp;
-    <form action="" id="jsonloader" name="json-load">
-        <label>
-            <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file">
+    <form action="" id="jsonloader" class="row" name="json-load">
+        <div class="col-xs-12 col-md-7">
+            <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
             <span class="error"></span>
-        </label>
-        <input class="submit btn btn-success" type="submit" value="Load JSON">
+        </div>
+        <div class="col-xs-12 col-md-5">
+            <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
+        </div>
     </form>
 
     <br>

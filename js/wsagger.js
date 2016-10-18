@@ -31,7 +31,7 @@ $('#jsonloader').submit(function (evt) {
                     var scenarios = data.scenarios;
 
                     scenarios.forEach(function(elem, i){
-                        text += '<div>&nbsp;<br><font color=blue>' + elem.name + '</font>\n<div>';
+                        text += '<div class="method"><br><h5>' + elem.name + '</h5><br>';
 
                         var s = elem;
                         for (var v in s) {
@@ -39,17 +39,18 @@ $('#jsonloader').submit(function (evt) {
                         }
 
                         tryData[++tryNum] = s.flow;
-                        text += '<button onclick="tryScenario ('+ tryNum + ')">Try!</button><br>\n';
+                        text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ tryNum + ')">Try!</button><br></div>';
 
                     });
 
                 setHTML ('data', text);
 
-                $('#jsonloader').find('.error').html( "JSON was loaded successfully" ).fadeOut('slow');
+                $('#jsonloader').find('.error').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
             },
 
-            function() {  // error callback
+            function(error) {  // error callback
+                console.log(error);
                 $('#jsonloader').find('.error').html( "JSON failed to load: URL is probably incorrect" );
             }
         );

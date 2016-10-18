@@ -23,25 +23,24 @@ body {
 }
 
 #argumentum {
-    position: absolute;
-    left: 505px;
+    float: left;
+    width: 60%;
 }
 
 #titulus {
-    width: 500px;
-    position: fixed;
+    padding-top: 20px;
     z-index: 999;
-    background-color: white;
-    padding: 4px;
-    overflow-y: auto;
     max-height: 100%;
+    width: 40%;
+    float: left;
+    background-color: white;
+    overflow-y: auto;
 }
 
 #jsonloader {
 }
 
 #jsonloader .url {
-    width: 300px;
 }
 
 #jsonloader .error {
@@ -50,4 +49,10 @@ body {
 }
 
 #jsonloader .submit {
+}
+
+/* METHOD block */
+.method {}
+.method h5 {
+    color: #4c4cca;
 }
