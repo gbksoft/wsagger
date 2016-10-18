@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font: 13px Helvetica, Arial;
+}
+
+#socketLog {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+#socketLog li {
+    padding: 5px 10px;
+}
+
+#socketLog li:nth-child(odd) {
+    background: #eee;
+}
+
+#argumentum {
+    position: absolute;
+    left: 505px;
+}
+
+#titulus {
+    width: 500px;
+    position: fixed;
+    z-index: 999;
+    background-color: white;
+    padding: 4px;
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+#jsonloader {
+}
+
+#jsonloader .url {
+    width: 300px;
+}
+
+#jsonloader .error {
+    float: left;
+    clear: both;
+}
+
+#jsonloader .submit {
+}
