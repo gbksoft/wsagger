@@ -2,7 +2,7 @@
    "$schema": "http://json-schema.org/draft-04/schema#",
    "title": "wsagger.json",
    "type": "object",
-   "required": ["wsagger", "info", "scenarios"],
+   "required": ["wsagger", "info", "proto", "host", "port", "path", "scenarios"],
    "properties": {
       "wsagger": {
          "type": "string",
@@ -22,6 +22,22 @@
                "type": "string"
             }
          }
+      },
+      "proto": {
+         "type": "string",
+         "description": "server proto"
+      },
+      "host": {
+         "type": "string",
+         "description": "server host"
+      },
+      "port": {
+         "type": "string",
+         "description": "server port"
+      },
+      "path": {
+         "type": "string",
+         "description": "server path"
       },
       "scenarios": {
          "title": "API test scenarios array",

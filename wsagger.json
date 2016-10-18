@@ -1,5 +1,9 @@
 {
    "wsagger": "0.0.2",
+   "proto": "socket.io",
+   "host": "localhost",
+   "port": "2870",
+   "path": "/front_space",
    "info": {
       "description": "API for GBK chat",
       "version": "1.0.0",
