@@ -2,17 +2,14 @@
 var config = {
     port: 25780,
     namespace: '/front_space'
-//          data: data
 };
-//      var data   = config.data;
 
 var data = {};
-
 
 $('#jsonloader').submit(function (evt) {
 
     evt.preventDefault();
-    $('#jsonloader').find('.error').html("");  // clear error message
+    $('#jsonloader').find('.error').html("").fadeIn();  // clear error message
 
     var jsonPromise = $.getJSON( $(this).find('.url').val() )
         .then(
@@ -30,10 +27,8 @@ $('#jsonloader').submit(function (evt) {
                         +  JSON.stringify (data.info.version) + '<br>'
                         + '</p>';
 
-                // for (var k in data) {
-                    var scenarios = data.scenarios;
-                    // delete data.scenarios;
 
+                    var scenarios = data.scenarios;
 
                     scenarios.forEach(function(elem, i){
                         text += '<div>&nbsp;<br><font color=blue>' + elem.name + '</font>\n<div>';
@@ -48,25 +43,13 @@ $('#jsonloader').submit(function (evt) {
 
                     });
 
-                    /* for (var s_ in scenarios) {
-                        text += '<p>&nbsp;<br><font color=blue>' + s_ + '</font>\n<p>';
-
-                        var s = scenarios[s_];
-                        for (var v in s) {
-                            text += v + ': '+ JSON.stringify (s[v]) + '\n<br>';
-                        }
-
-                        tryData[++tryNum] = s.flow;
-                        text += '<button onclick="tryScenario ('+ tryNum + ')">Try!</button><br>\n';
-
-                    }*/
-
-                // }
-
                 setHTML ('data', text);
+
                 $('#jsonloader').find('.error').html( "JSON was loaded successfully" ).fadeOut('slow');
 
-            }, function() {  // error callback
+            },
+
+            function() {  // error callback
                 $('#jsonloader').find('.error').html( "JSON failed to load: URL is probably incorrect" );
             }
         );

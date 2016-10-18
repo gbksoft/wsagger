@@ -40,8 +40,7 @@ body {
 #jsonloader {
 }
 
-#jsonloader [type='text'] {
-    float: left;
+#jsonloader .url {
     width: 300px;
 }
 
@@ -50,6 +49,5 @@ body {
     clear: both;
 }
 
-#jsonloader [type='submit'] {
-    padding: 0px 10px;
+#jsonloader .submit {
 }

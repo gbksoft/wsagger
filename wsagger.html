@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>WSagger</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -11,20 +12,22 @@
     <table id="connect" width=300>
         <tr>
             <td>Token:</td>
-            <td align=right><input id="login"></td>
+            <td align=right><input class='form-control' id="login"></td>
         </tr>
         <tr>
-            <td colspan=2 align=center><input type="submit" style="width:300px;" value="Connect to WS"
-                                              onclick="Connect(); return false;"></td>
+            <td colspan=2 align=center>
+                <input type="submit" class="btn btn-success" style="width:300px;" value="Connect to WS"
+                                              onclick="Connect(); return false;">
+            </td>
         </tr>
     </table>
     &nbsp;
     <form action="" id="jsonloader" name="json-load">
         <label>
-            <input type="text" class="url" name="url" placeholder="Enter url for WSagger JSON file">
+            <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file">
             <span class="error"></span>
         </label>
-        <input type="submit" value="Load JSON">
+        <input class="submit btn btn-success" type="submit" value="Load JSON">
     </form>
 
     <br>
@@ -41,8 +44,11 @@
     <ul id="socketLog"></ul>
 </div>
 
-<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
+<!--<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
+<script src="https://cdn.jsdelivr.net/socket.io-client/1.3.2/socket.io.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="hhttps://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/wsagger.js"></script>
 
 </body>
