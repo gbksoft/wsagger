@@ -14,22 +14,31 @@ $('#jsonloader').submit(function (evt) {
                 res.forEach(function (elem, dataNum) {  // for each in JSON
                     tryData[dataNum] = {server: elem.server, data: {}};
 
-                    text += '<hr><b>wsagger</b> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>';
+                    text += '<li class="wsagger">'
 
-                    text += '<b>info</b> <br> <p>';
-                    for (var k of ['title', 'description', 'version']) {
-                       text += k + ': ' + JSON.stringify (elem.info[k]) + '<br>';
-                    }
-                    text += '</p>';
+                    /* WSagger version & info  */
+
+                    text += '<div class="wsagger__summary">'
+                        + '<div class="wsagger__title">wsagger</div> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
+                        + '<div class="wsagger__title">info</div> <br> '
+                        + '<p>'
+                        +  JSON.stringify (elem.info.title) + '<br>'
+                        +  JSON.stringify (elem.info.description) + '<br>'
+                        +  JSON.stringify (elem.info.version) + '<br>'
+                        + '</p>'
+                        + '</div>';
+
 
                     text += '<b>server</b> <br> <p>';
                     for (var k of ['proto', 'host', 'port', 'path']) {
-                       text += k + ': ' + JSON.stringify (elem.server[k]) + '<br>';
+                        text += k + ': ' + JSON.stringify (elem.server[k]) + '<br>';
                     }
                     text += '</p>';
 
+                    /* WSagger methods */
+
                     elem.scenarios.forEach(function(elem, scenarioNum){
-                        text += '<div class="method"><br><h5>' + elem.name + '</h5><br>';
+                        text += '<div class="method"><h5>' + elem.name + '</h5>';
 
                         var s = elem;
                         for (var v in s) {
@@ -40,6 +49,8 @@ $('#jsonloader').submit(function (evt) {
                         text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button><br></div>';
 
                     });
+
+                    text += '</li>';
 
                 });
 
@@ -55,6 +66,12 @@ $('#jsonloader').submit(function (evt) {
         );
 });
 
+/* FILTERS section */
+
+$('.filters').on('click', 'input', function(){
+    var color = $(this).val();
+    $('#argumentum').toggleClass('hide-' + color);
+});
 
 var socket, reload_, iam;
 
@@ -88,7 +105,7 @@ function tryConnect (dataNum, token) {
 
         socket
             .on ("*", function (event, data) {
-                showMessage ('in: ' + event + ' / ' + JSON.stringify (data), 'socketLog', 'green');
+                showMessage ('in: ' + event + ' / ' + JSON.stringify (data), 'socketLog', 'gray');
             })
             .on ('connected',   onConnected)
             .on ('serverError', onServerError)
@@ -123,7 +140,7 @@ function tryScenario (dataNum, scenarioNum) {
 
     for (var step of flow) {
         if (step.action === 'connect') {
-            tryConnect(dataNum, flow.key);
+            tryConnect(dataNum, step.key);
 
         } else if (step.action === 'request') {
             if (!socket) return;
@@ -159,7 +176,7 @@ function notifyOnTop (message, color) {
 }
 
 function showMessage (text, type, color) {
-    if (color) { $ ('#' + type).append ($ ('<li>').text (text).css ('color', color)); }
+    if (color) { $ ('#' + type).append ($ ('<li>').text (text).addClass (color)); }
     else       { $ ('#' + type).append ($ ('<li>').text (text)); }
     ScrollTo ();
 }

@@ -4,6 +4,22 @@
     box-sizing: border-box;
 }
 
+.green {
+    color: #008000;
+}
+
+.red {
+    color: #de2f2f;
+}
+
+.brown {
+    color: #9b860f;
+}
+
+.gray {
+    color: #616161;
+}
+
 body {
     font: 13px Helvetica, Arial;
     height: 100vh;
@@ -17,6 +33,7 @@ body {
 
 #socketLog li {
     padding: 5px 10px;
+    overflow: auto;
 }
 
 #socketLog li:nth-child(odd) {
@@ -31,16 +48,39 @@ body {
     float: left;
     background-color: white;
     overflow-y: auto;
-
-
 }
 
 #argumentum {
     width: 60%;
 }
 
+/* show/hide messages according to checkboxes in Filters */
+#argumentum.hide-red li.red,
+#argumentum.hide-gray li.gray,
+#argumentum.hide-brown li.brown,
+#argumentum.hide-green li.green {
+    display: none;
+}
+
+.filters {
+    position: fixed;
+    right: 1.2em;
+    top: 0;
+    background: #dddddd;
+    padding: 4px 10px;
+    border-radius: 0 0 5px 5px;
+    border: 1px solid #bbbbbb;
+}
+.filters input {
+    vertical-align: bottom;
+}
+
+#data {
+    list-style: none;
+}
+
 #jsonloader {
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 #jsonloader .url {
@@ -55,8 +95,23 @@ body {
 #jsonloader .submit {
 }
 
+/* SUMMARY BLOCK*/
+.wsagger {
+    margin-bottom: 30px;
+    border-top: 1px solid #eeeeee;
+}
+
+.wsagger__summary {
+}
+
+.wsagger__title {
+    font-weight: bold;
+}
+
 /* METHOD block */
-.method {}
+.method {
+}
+
 .method h5 {
     color: #4c4cca;
 }
