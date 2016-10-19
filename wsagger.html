@@ -6,48 +6,54 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- LEFT PANEL -->
+    <div id="titulus" class="container-fluid">
+        <div id="status"></div>
 
-<div id="titulus">
-    <div id="status"></div>
-    <table id="connect" width=300>
-        <tr>
-            <td>Token:</td>
-            <td align=right><input class='form-control' id="login"></td>
-        </tr>
-        <tr>
-            <td colspan=2 align=center>
-                <input type="submit" class="btn btn-success" style="width:300px;" value="Connect to WS"
-                                              onclick="Connect(); return false;">
-            </td>
-        </tr>
-    </table>
-    &nbsp;
-    <form action="" id="jsonloader" name="json-load">
-        <label>
-            <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file">
-            <span class="error"></span>
-        </label>
-        <input class="submit btn btn-success" type="submit" value="Load JSON">
-    </form>
+        <div class="row">
+            <div class="col-xs-12 col-md-7">
+                <!-- TOKEN -->
+                <input class='form-control' id="login" placeholder="Enter token:">
+            </div>
+            <div class="col-xs-12 col-md-5">
+                <!-- CONNECT to WS -->
+                <input type="submit" class="btn btn-success btn-block" value="Connect to WS"
+                                    onclick="Connect(); return false;">
+            </div>
+        </div>
 
-    <br>
-    <br>
-    <p>User id: <span id="userId"></span>
-    <p>Socket id: <span id="socketId"></span>
-    <div>&nbsp;
+        <form action="" id="jsonloader" class="row" name="json-load">
+            <div class="col-xs-12 col-md-7">
+                <!-- WSagger URL -->
+                <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
+                <span class="feedback"></span>
+            </div>
+            <div class="col-xs-12 col-md-5">
+                <!-- load JSON -->
+                <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
+            </div>
+        </form>
+
         <br>
-        <span id="data"></span>
+        <br>
+        <p>User id: <span id="userId"></span>
+        <p>Socket id: <span id="socketId"></span>
+        <div>&nbsp;
+            <br>
+            <span id="data"></span>
+        </div>
     </div>
 
-</div>
-<div id="argumentum">
-    <ul id="socketLog"></ul>
-</div>
+    <!-- RIGHT PANEL -->
+    <div id="argumentum" class="container-fluid">
+        <ul id="socketLog"></ul>
+    </div>
 
 <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
 <!--<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
 <script src="https://cdn.jsdelivr.net/socket.io-client/1.3.2/socket.io.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<!--<script src="https://cdn.jsdelivr.net/lodash/4.16.4/lodash.min.js"></script>-->
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/wsagger.js"></script>
 
