@@ -6,6 +6,7 @@
 
 body {
     font: 13px Helvetica, Arial;
+    height: 100vh;
 }
 
 #socketLog {
@@ -22,12 +23,7 @@ body {
     background: #eee;
 }
 
-#argumentum {
-    float: left;
-    width: 60%;
-}
-
-#titulus {
+#argumentum, #titulus {
     padding-top: 20px;
     z-index: 999;
     max-height: 100%;
@@ -35,6 +31,12 @@ body {
     float: left;
     background-color: white;
     overflow-y: auto;
+
+
+}
+
+#argumentum {
+    width: 60%;
 }
 
 #jsonloader {
@@ -43,9 +45,10 @@ body {
 #jsonloader .url {
 }
 
-#jsonloader .error {
+#jsonloader .feedback {
     float: left;
     clear: both;
+    position: absolute;
 }
 
 #jsonloader .submit {

@@ -9,7 +9,7 @@ var data = {};
 $('#jsonloader').submit(function (evt) {
 
     evt.preventDefault();
-    $('#jsonloader').find('.error').html("").fadeIn();  // clear error message
+    $('#jsonloader').find('.feedback').html("").fadeIn();  // clear error message
 
     var jsonPromise = $.getJSON( $(this).find('.url').val() )
         .then(
@@ -45,13 +45,13 @@ $('#jsonloader').submit(function (evt) {
 
                 setHTML ('data', text);
 
-                $('#jsonloader').find('.error').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
+                $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
             },
 
             function(error) {  // error callback
                 console.log(error);
-                $('#jsonloader').find('.error').html( "JSON failed to load: URL is probably incorrect" );
+                $('#jsonloader').find('.feedback').html( "JSON didn't load: URL is probably incorrect" );
             }
         );
 });
