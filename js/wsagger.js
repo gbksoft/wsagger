@@ -1,10 +1,4 @@
-//      var config = {{{frontConfigJson}}};
-var config = {
-    port: 25780,
-    namespace: '/front_space'
-};
-
-var data = {};
+var config = {}, tryData = {};
 
 $('#jsonloader').submit(function (evt) {
 
@@ -14,25 +8,27 @@ $('#jsonloader').submit(function (evt) {
     var jsonPromise = $.getJSON( $(this).find('.url').val() )
         .then(
             function(res) {  // success callback
-                data = res;
-                config.data = res;
+                var text = '';
+                tryData = {};
 
-                var text   = '', tryNum = 0, tryData = {};
-
-                data.forEach(function (elem, i) {  // for each in JSON
+                res.forEach(function (elem, dataNum) {  // for each in JSON
+                    tryData[dataNum] = {server: elem.server, data: {}};
 
                     text += '<hr><b>wsagger</b> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>';
-                    text += '<b>info</b> <br> '
-                        + '<p>'
-                        +  JSON.stringify (elem.info.title) + '<br>'
-                        +  JSON.stringify (elem.info.description) + '<br>'
-                        +  JSON.stringify (elem.info.version) + '<br>'
-                        + '</p>';
 
+                    text += '<b>info</b> <br> <p>';
+                    for (var k of ['title', 'description', 'version']) {
+                       text += k + ': ' + JSON.stringify (elem.info[k]) + '<br>';
+                    }
+                    text += '</p>';
 
-                    var scenarios = elem.scenarios;
+                    text += '<b>server</b> <br> <p>';
+                    for (var k of ['proto', 'host', 'port', 'path']) {
+                       text += k + ': ' + JSON.stringify (elem.server[k]) + '<br>';
+                    }
+                    text += '</p>';
 
-                    scenarios.forEach(function(elem, i){
+                    elem.scenarios.forEach(function(elem, scenarioNum){
                         text += '<div class="method"><br><h5>' + elem.name + '</h5><br>';
 
                         var s = elem;
@@ -40,15 +36,14 @@ $('#jsonloader').submit(function (evt) {
                             text += '&bull; ' + v + ': '+ JSON.stringify (s[v]) + '\n<br>';
                         }
 
-                        tryData[++tryNum] = s.flow;
-                        text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ tryNum + ')">Try!</button><br></div>';
+                        tryData[dataNum].data[scenarioNum] = s.flow;
+                        text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button><br></div>';
 
                     });
 
                 });
 
                 setHTML ('data', text);
-
                 $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
             },
@@ -61,17 +56,16 @@ $('#jsonloader').submit(function (evt) {
 });
 
 
-
-
-
-
-var frontUrl = 'http://' + window.location.hostname + ':' + config.port + config.namespace;
-var groupId  = '';
-var groups   = {};
-
 var socket, reload_, iam;
 
-function Connect () {
+function tryConnect (dataNum, token) {
+
+    var server = tryData[dataNum].server;
+
+    // var frontUrl = 'http://' + window.location.hostname + ':' + config.port + config.namespace;
+
+    var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
+
     if (iam) {
         notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', red);
         return
@@ -79,10 +73,7 @@ function Connect () {
 
     iam = true;
 
-    var el       = document.getElementById ("login");
-    var login    = el.value;
-
-    var query = {query: "token=" + login};
+    var query = {query: "token=" + token};
     socket    = io (frontUrl, query);
 
     if (socket) {
@@ -115,6 +106,7 @@ function Connect () {
                 notifyOnTop("New socket is disconnected :-(", 'red');
 
             }
+
         });
         socket.on ('error',      function () { notifyOnTop ('status', "Error connecting to socket", 'red'); });
         socket.on ('disconnect', function () { notifyOnTop ("Socket is disconnected",               'red'); });
@@ -125,18 +117,22 @@ function Connect () {
     }
 }
 
-function tryScenario (tryNum) {
-    if (!socket) return;
-    var flow = array_ (tryData[tryNum]);
-    log (flow);
+function tryScenario (dataNum, scenarioNum) {
+
+    var flow = array_ (tryData[dataNum].data[scenarioNum]);
+
     for (var step of flow) {
-        if (step[0] === 'request') {
-            if (step.length > 3) {
-                showMessage ('out: ' + step[1] + ' / ' + JSON.stringify (step[2]) + ' / ' + JSON.stringify (step[3]), 'socketLog', 'brown');
-                socket.emit (step[1], step[2], step[3]);
+        if (step.action === 'connect') {
+            tryConnect(dataNum, flow.key);
+
+        } else if (step.action === 'request') {
+            if (!socket) return;
+            if (step.data.length > 1) {
+                showMessage ('out: ' + step.key + ' / ' + JSON.stringify (step.data[0]) + ' / ' + JSON.stringify (step.data[1]), 'socketLog', 'brown');
+                socket.emit (step.key, step.data[0], step.data[1]);
             } else {
-                showMessage ('out: ' + step[1] + ' / ' + JSON.stringify (step[2]), 'socketLog', 'brown');
-                socket.emit (step[1], step[2]);
+                showMessage ('out: ' + step.key + ' / ' + JSON.stringify (step.data[0]), 'socketLog', 'brown');
+                socket.emit (step.key, step.data[0]);
             }
         }
     }

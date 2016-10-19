@@ -1,14 +1,18 @@
 {
    "wsagger": "0.0.2",
-   "proto": "socket.io",
-   "host": "localhost",
-   "port": "2870",
-   "path": "/front_space",
    "info": {
       "description": "API for GBK chat",
       "version": "1.0.0",
       "title": "GBKSOFT chat API"
    },
+
+   "server" : {
+      "proto": "socket.io",
+      "host": "localhost",
+      "port": "28780",
+      "path": "/front_space"
+   },
+   
    "scenarios": [
        {
           "name": "connect to socket.io",
@@ -25,9 +29,8 @@
           "flow": [
              {
                 "action": "connect", 
-                "key": "socket.io", 
-                "data": {"token": "@"},
-                "dataType": "object"
+                "key": "@", 
+                "data": []
              }
           ]
        },
@@ -48,8 +51,7 @@
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "broadcast"},
-                "dataType": "object"
+                "data": [{"messageText": "@", "type": "broadcast"}]
              }
           ]
        },
@@ -76,20 +78,12 @@
              {
                 "action": "request", 
                 "key": "changeGroup", 
-                "data": {"groupId": "@"},
-                "dataType": "object"
-             },
-             {
-                "action": "request", 
-                "key": "sendMessage", 
-                "data": {"groupId": "@"},
-                "dataType": "object"
+                "data": ["@"]
              },
              {
                 "action": "response", 
                 "key": "message", 
-                "data": {"messageText": "@", "groupId": "@"},
-                "dataType": "object"
+                "data": [{"messageText": "@", "groupId": "@"}]
              }
           ]
        },
@@ -116,8 +110,7 @@
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "user", "recipientId": "@"},
-                "dataType": "object"
+                "data": [{"messageText": "@", "type": "user", "recipientId": "@"}]
              }
           ]
        }   

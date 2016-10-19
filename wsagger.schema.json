@@ -2,7 +2,7 @@
    "$schema": "http://json-schema.org/draft-04/schema#",
    "title": "wsagger.json",
    "type": "object",
-   "required": ["wsagger", "info", "proto", "host", "port", "path", "scenarios"],
+   "required": ["wsagger", "info", "server", "scenarios"],
    "properties": {
       "wsagger": {
          "type": "string",
@@ -23,21 +23,27 @@
             }
          }
       },
-      "proto": {
-         "type": "string",
-         "description": "server proto"
-      },
-      "host": {
-         "type": "string",
-         "description": "server host"
-      },
-      "port": {
-         "type": "string",
-         "description": "server port"
-      },
-      "path": {
-         "type": "string",
-         "description": "server path"
+      "server": {
+         "type": "object",
+         "required": ["proto", "host", "port", "path"],
+         "properties": {
+            "proto": {
+               "type": "string",
+               "description": "server proto"
+            },
+            "host": {
+               "type": "string",
+               "description": "server host"
+            },
+            "port": {
+               "type": "string",
+               "description": "server port"
+            },
+            "path": {
+               "type": "string",
+               "description": "server path"
+            }   
+         }   
       },
       "scenarios": {
          "title": "API test scenarios array",
@@ -85,7 +91,7 @@
                   "type": "array",
                   "items": {
                      "type": "object",
-                     "required": ["action", "key", "dataType"],
+                     "required": ["action", "key", "data"],
                      "properties": {
                         "action": {
                            "type": "string"
@@ -94,8 +100,6 @@
                            "type": "string"
                         },
                         "data": {
-                        },
-                        "dataType": {
                         }
                      }   
                   } 
