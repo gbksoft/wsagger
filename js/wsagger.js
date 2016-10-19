@@ -19,29 +19,33 @@ $('#jsonloader').submit(function (evt) {
 
                 var text   = '', tryNum = 0, tryData = {};
 
-                text += '<b>wsagger</b> <br> <p>' +  JSON.stringify (data.wsagger) + '</p>';
-                text += '<b>info</b> <br> '
+                data.forEach(function (elem, i) {  // for each in JSON
+
+                    text += '<hr><b>wsagger</b> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>';
+                    text += '<b>info</b> <br> '
                         + '<p>'
-                        +  JSON.stringify (data.info.title) + '<br>'
-                        +  JSON.stringify (data.info.description) + '<br>'
-                        +  JSON.stringify (data.info.version) + '<br>'
+                        +  JSON.stringify (elem.info.title) + '<br>'
+                        +  JSON.stringify (elem.info.description) + '<br>'
+                        +  JSON.stringify (elem.info.version) + '<br>'
                         + '</p>';
 
 
-                    var scenarios = data.scenarios;
+                    var scenarios = elem.scenarios;
 
                     scenarios.forEach(function(elem, i){
                         text += '<div class="method"><br><h5>' + elem.name + '</h5><br>';
 
                         var s = elem;
                         for (var v in s) {
-                            text += v + ': '+ JSON.stringify (s[v]) + '\n<br>';
+                            text += '&bull; ' + v + ': '+ JSON.stringify (s[v]) + '\n<br>';
                         }
 
                         tryData[++tryNum] = s.flow;
                         text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ tryNum + ')">Try!</button><br></div>';
 
                     });
+
+                });
 
                 setHTML ('data', text);
 
