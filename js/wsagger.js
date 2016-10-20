@@ -56,12 +56,18 @@ $('#jsonloader').submit(function (evt) {
 
                                     for (var v in s) {
                                         var divOrPre = (v === 'parameters' || v === 'flow')? 'pre' : 'div'; // use PRE or DIV tag for description
+                                        var hasFormdata = (  s[v][0] && s[v][0].in === 'formData' );  // if scenarios.parameters.in === formData
                                         text += '<li>'
-                                            + '<div class="method__item">' + v + '</div>: '
-                                            + '<'+ divOrPre + ' class="method__descr">'
-                                                + JSON.stringify (s[v], null, 2)
-                                            + '</' + divOrPre + '>'
-                                            + '</li>';
+                                            + '<div class="method__item">' + v + '</div>:<br>'
+                                            + '<'+ divOrPre + ' class="method__descr">';
+                                            if (hasFormdata) {    // we either show a form...
+                                                text += showFormInMethod( s[v][0].name, s[v][0].description );
+                                            } else {              // or show JSON data
+                                                text += JSON.stringify (s[v], null, 2);
+                                            }
+
+                                        text += '</' + divOrPre + '>';
+                                        text += '</li>';
                                     }
 
                                 text += '</ul>';
@@ -113,7 +119,7 @@ function tryConnect (dataNum, token) {
     var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
     if (iam) {
-        notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', red);
+        notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', "red");
         return
     }
 
@@ -214,6 +220,14 @@ function clearSocketLog () {
     setHTML ('socketLog', '')
 }
 
+function showFormInMethod(name, descr) {
+    return '<form class="formData">' +
+               'name: <br>' +
+               '<input value="' + name + '" class="name">' +
+               '<div class="descr">' + descr + '</div>'
+           '</form>';
+}
+
 function showError (text) {
     $ ('#socketLog').append ($ ('<li>').text ('!!! Error: ' + text).css ('color', 'red'));  //
     ScrollTo();
@@ -222,9 +236,13 @@ function showError (text) {
 function ScrollTo () {
     var el = document.getElementById ("argumentum");
     if (el) {
-        var delta = el.offsetHeight + el.offsetTop - window.innerHeight;
+        /*var delta = el.offsetHeight + el.offsetTop - window.innerHeight;
         if (delta > -10) window.scrollTo(0, delta + 10);
-        // log(el.offsetHeight, el.offsetTop, window.innerHeight);
+        log(el.offsetHeight, el.offsetTop, window.innerHeight);*/
+        // log('snizu = ', el.scrollHeight - el.scrollTop - el.clientHeight);
+
+        el.scrollTop = el.scrollHeight;
+
     }
 }
 

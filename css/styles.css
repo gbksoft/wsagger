@@ -136,4 +136,5 @@ body {
     .method__descr {
         line-height: 100%;
         vertical-align: top;
+        width: 100%;
     }
