@@ -8,6 +8,8 @@ $('#jsonloader').submit(function (evt) {
     var jsonPromise = $.getJSON( $(this).find('.url').val() )
         .then(
             function(res) {  // success callback
+                clearSocketLog();
+
                 var text = '';
                 tryData = {};
 

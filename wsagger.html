@@ -40,37 +40,31 @@
         <p>Socket id: <span id="socketId"></span>
         <div>&nbsp;
             <br>
-            <ul id="data"></ul>
+            <ul id="data">
+                <!-- container for Wsagger data -->
+            </ul>
         </div>
     </div>
 
     <!-- RIGHT PANEL -->
     <div id="argumentum" class="container-fluid">
         <div class="filters">
-            Show output for:
+            Show output for:&nbsp;
             <label>
                 <input type="checkbox" value="gray" id="filter-other" checked>
                 <span class="gray">Other</span>
             </label>
             <label>
-                <input type="checkbox" value="red" id="filter-request" checked>
-                <span class="red">Requests</span>
-            </label>
-            <label>
                 <input type="checkbox" value="green" id="filter-response" checked>
                 <span class="green">Responses</span>
             </label>
+            <label>
+                <input type="checkbox" value="brown" id="filter-request" checked>
+                <span class="brown">Requests</span>
+            </label>
         </div>
         <ul id="socketLog">
-            <!-- test messages for filters -->
-        <!--
-            <li class="gray">gray meassage</li>
-            <li class="gray">gray івпадюліва ;l,sdf;lmkds </li>
-            <li class="red">red gmkfsd98 09  -</li>
-            <li class="red">red івдлтів09 09і в09 </li>
-            <li class="green">green вадлва 9</li>
-            <li class="green">green алда 09 вм</li>
-        -->
+            <!-- container for output (messages) of Wsagger methods  -->
         </ul>
     </div>
 
