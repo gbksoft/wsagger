@@ -40,13 +40,32 @@
         <p>Socket id: <span id="socketId"></span>
         <div>&nbsp;
             <br>
-            <span id="data"></span>
+            <ul id="data">
+                <!-- container for Wsagger data -->
+            </ul>
         </div>
     </div>
 
     <!-- RIGHT PANEL -->
     <div id="argumentum" class="container-fluid">
-        <ul id="socketLog"></ul>
+        <div class="filters">
+            Show output for:&nbsp;
+            <label>
+                <input type="checkbox" value="gray" id="filter-other" checked>
+                <span class="gray">Other</span>
+            </label>
+            <label>
+                <input type="checkbox" value="green" id="filter-response" checked>
+                <span class="green">Responses</span>
+            </label>
+            <label>
+                <input type="checkbox" value="brown" id="filter-request" checked>
+                <span class="brown">Requests</span>
+            </label>
+        </div>
+        <ul id="socketLog">
+            <!-- container for output (messages) of Wsagger methods  -->
+        </ul>
     </div>
 
 <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
