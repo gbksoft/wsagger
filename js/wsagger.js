@@ -73,6 +73,9 @@ function tryConnect (dataNum, token) {
 
     iam = true;
 
+    log (token);
+
+
     var query = {query: "token=" + token};
     socket    = io (frontUrl, query);
 
@@ -123,7 +126,7 @@ function tryScenario (dataNum, scenarioNum) {
 
     for (var step of flow) {
         if (step.action === 'connect') {
-            tryConnect(dataNum, flow.key);
+            tryConnect(dataNum, step.key);
 
         } else if (step.action === 'request') {
             if (!socket) return;

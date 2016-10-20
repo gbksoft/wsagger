@@ -1,16 +1,17 @@
 {
    "wsagger": "0.0.2",
    "info": {
-      "description": "API for GBK chat",
-      "version": "1.0.0",
-      "title": "GBKSOFT chat API"
+      "description": "API for Gambling Game",
+      "version": "0.0.0",
+      "title": "API for Gambling Game"
    },
 
    "server" : {
       "proto": "socket.io",
-      "host": "localhost",
-      "port": "28780",
-      "path": "/front_space"
+      "host": "{{{host}}}",
+      "port": "{{{port}}}",
+      "path": "{{{path}}}",
+      "namespace": "{{{path}}}"
    },
    
    "scenarios": [
@@ -18,12 +19,6 @@
           "name": "connect to socket.io",
           "summary": " ",
           "parameters": [
-             {             
-                "in": "formData",
-                "name": "namespace",
-                "description": "connect to socket.io",
-                "dataType": "string"
-             }
           ],
           "operationId": "connect",
           "flow": [
@@ -34,86 +29,68 @@
              }
           ]
        },
+
+
        {
-          "name": "sendBroadcastMessage",
+          "name": "getUsersHere",
           "summary": " ",
           "parameters": [
-             { 
-               "in": "formData",
-               "name": "messageText",
-               "description": "broadcast message text",
-                "dataType": "string"
-             }
+          
           ],
-          "condition": "connect",
-          "operationId": "",
+          "operationId": "getUsersHere",
           "flow": [
              {
                 "action": "request", 
-                "key": "sendMessage", 
-                "data": [{"messageText": "@", "type": "broadcast"}]
+                "key": "getUsersHere", 
+                "data": []
              }
           ]
        },
+
        {
-          "name": "sendGroupMessage",
+          "name": "createGame",
           "summary": " ",
           "parameters": [
              {
                 "in": "formData",
-                "name": "messageText",
-                "description": "group message text",
-                "dataType": "string"
-             },
-             {
-                "in": "formData",
-                "name": "groupId",
-                "description": "group id",
+                "name": "gameId",
+                "description": "",
                 "dataType": "string"
              }
+          
           ],
-          "condition": "connect",
-          "operationId": "",
+          "operationId": "createGame",
           "flow": [
              {
                 "action": "request", 
-                "key": "changeGroup", 
-                "data": ["@"]
-             },
-             {
-                "action": "response", 
-                "key": "message", 
-                "data": [{"messageText": "@", "groupId": "@"}]
+                "key": "createGame", 
+                "data": ["{{gameId}}"]
              }
           ]
        },
+
        {
-          "name": "sendUserMessage",
+          "name": "joinGame",
           "summary": " ",
           "parameters": [
              {
                 "in": "formData",
-                "name": "messageText",
-                "description": "user message text",
-                "dataType": "string"
-             },
-             {
-                "in": "formData",
-                "name": "recipientId",
-                "description": "recipient id",
+                "name": "gameId",
+                "description": "",
                 "dataType": "string"
              }
+          
           ],
-          "operationId": "",
-          "condition": "connect",
+          "operationId": "joinGame",
           "flow": [
              {
                 "action": "request", 
-                "key": "sendMessage", 
-                "data": [{"messageText": "@", "type": "user", "recipientId": "@"}]
+                "key": "joinGame", 
+                "data": ["{{gameId}}"]
              }
           ]
-       }   
+       }
+
     ]
 }
 
