@@ -21,8 +21,8 @@ $('#jsonloader').submit(function (evt) {
                     /* WSagger version & info  */
 
                     text += '<div class="wsagger__summary">'
-                        + '<div class="wsagger__title">wsagger</div> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
-                        + '<div class="wsagger__title">info</div> <br> '
+                        + '<div class="wsagger__title">wsagger</div> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
+                        + '<div class="wsagger__title">info</div> '
                         + '<p>'
                         +  JSON.stringify (elem.info.title) + '<br>'
                         +  JSON.stringify (elem.info.description) + '<br>'
@@ -40,15 +40,37 @@ $('#jsonloader').submit(function (evt) {
                     /* WSagger methods */
 
                     elem.scenarios.forEach(function(elem, scenarioNum){
-                        text += '<div class="method"><h5>' + elem.name + '</h5>';
+                        var idToToggle = 'id' + scenarioNum;
 
-                        var s = elem;
-                        for (var v in s) {
-                            text += '&bull; ' + v + ': '+ JSON.stringify (s[v]) + '\n<br>';
-                        }
+                        text += '<div class="method panel panel-info">';
 
-                        tryData[dataNum].data[scenarioNum] = s.flow;
-                        text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button><br></div>';
+                            text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
+                                        + '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
+                                        + elem.name
+                                    + '</h5>';
+
+                            text += '<div class="method_body panel-body collapse" id="'+ idToToggle +'">';
+
+                                text += '<ul class="method__details">';
+                                    var s = elem;
+
+                                    for (var v in s) {
+                                        var divOrPre = (v === 'parameters' || v === 'flow')? 'pre' : 'div'; // use PRE or DIV tag for description
+                                        text += '<li>'
+                                            + '<div class="method__item">' + v + '</div>: '
+                                            + '<'+ divOrPre + ' class="method__descr">'
+                                                + JSON.stringify (s[v], null, 2)
+                                            + '</' + divOrPre + '>'
+                                            + '</li>';
+                                    }
+
+                                text += '</ul>';
+
+                                tryData[dataNum].data[scenarioNum] = s.flow;
+                                text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
+
+                            text += '</div>';
+                        text += '</div>';
 
                     });
 
@@ -74,6 +96,11 @@ $('.filters').on('click', 'input', function(){
     var color = $(this).val();
     $('#argumentum').toggleClass('hide-' + color);
 });
+
+$('body').on('click', '.method__header', function(){
+    $(this).find('span').toggleClass('glyphicon-plus glyphicon-minus');
+});
+
 
 var socket, reload_, iam;
 

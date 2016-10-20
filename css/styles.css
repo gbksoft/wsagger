@@ -20,6 +20,10 @@
     color: #616161;
 }
 
+.blue {
+    color:#4c4cca;
+}
+
 body {
     font: 13px Helvetica, Arial;
     height: 100vh;
@@ -109,9 +113,27 @@ body {
 }
 
 /* METHOD block */
+
 .method {
 }
-
-.method h5 {
-    color: #4c4cca;
+.method__header {
+    margin: 0;
 }
+.method__header span{
+    margin-right:10px;
+}
+
+.method__body {
+
+}
+
+.method__details {
+    padding-left: 1.2em;
+}
+    .method__item, .method__descr {
+        display: inline-block;
+    }
+    .method__descr {
+        line-height: 100%;
+        vertical-align: top;
+    }
