@@ -8,6 +8,8 @@ $('#jsonloader').submit(function (evt) {
     var jsonPromise = $.getJSON( $(this).find('.url').val() )
         .then(
             function(res) {  // success callback
+                clearSocketLog();
+
                 var text = '';
                 tryData = {};
 
@@ -19,8 +21,8 @@ $('#jsonloader').submit(function (evt) {
                     /* WSagger version & info  */
 
                     text += '<div class="wsagger__summary">'
-                        + '<div class="wsagger__title">wsagger</div> <br> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
-                        + '<div class="wsagger__title">info</div> <br> '
+                        + '<div class="wsagger__title">wsagger</div> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
+                        + '<div class="wsagger__title">info</div> '
                         + '<p>'
                         +  JSON.stringify (elem.info.title) + '<br>'
                         +  JSON.stringify (elem.info.description) + '<br>'
@@ -38,15 +40,43 @@ $('#jsonloader').submit(function (evt) {
                     /* WSagger methods */
 
                     elem.scenarios.forEach(function(elem, scenarioNum){
-                        text += '<div class="method"><h5>' + elem.name + '</h5>';
+                        var idToToggle = 'id' + scenarioNum;
 
-                        var s = elem;
-                        for (var v in s) {
-                            text += '&bull; ' + v + ': '+ JSON.stringify (s[v]) + '\n<br>';
-                        }
+                        text += '<div class="method panel panel-info">';
 
-                        tryData[dataNum].data[scenarioNum] = s.flow;
-                        text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button><br></div>';
+                            text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
+                                        + '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
+                                        + elem.name
+                                    + '</h5>';
+
+                            text += '<div class="method_body panel-body collapse" id="'+ idToToggle +'">';
+
+                                text += '<ul class="method__details">';
+                                    var s = elem;
+
+                                    for (var v in s) {
+                                        var divOrPre = (v === 'parameters' || v === 'flow')? 'pre' : 'div'; // use PRE or DIV tag for description
+                                        var hasFormdata = (  s[v][0] && s[v][0].in === 'formData' );  // if scenarios.parameters.in === formData
+                                        text += '<li>'
+                                            + '<div class="method__item">' + v + '</div>:<br>'
+                                            + '<'+ divOrPre + ' class="method__descr">';
+                                            if (hasFormdata) {    // we either show a form...
+                                                text += showFormInMethod( s[v][0].name, s[v][0].description );
+                                            } else {              // or show JSON data
+                                                text += JSON.stringify (s[v], null, 2);
+                                            }
+
+                                        text += '</' + divOrPre + '>';
+                                        text += '</li>';
+                                    }
+
+                                text += '</ul>';
+
+                                tryData[dataNum].data[scenarioNum] = s.flow;
+                                text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
+
+                            text += '</div>';
+                        text += '</div>';
 
                     });
 
@@ -73,6 +103,11 @@ $('.filters').on('click', 'input', function(){
     $('#argumentum').toggleClass('hide-' + color);
 });
 
+$('body').on('click', '.method__header', function(){
+    $(this).find('span').toggleClass('glyphicon-plus glyphicon-minus');
+});
+
+
 var socket, reload_, iam;
 
 function tryConnect (dataNum, token) {
@@ -84,7 +119,7 @@ function tryConnect (dataNum, token) {
     var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
     if (iam) {
-        notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', red);
+        notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', "red");
         return
     }
 
@@ -185,6 +220,14 @@ function clearSocketLog () {
     setHTML ('socketLog', '')
 }
 
+function showFormInMethod(name, descr) {
+    return '<form class="formData">' +
+               'name: <br>' +
+               '<input value="' + name + '" class="name">' +
+               '<div class="descr">' + descr + '</div>'
+           '</form>';
+}
+
 function showError (text) {
     $ ('#socketLog').append ($ ('<li>').text ('!!! Error: ' + text).css ('color', 'red'));  //
     ScrollTo();
@@ -193,9 +236,13 @@ function showError (text) {
 function ScrollTo () {
     var el = document.getElementById ("argumentum");
     if (el) {
-        var delta = el.offsetHeight + el.offsetTop - window.innerHeight;
+        /*var delta = el.offsetHeight + el.offsetTop - window.innerHeight;
         if (delta > -10) window.scrollTo(0, delta + 10);
-        // log(el.offsetHeight, el.offsetTop, window.innerHeight);
+        log(el.offsetHeight, el.offsetTop, window.innerHeight);*/
+        // log('snizu = ', el.scrollHeight - el.scrollTop - el.clientHeight);
+
+        el.scrollTop = el.scrollHeight;
+
     }
 }
 

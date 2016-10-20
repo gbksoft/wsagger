@@ -13,11 +13,15 @@
 }
 
 .brown {
-    color: #9b860f;
+    color: #bb7608;
 }
 
 .gray {
     color: #616161;
+}
+
+.blue {
+    color:#4c4cca;
 }
 
 body {
@@ -109,9 +113,28 @@ body {
 }
 
 /* METHOD block */
+
 .method {
 }
-
-.method h5 {
-    color: #4c4cca;
+.method__header {
+    margin: 0;
 }
+.method__header span{
+    margin-right:10px;
+}
+
+.method__body {
+
+}
+
+.method__details {
+    padding-left: 1.2em;
+}
+    .method__item, .method__descr {
+        display: inline-block;
+    }
+    .method__descr {
+        line-height: 100%;
+        vertical-align: top;
+        width: 100%;
+    }
