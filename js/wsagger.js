@@ -49,7 +49,7 @@ $('#jsonloader').submit(function (evt) {
                                         + elem.name
                                     + '</h5>';
 
-                            text += '<div class="method_body panel-body collapse" id="'+ idToToggle +'">';
+                            text += '<div class="method__body panel-body collapse" id="'+ idToToggle +'">';
 
                                 text += '<ul class="method__details">';
                                     var s = elem;
@@ -222,9 +222,9 @@ function clearSocketLog () {
 
 function showFormInMethod(name, descr) {
     return '<form class="formData">' +
-               'name: <br>' +
-               '<input value="' + name + '" class="name">' +
-               '<div class="descr">' + descr + '</div>'
+                '<div class="formData__name">' + name + ': </div>' +
+                '<input value="" class="formData__name-input">' +
+                '<div class="formData__descr">' + descr + '</div>' +
            '</form>';
 }
 
@@ -236,13 +236,8 @@ function showError (text) {
 function ScrollTo () {
     var el = document.getElementById ("argumentum");
     if (el) {
-        /*var delta = el.offsetHeight + el.offsetTop - window.innerHeight;
-        if (delta > -10) window.scrollTo(0, delta + 10);
-        log(el.offsetHeight, el.offsetTop, window.innerHeight);*/
-        // log('snizu = ', el.scrollHeight - el.scrollTop - el.clientHeight);
-
-        el.scrollTop = el.scrollHeight;
-
+        // el.scrollTop = el.scrollHeight;  // immediate scroll to end
+        $(el).scrollTo('max', 400); // smooth scroll to end
     }
 }
 
