@@ -38,7 +38,14 @@ function jsonLoadSuccessHandler(res) {  // success callback
     var text = '';
     tryData = {};
 
-    res.forEach(function (elem, dataNum) {  // for each in JSON
+    // res.forEach(function (elem, dataNum) {  // for each in JSON
+
+    
+    elem = res;
+    dataNum = 0;
+
+
+
         tryData[dataNum] = {server: elem.server, data: {}};
 
         text += '<li class="wsagger">'
@@ -107,7 +114,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
         text += '</li>';
 
-    });
+    // });
 
     setHTML ('data', text);
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
@@ -195,6 +202,20 @@ function tryConnect (dataNum, token) {
     }
 }
 
+
+function tryLoginAndConnect(dataNum, username, password) {
+    var server = tryData[dataNum].server;
+    $.ajax({
+        method: "POST",
+        url: "http://" + server.host + ':' + server.port + "/rest/v1/user/login",
+        data: {username: username, password: password}
+    })
+    .done(function(msg) {
+        tryConnect(dataNum, msg.result.token);
+    });
+}
+
+
 function tryScenario (dataNum, scenarioNum) {
 
     var flow = array_ (tryData[dataNum].data[scenarioNum]);
@@ -202,6 +223,9 @@ function tryScenario (dataNum, scenarioNum) {
     for (var step of flow) {
         if (step.action === 'connect') {
             tryConnect(dataNum, step.key);
+
+        } if (step.action === 'login_and_connect') {
+            tryLoginAndConnect(dataNum, step.key, step.key);
 
         } else if (step.action === 'request') {
             if (!socket) return;
