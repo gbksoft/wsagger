@@ -13,8 +13,6 @@ $('#jsonloader').submit(function (evt) {
     $('#jsonloader').find('.feedback').html("").fadeIn();  // clear error message
 
     var localOrRemote = $('#jsonloader').find('.json-url').find('input').attr('type');
-    console.log(localOrRemote);
-
 
     if (localOrRemote === 'text') {  // if remote JSON
 
@@ -71,7 +69,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
         /* WSagger methods */
 
-        elem.scenarios.forEach(function(elem, scenarioNum){
+        elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
             var idToToggle = 'id' + scenarioNum;
 
             text += '<div class="method panel panel-info">';
@@ -89,23 +87,31 @@ function jsonLoadSuccessHandler(res) {  // success callback
             for (var v in s) {
                 var divOrPre = (v === 'parameters' || v === 'flow')? 'pre' : 'div'; // use PRE or DIV tag for description
                 var hasFormdata = (  s[v][0] && s[v][0].in === 'formData' );  // if scenarios.parameters.in === formData
-                text += '<li>'
-                    + '<div class="method__item">' + v + '</div>:<br>'
-                    + '<'+ divOrPre + ' class="method__descr">';
-                if (hasFormdata) {    // we either show a form...
-                    text += showFormInMethod( s[v][0].name, s[v][0].description );
-                } else {              // or show JSON data
-                    text += JSON.stringify (s[v], null, 2);
-                }
+                text += (v === "parameters")?
+                        "<li class='parameters'>" : "<li>";
 
-                text += '</' + divOrPre + '>';
+                            text += '<div class="method__item">' + v + '</div>:<br>'
+                                + '<'+ divOrPre + ' class="method__descr">';
+                                if (hasFormdata) {    // we either show a form...
+
+                                    s[v].forEach(function (item, formDataItemNum) {   // for each in JSON/scenarios/parameters
+                                        text += showFormInMethod( item.name, item.description );
+                                    });
+
+                                } else {              // or show JSON data
+                                    text += JSON.stringify (s[v], null, 2);
+                                }
+
+                            text += '</' + divOrPre + '>';
+
                 text += '</li>';
             }
 
             text += '</ul>';
 
             tryData[dataNum].data[scenarioNum] = s.flow;
-            text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
+            // text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
+            text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
 
             text += '</div>';
             text += '</div>';
@@ -118,6 +124,34 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
     setHTML ('data', text);
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
+
+}
+
+$('body').on('click', '.btn-try', function () {
+    var a = $(this).data("datanum"),
+        b = $(this).data("scenarionum");
+
+    tryScenario(a,b);
+
+
+    // get copy of original elem/scenario/parameters. Create object A.
+    var updatedParams = elem.scenarios[a].parameters;
+
+    // get forms with user's data in their inputs.
+    var paramsForms = $(this).prev().find('.parameters').find('form');
+
+    // in each form, we find user's input
+    paramsForms.each(function (ii, el) {
+        var paramValue = $(el).find('input').val();
+        // In ii-th object of parameters, we substitute 'in' field with what user has entered.
+        updatedParams[ii]['in'] = paramValue;
+    });
+
+    // ----------  this is updated 'parameters' object -----------
+    console.log('updatedParams = ', updatedParams);
+});
+
+function getEnteredParams(dataNum, scenarioNum, formDataItemNum) {
 
 }
 
@@ -271,7 +305,7 @@ function clearSocketLog () {
 }
 
 function showFormInMethod(name, descr) {
-    return '<form class="formData">' +
+    return '<form class="formData" data-name="' + name + '">' +
                 '<div class="formData__name blue">' + name + ': </div>' +
                 '<input value="" class="formData__name-input">' +
                 '<div class="formData__descr">' + descr + '</div>' +
