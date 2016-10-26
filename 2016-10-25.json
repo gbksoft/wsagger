@@ -16,7 +16,7 @@
 
    "scenarios": [
        {
-          "name": "connect to socket.io with arbitrary token",
+          "name": "connect to socket.io with tokenapi25",
           "summary": " ",
           "parameters": [
              {             
@@ -30,8 +30,8 @@
           "flow": [
              {
                 "action": "connect", 
-                "key": "{{token}}", 
-                "data": [{"token": "{{token}}"}]
+                "key": "api25", 
+                "data": [{"token": "api25"}]
              }
           ]
        },
