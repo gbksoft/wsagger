@@ -8,14 +8,15 @@
 
    "server" : {
       "proto": "socket.io",
-      "host": "localhost",
-      "port": "28780",
+      "host": "chat-nodejs.dev.gbksoft.net",
+      "port": "28781",
       "path": "/front_space"
    },
    
+
    "scenarios": [
        {
-          "name": "connect to socket.io with arbitrary token",
+          "name": "connect to socket.io with tokenapi25",
           "summary": " ",
           "parameters": [
              {             
@@ -29,8 +30,8 @@
           "flow": [
              {
                 "action": "connect", 
-                "key": "{{token}}", 
-                "data": [{"token": "{{token}}"}]
+                "key": "api25", 
+                "data": [{"token": "api25"}]
              }
           ]
        },

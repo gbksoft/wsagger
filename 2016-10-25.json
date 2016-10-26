@@ -67,6 +67,35 @@
          ]
        },
 
+
+       {
+         "name": "send message to common group",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "groupId",
+                "description": "group id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "group", "groupId": "1"}]
+             }
+          ]
+       },
+
        {
          "name": "changeGroup (777)",
          "summary": " ",
