@@ -1,0 +1,228 @@
+{
+   "wsagger": "0.0.2",
+   "info": {
+      "description": "API for GBK chat",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+   },
+
+   "server" : {
+      "proto": "socket.io",
+      "host": "localhost",
+      "port": "28780",
+      "path": "/front_space"
+   },
+
+   "scenarios": [
+       {
+          "name": "connect to socket.io with tokenapi25",
+          "summary": " ",
+          "parameters": [
+             {             
+                "in": "formData",
+                "name": "token",
+                "description": "",
+                "dataType": "string"
+             }
+          ],
+          "operationId": "connect",
+          "flow": [
+             {
+                "action": "connect", 
+                "key": "api25", 
+                "data": [{"token": "api25"}]
+             }
+          ]
+       },
+
+       {
+          "name": "connect to socket.io as alexr",
+          "summary": " ",
+          "parameters": [
+          ],
+          "operationId": "connect",
+          "flow": [
+             {
+                "action": "login_and_connect", 
+                "key": "alexr", 
+                "data": [{"username": "alexr", "password": "alexr"}]
+             }
+          ]
+       },
+
+       {
+         "name": "create open group",
+         "summary": " ",
+         "parameters": [
+         ],
+         "operationId": "",
+         "flow": [        
+             {
+                "action": "request", 
+                "key": "createGroup", 
+                "data": [{"name": "333", "type": "open", "userIds": []}]
+             }
+         ]
+       },
+
+       {
+         "name": "create closed group",
+         "summary": " ",
+         "parameters": [
+         ],
+         "operationId": "",
+         "flow": [        
+             {
+                "action": "request", 
+                "key": "createGroup", 
+                "data": [{"name": "333", "type": "closed", "userIds": []}]
+             }
+         ]
+       },
+
+       {
+         "name": "send message to common group",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "groupId",
+                "description": "group id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "group", "groupId": "1"}]
+             }
+          ]
+       },
+
+       {
+         "name": "send message to group 2",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "groupId",
+                "description": "group id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "changeGroup", 
+                "data": ["2"]
+             },
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "group", "groupId": "2"}]
+             }
+          ]
+       },
+
+       {
+         "name": "send message to user",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "recipientId",
+                "description": "recipient id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "user", "recipientId": "6"}]
+             }
+          ]
+       },
+
+       {
+         "name": "set status",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "status",
+                "description": "new user status",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "setStatus", 
+                "data": ["dnd"]
+             }
+          ]
+       },
+
+       {
+         "name": "set status invisible",
+         "summary": " ",
+          "parameters": [
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "setStatus", 
+                "data": ["invisible"]
+             }
+          ]
+       },
+
+       {
+         "name": "set status offline",
+         "summary": " ",
+          "parameters": [
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "setStatus", 
+                "data": ["offline"]
+             }
+          ]
+       }
+
+    ]
+}
+

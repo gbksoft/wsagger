@@ -8,11 +8,10 @@
 
    "server" : {
       "proto": "socket.io",
-      "host": "chat-nodejs.dev.gbksoft.net",
-      "port": "28781",
+      "host": "localhost",
+      "port": "28780",
       "path": "/front_space"
    },
-   
 
    "scenarios": [
        {
@@ -65,6 +64,35 @@
                 "data": [{"id": "777", "type": "open"}]
              }
          ]
+       },
+
+
+       {
+         "name": "send message to common group",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "groupId",
+                "description": "group id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "group", "groupId": "1"}]
+             }
+          ]
        },
 
        {

@@ -1,12 +1,14 @@
 var schemaFile = 'wsagger.schema.json';
-var dataFile   = 'wsagger.json';
 
 var fs     = require ('fs');
 var schema = JSON.parse (fs.readFileSync (schemaFile));
 console.log ('SCHEMA IS READED');
 
+var dataFile  = process.argv[2] ? process.argv[2] : 'wsagger.json';
+
+
 var data   = JSON.parse (fs.readFileSync (dataFile));
-console.log ('DATA IS READED');
+console.log ('DATA IS READED: ' + dataFile);
 
 var ajv      = new (require ('ajv')) ({allErrors: true}); 
 
