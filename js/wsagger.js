@@ -1,11 +1,31 @@
-var config = {}, tryData = {};
+// this should fire on JSON load AND 'disconnect' event
+$('body').on('connect disconnect dombuiltfromjson', function (evt) {
+    console.log(evt);
+    var self = $(this);
 
+    jsonData.scenarios.forEach(function (el, c) {
+        if (el.condition === 'connect') {
+            self.find('.method')
+                .eq(c)
+                .toggleClass('panel-default panel-info')
+                .find('.btn-try').attr('disabled', function(_, attr){ return !attr});
+        }
+    });
+
+});
+
+var config = {},
+    tryData = {},
+    jsonData;
+
+/* --- JSON radio buttons --- */
 $('#jsonloader').on('change', 'input[type=radio]', function(){
     var val = $(this).val();
     $('div.json-url').find('input').attr({'type':val});
     clearFeedback();
 });
 
+/* JSON loading and parsing >>> */
 $('#jsonloader').submit(function (evt) {
 
     evt.preventDefault();
@@ -37,6 +57,7 @@ $('#jsonloader').submit(function (evt) {
 
 function jsonLoadSuccessHandler(res) {  // success callback
     clearSocketLog();
+    jsonData = res; // save it globally, for future use
 
     var text = '';
     tryData = {};
@@ -76,11 +97,9 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
         elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
 
-            var waitToConnect = elem.condition === 'connect';
-            console.log(waitToConnect);
             var idToToggle = 'id' + scenarioNum;
 
-            text += '<div class="method panel panel-info ' + (waitToConnect ? 'wait-to-connect' : '') + '">';
+            text += '<div class="method panel panel-info">';
 
             text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
                 + '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
@@ -120,6 +139,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
             tryData[dataNum].data[scenarioNum] = s.flow;
             // text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
             text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
+            text += '<span class="red">Pls establish socket connect first</span>';
 
             text += '</div>';
             text += '</div>';
@@ -133,6 +153,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
     setHTML ('data', text);
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
+    trigger('dombuiltfromjson'); // custom event
 }
 
 function jsonLoadErrorHandler(error) {  // error callback
@@ -143,7 +164,11 @@ function jsonLoadErrorHandler(error) {  // error callback
 function clearFeedback(){
     $('#jsonloader').find('.feedback').html("").fadeIn(); // clear JSON message
 }
+/* <<< JSON loading and parsing */
 
+
+/* jQuery handlers >>> */
+// TRY button >>>
 $('body').on('click', '.btn-try', function () {
     var a = $(this).data("datanum"),
         b = $(this).data("scenarionum");
@@ -167,23 +192,32 @@ $('body').on('click', '.btn-try', function () {
     // ----------  this is updated 'parameters' object -----------
     console.log('updatedParams = ', updatedParams);
 });
+// <<< TRY button
 
-function getEnteredParams(dataNum, scenarioNum, formDataItemNum) {
-
-}
-
-
-/* FILTERS section */
-
+// filters section
 $('.filters').on('click', 'input', function(){
     var color = $(this).val();
     $('#argumentum').toggleClass('hide-' + color);
 });
 
+// adding +/- to methods
 $('body').on('click', '.method__header', function(){
     $(this).find('span').toggleClass('glyphicon-plus glyphicon-minus');
 });
 
+// on "connect" event
+$('body').on('connect', function (evt) {
+    console.log(evt);
+
+    var methods = $(this).find('.method');
+    methods.each(function (j, elem) {
+        // elem.addClass('panel-default');
+    })
+});
+
+
+
+/* <<< jQuery handlers */
 
 var socket, reload_, iam;
 
@@ -233,15 +267,21 @@ function tryConnect (dataNum, token) {
                 if (reload_) window.clearTimeout (reload_);
                 notifyOnTop ('Socket connected to ' + frontUrl, 'green');
                 setHTML ('connect', '');
-
+                trigger('connect'); // custom event
             } else {
                 notifyOnTop("New socket is disconnected :-(", 'red');
 
             }
 
         });
-        socket.on ('error',      function () { notifyOnTop ('status', "Error connecting to socket", 'red'); });
-        socket.on ('disconnect', function () { notifyOnTop ("Socket is disconnected",               'red'); });
+        socket.on ('error',      function () {
+            notifyOnTop ('status', "Error connecting to socket", 'red');
+            trigger('socketerror'); // custom event
+        });
+        socket.on ('disconnect', function () {
+            notifyOnTop ("Socket is disconnected", 'red');
+            trigger('disconnect'); // custom event
+        });
 
     } else {
         notifyOnTop ("Can't connect to socket", 'red');
@@ -249,6 +289,10 @@ function tryConnect (dataNum, token) {
     }
 }
 
+function trigger(evtName, domEl){
+    var domEl = domEl || $('body');
+    domEl.trigger(evtName);
+}
 
 function tryLoginAndConnect(dataNum, username, password) {
     var server = tryData[dataNum].server;
