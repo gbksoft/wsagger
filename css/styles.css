@@ -93,7 +93,6 @@ body {
 #jsonloader .feedback {
     float: left;
     clear: both;
-    position: absolute;
 }
 
 #jsonloader .submit {
@@ -127,6 +126,14 @@ body {
 
 }
 
+    .btn-try + .red {
+        display: none;
+        margin-left: 0.5em;
+    }
+    .btn-try:disabled + .red {
+        display: inline-block;
+    }
+
 .method__details {
     padding-left: 1.2em;
 }
@@ -138,3 +145,8 @@ body {
         vertical-align: top;
         width: 100%;
     }
+        .formData+.formData {
+            margin-top: 0.5em;
+            padding-top: 0.5em;
+            border-top: 1px dashed #999999;
+        }

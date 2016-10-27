@@ -1,23 +1,43 @@
-var config = {}, tryData = {};
+/* jQuery handlers for custom events */
 
-$('#jsonloader').on('change', 'input[type=radio]', function(){
-    var val = $(this).val();
-    $('div.json-url').find('input').attr({'type':val});
+// fire on DOM built from JSON, connect and disconnect
+$('body').on('connect disconnect dombuiltfromjson', function (evt) {
+    var self = $(this);
 
+    jsonData.scenarios.forEach(function (el, c) {
+        if (el.condition === 'connect') {
+            self.find('.method')
+                .eq(c)
+                .toggleClass('panel-default panel-info')
+                .find('.btn-try').attr('disabled', function(_, attr){ return !attr});
+        }
+    });
 
 });
 
+var config = {},
+    tryData = {},
+    jsonData;
+
+/* --- JSON radio buttons --- */
+$('#jsonloader').on('change', 'input[type=radio]', function(){
+    var val = $(this).val();
+    $('div.json-url').find('input').attr({'type':val});
+    clearFeedback();
+});
+
+/* JSON loading and parsing >>> */
 $('#jsonloader').submit(function (evt) {
 
     evt.preventDefault();
-    $('#jsonloader').find('.feedback').html("").fadeIn();  // clear error message
+    clearFeedback();
 
     var localOrRemote = $('#jsonloader').find('.json-url').find('input').attr('type');
 
     if (localOrRemote === 'text') {  // if remote JSON
 
         var jsonPromise = $.getJSON( $(this).find('.url').val() )
-            .then( jsonLoadSuccessHandler,jsonLoadErrorHandler );
+            .then( jsonLoadSuccessHandler,jsonLoadErrorHandler(localOrRemote) );
 
     } else {  // if local JSON
 
@@ -25,13 +45,20 @@ $('#jsonloader').submit(function (evt) {
         reader.addEventListener('load', function() {
             jsonLoadSuccessHandler(JSON.parse(this.result));
         });
-        reader.readAsText(document.forms[0][2].files[0]);
+
+        if (document.forms[0][2].files[0]) {
+            reader.readAsText(document.forms[0][2].files[0]);
+        } else {
+            jsonLoadErrorHandler(localOrRemote)
+        }
+
     }
 
 });
 
 function jsonLoadSuccessHandler(res) {  // success callback
     clearSocketLog();
+    jsonData = res; // save JSON globally, for future use
 
     var text = '';
     tryData = {};
@@ -70,6 +97,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
         /* WSagger methods */
 
         elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
+
             var idToToggle = 'id' + scenarioNum;
 
             text += '<div class="method panel panel-info">';
@@ -112,6 +140,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
             tryData[dataNum].data[scenarioNum] = s.flow;
             // text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
             text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
+            text += '<span class="red">Pls establish socket connect first</span>';
 
             text += '</div>';
             text += '</div>';
@@ -125,51 +154,59 @@ function jsonLoadSuccessHandler(res) {  // success callback
     setHTML ('data', text);
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
-}
-
-$('body').on('click', '.btn-try', function () {
-    var a = $(this).data("datanum"),
-        b = $(this).data("scenarionum");
-
-    tryScenario(a,b);
-
-
-    // get copy of original elem/scenario/parameters. Create object A.
-    var updatedParams = elem.scenarios[a].parameters;
-
-    // get forms with user's data in their inputs.
-    var paramsForms = $(this).prev().find('.parameters').find('form');
-
-    // in each form, we find user's input
-    paramsForms.each(function (ii, el) {
-        var paramValue = $(el).find('input').val();
-        // In ii-th object of parameters, we substitute 'in' field with what user has entered.
-        updatedParams[ii]['in'] = paramValue;
-    });
-
-    // ----------  this is updated 'parameters' object -----------
-    console.log('updatedParams = ', updatedParams);
-});
-
-function getEnteredParams(dataNum, scenarioNum, formDataItemNum) {
-
+    announce('dombuiltfromjson'); // custom event
 }
 
 function jsonLoadErrorHandler(error) {  // error callback
-    console.log(error);
-    $('#jsonloader').find('.feedback').html( "JSON didn't load: URL is probably incorrect" );
+    var message =  (error === "text")? 'Incorrect URL' : 'File not selected';
+    $('#jsonloader').find('.feedback').html(message);
 }
 
-/* FILTERS section */
+function clearFeedback(){
+    $('#jsonloader').find('.feedback').html("").fadeIn(); // clear JSON message
+}
+/* <<< JSON loading and parsing */
 
-$('.filters').on('click', 'input', function(){
-    var color = $(this).val();
-    $('#argumentum').toggleClass('hide-' + color);
-});
 
-$('body').on('click', '.method__header', function(){
-    $(this).find('span').toggleClass('glyphicon-plus glyphicon-minus');
-});
+/* jQuery handlers >>> */
+    // TRY button >>>
+    $('body').on('click', '.btn-try', function () {
+        var a = $(this).data("datanum"),
+            b = $(this).data("scenarionum");
+
+        tryScenario(a,b);
+
+
+        // get copy of original elem/scenario/parameters. Create object A.
+        var updatedParams = elem.scenarios[a].parameters;
+
+        // get forms with user's data in their inputs.
+        var paramsForms = $(this).prev().find('.parameters').find('form');
+
+        // in each form, we find user's input
+        paramsForms.each(function (ii, el) {
+            var paramValue = $(el).find('input').val();
+            // In ii-th object of parameters, we substitute 'in' property value with what user has entered.
+            updatedParams[ii]['in'] = paramValue;
+        });
+
+        // ----------  this is updated 'parameters' object -----------
+        console.log('updatedParams = ', updatedParams);
+    });
+    // <<< TRY button
+
+    // filters section
+    $('.filters').on('click', 'input', function(){
+        var color = $(this).val();
+        $('#argumentum').toggleClass('hide-' + color);
+    });
+
+    // adding +/- to methods
+    $('body').on('click', '.method__header', function(){
+        $(this).find('span').toggleClass('glyphicon-plus glyphicon-minus');
+    });
+
+/* <<< jQuery handlers */
 
 
 var socket, reload_, iam;
@@ -220,15 +257,21 @@ function tryConnect (dataNum, token) {
                 if (reload_) window.clearTimeout (reload_);
                 notifyOnTop ('Socket connected to ' + frontUrl, 'green');
                 setHTML ('connect', '');
-
+                announce('connect'); // custom event
             } else {
                 notifyOnTop("New socket is disconnected :-(", 'red');
 
             }
 
         });
-        socket.on ('error',      function () { notifyOnTop ('status', "Error connecting to socket", 'red'); });
-        socket.on ('disconnect', function () { notifyOnTop ("Socket is disconnected",               'red'); });
+        socket.on ('error',      function () {
+            notifyOnTop ('status', "Error connecting to socket", 'red');
+            announce('socketerror'); // custom event
+        });
+        socket.on ('disconnect', function () {
+            notifyOnTop ("Socket is disconnected", 'red');
+            announce('disconnect'); // custom event
+        });
 
     } else {
         notifyOnTop ("Can't connect to socket", 'red');
@@ -236,6 +279,10 @@ function tryConnect (dataNum, token) {
     }
 }
 
+function announce(evtName, domEl){
+    var domEl = domEl || $('body');
+    domEl.trigger(evtName);
+}
 
 function tryLoginAndConnect(dataNum, username, password) {
     var server = tryData[dataNum].server;
