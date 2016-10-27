@@ -55,6 +55,7 @@
          "summary": " ",
          "parameters": [
          ],
+         "condition": "connect",
          "operationId": "",
          "flow": [        
              {
@@ -70,6 +71,7 @@
          "summary": " ",
          "parameters": [
          ],
+         "condition": "connect",
          "operationId": "",
          "flow": [        
              {
@@ -109,6 +111,38 @@
        },
 
        {
+         "name": "add user alexr to group 2",
+         "summary": " ",
+          "parameters": [
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "addUser", 
+                "data": ["2", "6"]
+             }
+          ]
+       },
+
+       {
+         "name": "add user alexr to group 3",
+         "summary": " ",
+          "parameters": [
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "addUser", 
+                "data": ["3", "6"]
+             }
+          ]
+       },
+
+       {
          "name": "send message to group 2",
          "summary": " ",
           "parameters": [
@@ -136,7 +170,40 @@
              {
                 "action": "request", 
                 "key": "sendMessage", 
-                "data": [{"messageText": "@", "type": "group", "groupId": "2"}]
+                "data": [{"messageText": "@2", "type": "group", "groupId": "2"}]
+             }
+          ]
+       },
+
+       {
+         "name": "send message to group 3",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "groupId",
+                "description": "group id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "changeGroup", 
+                "data": ["3"]
+             },
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@3", "type": "group", "groupId": "3"}]
              }
           ]
        },
@@ -146,6 +213,7 @@
           "summary": " ",
           "parameters": []
           ,
+          "condition": "connect",
           "operationId": "",
           "flow": [
              {
@@ -157,7 +225,7 @@
        },      
 
        {
-         "name": "send message to user",
+         "name": "send message to user alexr",
          "summary": " ",
           "parameters": [
              {
@@ -180,6 +248,50 @@
                 "action": "request", 
                 "key": "sendMessage", 
                 "data": [{"messageText": "@", "type": "user", "recipientId": "6"}]
+             }
+          ]
+       },
+
+       {
+         "name": "send message to user tokenapi25",
+         "summary": " ",
+          "parameters": [
+             {
+                "in": "formData",
+                "name": "messageText",
+                "description": "group message text",
+                "dataType": "string"
+             },
+             {
+                "in": "formData",
+                "name": "recipientId",
+                "description": "recipient id",
+                "dataType": "string"
+             }
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "sendMessage", 
+                "data": [{"messageText": "@", "type": "user", "recipientId": "tokenapi25"}]
+             }
+          ]
+       },
+
+       {
+         "name": "get users not in group",
+         "summary": " ",
+          "parameters": [
+          ],
+          "condition": "connect",
+          "operationId": "",
+          "flow": [
+             {
+                "action": "request", 
+                "key": "getUsers", 
+                "data": [{"notInGroup": "3"}]
              }
           ]
        },
@@ -221,39 +333,6 @@
              }
           ]
        },
-
-       {
-         "name": "get users not in group",
-         "summary": " ",
-          "parameters": [
-          ],
-          "condition": "connect",
-          "operationId": "",
-          "flow": [
-             {
-                "action": "request", 
-                "key": "getUsers", 
-                "data": [{"notInGroup": "3"}]
-             }
-          ]
-       },
-
-       {
-         "name": "set readed all",
-         "summary": " ",
-          "parameters": [
-          ],
-          "condition": "connect",
-          "operationId": "",
-          "flow": [
-             {
-                "action": "request", 
-                "key": "setReaded", 
-                "data": [{"userId": 6}]
-             }
-          ]
-       },
-
 
        {
          "name": "set status offline",
