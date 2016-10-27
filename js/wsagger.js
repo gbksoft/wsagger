@@ -1,22 +1,6 @@
-/* jQuery handlers for custom events */
-
-// fire on DOM built from JSON, connect and disconnect
-$('body').on('connect disconnect dombuiltfromjson', function (evt) {
-    var self = $(this);
-
-    jsonData.scenarios.forEach(function (el, c) {
-        if (el.condition === 'connect') {
-            self.find('.method')
-                .eq(c)
-                .toggleClass('panel-default panel-info')
-                .find('.btn-try').attr('disabled', function(_, attr){ return !attr});
-        }
-    });
-
-});
-
 var config = {},
     tryData = {},
+    fileInUrl = getUrlParamByName('url'),
     jsonData;
 
 /* --- JSON radio buttons --- */
@@ -155,6 +139,15 @@ function jsonLoadSuccessHandler(res) {  // success callback
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
 
     announce('dombuiltfromjson'); // custom event
+
+    // autostart certain scenario (method) of WSagger
+    if (jsonData.autoStart.length !== 0) {
+        $('#data').find('.method')
+            .eq( jsonData.autoStart[0] )    // we take 1st item from "autoStart" array
+            .find('.method__header').click()
+            .siblings('.method__body')
+            .find('.btn-try').click();
+    }
 }
 
 function jsonLoadErrorHandler(error) {  // error callback
@@ -169,6 +162,31 @@ function clearFeedback(){
 
 
 /* jQuery handlers >>> */
+
+    // JSON auto-load, if URL query contains file url, like this:   http://wsagger.com/?url=w.json
+    if (fileInUrl) {
+        $('#jsonloader')
+            .find('input[value=text]').prop('checked', true).end()
+            .find('.json-url input').val(fileInUrl).end();
+        $('#jsonloader').trigger('submit');
+    };
+
+
+
+    // handler for custom events. Fire on DOM built from JSON, connect and disconnect
+    $('body').on('connect disconnect dombuiltfromjson', function (evt) {
+
+        jsonData.scenarios.forEach(function (el, c) {
+            if (el.condition === 'connect') {
+                $('#data').find('.method')
+                            .eq(c)
+                            .toggleClass('panel-default panel-info')
+                            .find('.btn-try').attr('disabled', function(_, attr){ return !attr});
+            }
+        });
+
+    });
+
     // TRY button >>>
     $('body').on('click', '.btn-try', function () {
         var a = $(this).data("datanum"),
@@ -334,6 +352,18 @@ function onServerError (message) {
 
 function setHTML (id, html) {
     if (el = document.getElementById(id)) el.innerHTML = html;
+}
+
+function getUrlParamByName(name, url) {
+    if (!url) {
+        url = window.location.href;
+    }
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 function notifyOnTop (message, color) {
