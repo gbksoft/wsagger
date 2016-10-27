@@ -93,7 +93,6 @@ body {
 #jsonloader .feedback {
     float: left;
     clear: both;
-    position: absolute;
 }
 
 #jsonloader .submit {

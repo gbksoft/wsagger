@@ -3,21 +3,20 @@ var config = {}, tryData = {};
 $('#jsonloader').on('change', 'input[type=radio]', function(){
     var val = $(this).val();
     $('div.json-url').find('input').attr({'type':val});
-
-
+    clearFeedback();
 });
 
 $('#jsonloader').submit(function (evt) {
 
     evt.preventDefault();
-    $('#jsonloader').find('.feedback').html("").fadeIn();  // clear error message
+    clearFeedback();
 
     var localOrRemote = $('#jsonloader').find('.json-url').find('input').attr('type');
 
     if (localOrRemote === 'text') {  // if remote JSON
 
         var jsonPromise = $.getJSON( $(this).find('.url').val() )
-            .then( jsonLoadSuccessHandler,jsonLoadErrorHandler );
+            .then( jsonLoadSuccessHandler,jsonLoadErrorHandler(localOrRemote) );
 
     } else {  // if local JSON
 
@@ -25,7 +24,13 @@ $('#jsonloader').submit(function (evt) {
         reader.addEventListener('load', function() {
             jsonLoadSuccessHandler(JSON.parse(this.result));
         });
-        reader.readAsText(document.forms[0][2].files[0]);
+
+        if (document.forms[0][2].files[0]) {
+            reader.readAsText(document.forms[0][2].files[0]);
+        } else {
+            jsonLoadErrorHandler(localOrRemote)
+        }
+
     }
 
 });
@@ -70,9 +75,12 @@ function jsonLoadSuccessHandler(res) {  // success callback
         /* WSagger methods */
 
         elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
+
+            var waitToConnect = elem.condition === 'connect';
+            console.log(waitToConnect);
             var idToToggle = 'id' + scenarioNum;
 
-            text += '<div class="method panel panel-info">';
+            text += '<div class="method panel panel-info ' + (waitToConnect ? 'wait-to-connect' : '') + '">';
 
             text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
                 + '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
@@ -127,6 +135,15 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
 }
 
+function jsonLoadErrorHandler(error) {  // error callback
+    var message =  (error === "text")? 'Incorrect URL' : 'File not selected';
+    $('#jsonloader').find('.feedback').html(message);
+}
+
+function clearFeedback(){
+    $('#jsonloader').find('.feedback').html("").fadeIn(); // clear JSON message
+}
+
 $('body').on('click', '.btn-try', function () {
     var a = $(this).data("datanum"),
         b = $(this).data("scenarionum");
@@ -143,7 +160,7 @@ $('body').on('click', '.btn-try', function () {
     // in each form, we find user's input
     paramsForms.each(function (ii, el) {
         var paramValue = $(el).find('input').val();
-        // In ii-th object of parameters, we substitute 'in' field with what user has entered.
+        // In ii-th object of parameters, we substitute 'in' property value with what user has entered.
         updatedParams[ii]['in'] = paramValue;
     });
 
@@ -155,10 +172,6 @@ function getEnteredParams(dataNum, scenarioNum, formDataItemNum) {
 
 }
 
-function jsonLoadErrorHandler(error) {  // error callback
-    console.log(error);
-    $('#jsonloader').find('.feedback').html( "JSON didn't load: URL is probably incorrect" );
-}
 
 /* FILTERS section */
 
