@@ -8,16 +8,15 @@
 
    "server" : {
       "proto": "socket.io",
-      
+
       "host": "chat-nodejs.dev.gbksoft.net",
       "port": "28781",
-
-      "host1": "localhost",
-      "port1": "28780",
 
       "host0": "chat-nodejs.dev.gbksoft.net",
       "port0": "28781",
 
+      "host1": "localhost",
+      "port1": "28780",
 
       "path": "/front_space"
    },
@@ -28,7 +27,7 @@
 
    "scenarios": [
        {
-          "name": "connect to socket.io with tokenapi25",
+          "name": "connect to socket.io with tokenalex1",
           "summary": " ",
           "parameters": [
              {             
@@ -42,23 +41,8 @@
           "flow": [
              {
                 "action": "connect", 
-                "key": "api25", 
-                "data": [{"token": "api25"}]
-             }
-          ]
-       },
-
-       {
-          "name": "connect to socket.io as alexr",
-          "summary": " ",
-          "parameters": [
-          ],
-          "operationId": "connect",
-          "flow": [
-             {
-                "action": "login_and_connect", 
-                "key": "alexr", 
-                "data": [{"username": "alexr", "password": "alexr"}]
+                "key": "alex1", 
+                "data": [{"token": "alex1"}]
              }
           ]
        },

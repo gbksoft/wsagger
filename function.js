@@ -1,15 +1,16 @@
-function setParameter(data, key, value) {
+function setParameters(data, parameters) {
    if (typeof data === 'string') {
-      return data.replace(new RegExp('{{' + key + '}}', 'g'), value);
-   
+      for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), parameters[key]);
+      return data 
+
    } else if (data instanceof Array) {
       for (var i=-1; ++i < data.length;) {
-         data[i] = setParameter(data[i], key, value);
+         data[i] = setParameters(data[i], parameters);
       }
 
    } else if (data instanceof Object) {
       for (var i in data) {
-         data[i] = setParameter(data[i], key, value);
+         data[i] = setParameters(data[i], parameters);
       }
 
    }
@@ -73,7 +74,6 @@ var parameters = {};
 //                      ['1', '2', '{{!key3}}', '{{!key1}}',  {1: '{{!key2}}', 2: {1: '{{key}}'}}], parameters);
 
 var check = checkData(1, '1', parameters);
+// console.log(check, parameters);
 
-console.log(check, parameters);
-
-// console.log(setParameter([1, 2, 3, '  {{key}} swer {{key}} {{ke y}}', {1: '{{key}}', 2: {1: '{{key}}'}}], 'key', 'value'));
+console.log(setParameters([1, 2, 3, '  {{key}} swer {{key2}} {{ke y}}', {1: '{{key}}', 2: {1: '{{key}}'}}], {key: 'value', key2: 'value2'}));

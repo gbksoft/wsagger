@@ -314,9 +314,7 @@ function tryLoginAndConnect(dataNum, username, password) {
 
 var num = 0;
 
-function scenarioCallbackDefault (result) { 
-    // log (++num, ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')), 'socketLog', 'blue');
-    
+function scenarioCallbackDefault (result) {   
     showMessage(('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')), 'socketLog', 'blue'); 
 
 };
@@ -351,12 +349,12 @@ function doStep () {
             if (!socket) return;
 
             if (step.waitForResponse) {
-               waitingFor = step.waitForResponse.data;
+               waitingFor = setParameters(step.waitForResponse.data, parameters);
                waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
             }
 
             showMessage('out: ' + step.key + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / '), 'socketLog', 'brown');
-            socket.emit.apply(socket, [step.key].concat(step.data));
+            socket.emit.apply(socket, [step.key].concat(setParameters(step.data, parameters)));
             // socket.emit (step.key, step.data[0], step.data[1]);
 
             if (step.waitForResponse) return;
@@ -380,12 +378,10 @@ function onInputEvent(event, data) {
           // log ('checkData failed', [event, data], waitingFor[i]);
        }
     }
-    log (++num, 'in: ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
-
     showMessage ('in: ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
 
     if (inScenario && waitingFor.length < 1) {
-       log ('onInputEvent: !waitingFor.length', waiting);
+       // log ('onInputEvent: !waitingFor.length', waiting);
 
        if (waiting) clearTimeout(waiting);
        doStep();  
@@ -408,18 +404,19 @@ function finishWaiting() {
    }
 }
 
-function setParameter(data, key, value) {
+function setParameters(data, parameters) {
    if (typeof data === 'string') {
-      return data.replace(new RegExp('{{' + key + '}}', 'g'), value);
-   
+      for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), parameters[key]);
+      return data 
+
    } else if (data instanceof Array) {
       for (var i=-1; ++i < data.length;) {
-         data[i] = setParameter(data[i], key, value);
+         data[i] = setParameters(data[i], parameters);
       }
 
    } else if (data instanceof Object) {
       for (var i in data) {
-         data[i] = setParameter(data[i], key, value);
+         data[i] = setParameters(data[i], parameters);
       }
 
    }
