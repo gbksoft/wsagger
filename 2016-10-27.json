@@ -13,6 +13,10 @@
       "path": "/front_space"
    },
 
+   "autoStart": [0],
+
+   "testSequence": [2,3,4,5,6,7,8,9],
+
    "scenarios": [
        {
           "name": "connect to socket.io with tokenapi25",
@@ -61,7 +65,11 @@
              {
                 "action": "request", 
                 "key": "createGroup", 
-                "data": [{"name": "333", "type": "open", "userIds": []}]
+                "data": [{"name": "333", "type": "open", "userIds": []}],
+                "waitForResponse": {
+                   "delay": 3000, 
+                   "data": [["newGroup", {"name":"333", "type":"open", "usersCnt":1, "needBadgesNum":1, "needBadges":true}]]
+                }
              }
          ]
        },
@@ -77,7 +85,11 @@
              {
                 "action": "request", 
                 "key": "createGroup", 
-                "data": [{"name": "333", "type": "closed", "userIds": []}]
+                "data": [{"name": "444", "type": "closed", "userIds": []}],
+                "waitForResponse": {
+                   "delay": 3000, 
+                   "data": [["newGroup", {"name":"444", "type":"closed", "usersCnt":1, "needBadgesNum":1, "needBadges":true}]]
+                }
              }
          ]
        },
