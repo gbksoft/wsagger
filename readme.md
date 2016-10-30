@@ -1,7 +1,3 @@
-  
-
-
-       
 ## WSagger — валідація
 
 Схема живе в файлі wsagger.schema.json
