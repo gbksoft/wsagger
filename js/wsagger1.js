@@ -406,8 +406,13 @@ function finishWaiting() {
 
 function setParameters(data, parameters) {
    if (typeof data === 'string') {
-      for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), parameters[key]);
-      return data 
+      if ((data.substr(0, 2) == '{{') && (data.substr(-2) == '}}')) {
+         data = parameters[data.substr(2, data.length - 4)];
+      
+      } else {
+         // for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), str_ (parameters[key]));
+         for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'),         parameters[key]);
+      }
 
    } else if (data instanceof Array) {
       for (var i=-1; ++i < data.length;) {
@@ -436,7 +441,7 @@ function checkData(data, proto, parameters) {
       }  
 
    } else if (proto instanceof Array) {
-      if (data instanceof Array) {
+      if ((data instanceof Array) && (data.length >= proto.length)) {
          for (var i=-1; ++i < proto.length;) {
             if (!checkData(data[i], proto[i], parameters)) checked = false; 
          }   
