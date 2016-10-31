@@ -35,12 +35,12 @@
           ],
           "operationId": "connect",
           "flow": [
-             { "worker": "slave",  "action": "connect", "key": "", "data": [{"token": "{{tokenSlave}}"}], "waitForResponse": { "data": [["connected", {}]] }},
-             { "worker": "slave",  "action": "",        "key": "", "data": [], "waitForResponse": { "data": [["message", {"messageText" : "{{messageText}}"}]] }},
+             { "worker": "slave",  "action": "connect", "key": "", "data": [{"token": "{{tokenSlave}}"}], "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+             { "worker": "slave",  "action": "",        "key": "", "data": [], "waitForResponse": { "delay": 3000, "data": [["message", {"messageText" : "{{messageText}}"}]] }},
 
-             { "action": "connect", "key": "", "data": [{"token": "{{token}}"}], "waitForResponse": { "data": [["connected", {}]] }},
-             { "action": "",        "key": "", "data": [], "waitForResponse": {"data": []} },
-             { "action": "request", "key": "sendMessage", "data": [{"messageText": "{{messageText}}"}], "waitForResponse": { "data": [["message", {}]] }}
+             { "action": "connect", "key": "", "data": [{"token": "{{token}}"}], "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+             { "action": "",        "key": "", "data": [], "waitForResponse": {"delay": 3000, "data": []} },
+             { "action": "request", "key": "sendMessage", "data": [{"messageText": "{{messageText}}"}], "waitForResponse": { "delay": 3000, "data": [["message", {}]] }}
           ]
        }
     ]

@@ -32,17 +32,16 @@ var selected = {
 }
 
 
-var flow_ = runner.divideFlow (tryData[0].data[0]);
-var numWorkers = Object.keys(flow_).length;
-var success = true;
+var success = true, numWorkers;
 
-if (numWorkers >= 1) {
+if (worker) {
+   numWorkers = 1;
+   runner.tryScenario (variants, selected, {}, 0, 0, worker, finish);
 
-   if (worker) {
-      runner.tryScenario (variants, selected, {}, 0, 0, worker, finish);
-
-   } else {
-
+} else {
+   var flow_ = runner.divideFlow (tryData[0].data[0]);
+   numWorkers = Object.keys(flow_).length;
+   if (numWorkers >= 1) {
       var workers = []; for (var worker in flow_) { if (worker) workers.push(worker); }
       if (0 in flow_) workers.push(0); 
 
@@ -62,6 +61,8 @@ if (numWorkers >= 1) {
 
          }
       }
+   } else {
+	   
    }
 } 
 

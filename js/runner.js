@@ -138,7 +138,13 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     theWorker = worker;
     setParameters(tryData[dataNum].server, parameters);
     flowOrigin = tryData[dataNum].data[scenarioNum];
+
+    // console.log(flowOrigin[0]); 
+
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
+
+    // console.log(flow[0].waitForResponse.data); 
+    // process.exit();
 
     doStep ();
 }
