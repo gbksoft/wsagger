@@ -1,0 +1,52 @@
+{
+   "wsagger": "0.0.3",
+   "info": {
+      "description": "GBKSOFT chat API",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+   },
+
+   "server" : {"proto": "{{proto}}", "host": "{{host}}", "port": "{{port}}", "path": "{{path}}" },
+
+   "server_" : {
+      "localhost":                   { "proto": "socket.io", "host": "127.0.0.1",                   "port": "28780", "path": "/front_space" },
+      "chat-nodejs.dev.gbksoft.net": { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net", "port": "28781", "path": "/front_space" }
+   },
+
+   "user" : {"token": "{{token}}"},
+
+   "user_" : {
+       "token2":     { "token": "2" },
+       "tokenapi25": { "token": "api25" },
+       "pavlo":      { "username": "pavlo",    "password": "pavlo" },
+       "alexr":      { "username": "alexr",    "password": "alexr" },
+       "roman":      { "username": "roman",    "password": "roman" },
+       "olexandr":   { "username": "olexandr", "password": "olexandr" }
+   },
+
+   "scenarios": [
+       {
+          "name": "connect to socket.io with arbitrary token",
+          "summary": " ",
+          "parameters": [
+             { "in": "formData", "name": "token", "description": "", "dataType": "string" }
+          ],
+          "operationId": "connect",
+          "flow": [
+             { "action": "connect", "key": "", "data": [{"token": "{{token}}"}],
+               "waitForResponse": {
+                  "delay": 3000, 
+                  "data": [
+                     ["connected", {}],
+                     ["joinedTo",  {}],
+                     ["history",   {}],
+                     ["users",     {}],
+                     ["unread",    {}]
+                  ]
+               }
+             }
+          ]
+       }
+    ]
+}
+

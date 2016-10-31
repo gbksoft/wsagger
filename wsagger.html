@@ -41,10 +41,19 @@
                 <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
             </div>
         </form>
+        &nbsp;
+        <table cellpadding=3>
+        
+        <tr><td>Select server:</td><td>&nbsp;</td><td><select id="server_" onchange="select('server')"><option>localhost</option><option>chat-nodejs.dev.gbksoft.net</option></select></td></tr>
+        <tr><td>Select user:</td><td>&nbsp;</td><td><select id="user_" onchange="select('user')"><option>token2</option><option>tokenapi25</option><option>pavlo</option><option>alexr</option><option>roman</option><option>olexandr</option></select></td></tr>
+        
+        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
 
-        <br>&nbsp;
-        <p><b>User id: </b><font color=blue><span id="userId"></span></font>
-        <p><b>Socket id: </b><font color=blue><span id="socketId"></span></font>
+        <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
+        <tr><td><b>User id / name:</b></td><td>&nbsp;</td><td><font color=blue><span id="userId"></span> / <span id="userName"></span></font></td></tr>
+        <tr><td><b>Socket id:</b></td><td>&nbsp;</td><td><font color=blue><span id="socketId"></span></font></td></tr>
+        </table>
+
         <div>&nbsp;
             <ul id="data">
                 <!-- container for Wsagger data -->

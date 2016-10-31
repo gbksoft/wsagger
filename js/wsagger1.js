@@ -36,10 +36,18 @@ $('#jsonloader').submit(function (evt) {
         } else {
             jsonLoadErrorHandler(localOrRemote)
         }
-
     }
-
 });
+
+var selectedKeys = {}, select_ = {};
+
+select('server');
+select('user');
+
+function select(source) {
+    var el = document.getElementById(source + '_');
+    if (el) selectedKeys[source] = el.options[el.selectedIndex].value;
+}
 
 function jsonLoadSuccessHandler(res) {  // success callback
     clearSocketLog();
@@ -48,34 +56,25 @@ function jsonLoadSuccessHandler(res) {  // success callback
     var text = '';
     tryData = {};
 
+    select_.server = res.server_;
+    select_.user   = res.user_;
+    
+
     // res.forEach(function (elem, dataNum) {  // for each in JSON
 
-    
     elem = res;
     dataNum = 0;
 
         tryData[dataNum] = {server: elem.server, data: {}};
 
-        text += '<li class="wsagger">'
+        // text += '<li class="wsagger">'
 
         /* WSagger version & info  */
 
         text += '<div class="wsagger__summary">'
-            + '<div class="wsagger__title">wsagger</div> <p>' +  JSON.stringify (elem.wsagger) + '</p>'
-            + '<div class="wsagger__title">info</div> '
-            + '<p>'
-            +  JSON.stringify (elem.info.title) + '<br>'
-            +  JSON.stringify (elem.info.description) + '<br>'
-            +  JSON.stringify (elem.info.version) + '<br>'
-            + '</p>'
+            + '<p><span class="wsagger__title">wsagger</span> ' +  JSON.stringify (elem.wsagger)
+            + '<p><span class="wsagger__title">info</span> ' + JSON.stringify (elem.info.title) + ' / '  +  JSON.stringify (elem.info.description) + ' / '  +  JSON.stringify (elem.info.version) 
             + '</div>';
-
-
-        text += '<b>server</b> <br> <p>';
-        for (var k of ['proto', 'host', 'port', 'path']) {
-            text += k + ': ' + JSON.stringify (elem.server[k]) + '<br>';
-        }
-        text += '</p>';
 
         /* WSagger methods */
 
@@ -130,7 +129,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
         });
 
-        text += '</li>';
+        // text += '</li>';
 
     // });
 
@@ -140,7 +139,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
     announce('dombuiltfromjson'); // custom event
 
     // autostart certain scenario (method) of WSagger
-    if (jsonData.autoStart.length !== 0) {
+    if (jsonData.autoStart && jsonData.autoStart.length) {
         $('#data').find('.method')
             .eq( jsonData.autoStart[0] )    // we take 1st item from "autoStart" array
             .find('.method__header').click()
@@ -188,27 +187,22 @@ function clearFeedback(){
 
     // TRY button >>>
     $('body').on('click', '.btn-try', function () {
-        var a = $(this).data("datanum"),
-            b = $(this).data("scenarionum");
 
-        tryScenario(a, b);
+        var tryDataNum     = $(this).data("datanum"),
+            tryScenarioNum = $(this).data("scenarionum");
 
-
-        // get copy of original elem/scenario/parameters. Create object A.
-        var updatedParams = elem.scenarios[a].parameters;
-
-        // get forms with user's data in their inputs.
-        var paramsForms = $(this).prev().find('.parameters').find('form');
-
-        // in each form, we find user's input
-        paramsForms.each(function (ii, el) {
-            var paramValue = $(el).find('input').val();
-            // In ii-th object of parameters, we substitute 'in' property value with what user has entered.
-            updatedParams[ii]['in'] = paramValue;
+        var parameters    = elem.scenarios[tryDataNum].parameters, 
+        parametersForms   = $(this).prev().find('.parameters').find('form')
+        updatedParameters = {};
+        
+        parametersForms.each(function (ii, el) { 
+            var newValue = $(el).find('input').val();
+            if ((newValue != '') && (newValue != undefined)) { updatedParameters[parameters[ii].name] = newValue; }
+            else if (parameters[ii].in != 'formData')        { updatedParameters[parameters[ii].name] = parameters[ii].in; }
         });
 
-        // ----------  this is updated 'parameters' object -----------
-        console.log('updatedParams = ', updatedParams);
+        tryScenario(select_, selectedKeys, updatedParameters, tryDataNum, tryScenarioNum);
+
     });
     // <<< TRY button
 

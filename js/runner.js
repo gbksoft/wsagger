@@ -1,11 +1,12 @@
 if (typeof exports !== 'undefined') {
    exports.bootstrap   = bootstrap; 
    exports.tryScenario = tryScenario; 
+   exports.divideFlow  = divideFlow; 
    config = {};
 }
 
 
-var socket, reload_, iam, tryData = {}, io_client;
+var socket, reload_, iam, tryData = {}, io_client, theWorker;
 
 function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
@@ -27,8 +28,6 @@ function onServerError(message) {
    if (message.error) { notifyOnTop (message.error, 'red'); }
 }
 
-
-
 function tryConnect (dataNum, token) {
    var server = tryData[dataNum].server;
 
@@ -38,16 +37,18 @@ function tryConnect (dataNum, token) {
 
    if (iam) {
       notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', "red");
-      return
+      return;
    }
 
    iam = true;
 
    var query = {query: "token=" + token};
-   socket    = io_client (frontUrl, query);
+
+   log('connecting:', frontUrl, query);
+
+   socket    = io_client(frontUrl, query);
 
    if (socket) {
-
         var onevent = socket.onevent;
         socket.onevent = function (packet) {
             var args = packet.data || [];
@@ -91,26 +92,53 @@ function tryConnect (dataNum, token) {
    }
 }
 
-
 var num = 0;
 
-function scenarioCallbackDefault (result) {   
-    showMessage(('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')), 'socketLog', 'blue'); 
-
+function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {   
+    /*
+    showMessage(
+       ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''), 
+       'socketLog', 
+       'blue'
+    );
+    */
+     
+    if (callback) {
+       callback(result, flowOrigin, flow, waitingFor);
+    }  
 };
 
-var waiting, waitingFor = [], parameters = {}, flow = [], scenarioCallback = scenarioCallbackDefault, inScenario;
+var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
 
-function tryScenario (dataNum, scenarioNum, callback) {
+function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNum, worker, callback) {
     if (inScenario) {
        alert ('tryScenario simultaneously running is not allowed!');
        return; 
     }
-    scenarioCallback = (typeof callback === 'function') ? callback : scenarioCallbackDefault;
+    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};     
-    flow = array_ (tryData[dataNum].data[scenarioNum]);
-    // log ('tryScenario:', flow);
+   
+    if (variants.user && variants.user[selected.user]) {
+       parameters.token    = variants.user[selected.user].token;
+       parameters.username = variants.user[selected.user].username;
+       parameters.password = variants.user[selected.user].password;
+    }
+    
+    if (variants.server && variants.server[selected.server]) {
+       parameters.proto = variants.server[selected.server].proto;
+       parameters.host  = variants.server[selected.server].host;
+       parameters.port  = variants.server[selected.server].port;
+       parameters.path  = variants.server[selected.server].path;
+    }
+
+
+    for (var key in updatedParameters) parameters[key] = updatedParameters[key];
+
+    theWorker = worker;
+    setParameters(tryData[dataNum].server, parameters);
+    flowOrigin = tryData[dataNum].data[scenarioNum];
+    flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
 
     doStep ();
 }
@@ -118,32 +146,37 @@ function tryScenario (dataNum, scenarioNum, callback) {
 function doStep () {
     var step;
     while (step = flow.shift()) {
-        log ('doStep:', step);
+        log ('worker doStep:', theWorker, step);
+
+        setParameters(step.data, parameters);
+
+        if (step.waitForResponse) {
+            waitingFor = setParameters(step.waitForResponse.data, parameters);
+            waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
+            // log ('setTimeout', waiting);
+        }  
+        showMessage('out: ' + step.key + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / '), 'socketLog', 'brown');
 
         if (step.action === 'connect') {
-            tryConnect(dataNum, step.key);
+            tryConnect(dataNum, step.data[0].token);
 
         } if (step.action === 'login_and_connect') {
-            tryLoginAndConnect(dataNum, step.key, step.key);
+            tryLoginAndConnect(dataNum, step.data[0].username, step.data[0].password);
 
         } else if (step.action === 'request') {
-            if (!socket) return;
-
-            if (step.waitForResponse) {
-               waitingFor = setParameters(step.waitForResponse.data, parameters);
-               waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
+            if (!socket) {
+               showMessage('abort: no socket found :-(', 'socketLog', 'red');
+               return;
             }
-
-            showMessage('out: ' + step.key + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / '), 'socketLog', 'brown');
             socket.emit.apply(socket, [step.key].concat(setParameters(step.data, parameters)));
-            // socket.emit (step.key, step.data[0], step.data[1]);
 
-            if (step.waitForResponse) return;
         }
+        if (step.waitForResponse) return;
     }
+    if (waiting) clearTimeout(waiting);
     inScenario = false;
     var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
-    _scenarioCallback(true);
+    _scenarioCallback(true, flowOrigin, [], []);
 }
 
 
@@ -170,14 +203,14 @@ function onInputEvent(event, data) {
 }    
 
 function finishWaiting() {
-   log ('finishWaiting', waiting, waitingFor);
+   // log ('\n\nfinishWaiting', waiting, waitingFor);
 
    clearTimeout(waiting);
    if (waitingFor.length) {
       waitingFor = [];
       inScenario = false;
       var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
-      _scenarioCallback(false);
+      _scenarioCallback(false, flowOrigin, flow, waitingFor);
 
    } else {
       doStep();
@@ -213,13 +246,8 @@ function checkData(data, proto, parameters) {
    var checked = true;
    if (typeof proto === 'string') {
       var r = proto.match(/^\{\{!(.*?)\}\}$/);
-      if (r)             { 
-         parameters[r[1]] = data; 
-
-      } else if (data !== proto) { 
-         checked = false; 
-
-      }  
+      if (r)                   { parameters[r[1]] = data; } 
+      else if (data !== proto) { checked = false; }  
 
    } else if (proto instanceof Array) {
       if ((data instanceof Array) && (data.length >= proto.length)) {
@@ -251,6 +279,18 @@ function checkData(data, proto, parameters) {
    return checked;
 }
 
+function divideFlow (A) {
+    var flow_ = {};
+    for (var step of array_(A)) {
+       if (step && (typeof step == 'object')) {
+          var worker = step.worker ? step.worker : 0;
+          if (worker in flow_) { flow_[worker].push(step); } 
+          else                 { flow_[worker] = [step];}
+       }
+    }
+
+    return flow_; 
+}
 
 function log () {
     var t = '', a;
@@ -275,3 +315,4 @@ function dict_ (A) {
 function array_ (A) {
     return (A === null || A === undefined) ? [] : (typeof A !== 'object') ? [A] : ('length' in A) ? A  : [A];
 }
+
