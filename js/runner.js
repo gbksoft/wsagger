@@ -50,6 +50,7 @@ function tryConnect (dataNum, token) {
 
    if (socket) {
         var onevent = socket.onevent;
+        
         socket.onevent = function (packet) {
             var args = packet.data || [];
             onevent.call (this, packet);    // original call
@@ -95,13 +96,11 @@ function tryConnect (dataNum, token) {
 var num = 0;
 
 function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {   
-    /*
     showMessage(
        ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''), 
        'socketLog', 
        'blue'
     );
-    */
      
     if (callback) {
        callback(result, flowOrigin, flow, waitingFor);
@@ -132,11 +131,11 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
        parameters.path  = variants.server[selected.server].path;
     }
 
-
     for (var key in updatedParameters) parameters[key] = updatedParameters[key];
 
     theWorker = worker;
-    setParameters(tryData[dataNum].server, parameters);
+    
+    tryData[dataNum].server = {}; for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum].server[key] = parameters[key];
     flowOrigin = tryData[dataNum].data[scenarioNum];
 
     // console.log(flowOrigin[0]); 
@@ -161,7 +160,12 @@ function doStep () {
             waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
             // log ('setTimeout', waiting);
         }  
-        showMessage('out: ' + step.key + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / '), 'socketLog', 'brown');
+        step.data = array_(step.data);
+        showMessage(
+           'out : ' + (step.action ? step.action + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / ') : '') 
+           + (step.waitForResponse ? ' : waitForResponse : ' + JSON.stringify(step.waitForResponse) : ''), 
+           'socketLog', 
+           'brown');
 
         if (step.action === 'connect') {
             tryConnect(dataNum, step.data[0].token);
@@ -174,7 +178,14 @@ function doStep () {
                showMessage('abort: no socket found :-(', 'socketLog', 'red');
                return;
             }
-            socket.emit.apply(socket, [step.key].concat(setParameters(step.data, parameters)));
+            var p = setParameters(step.data, parameters);
+            log (p);
+
+            /*
+            socket.emit.apply(socket, p);
+            */
+
+            socket.emit(p[0], p[1]);
 
         }
         if (step.waitForResponse) return;
@@ -198,7 +209,7 @@ function onInputEvent(event, data) {
           // log ('checkData failed', [event, data], waitingFor[i]);
        }
     }
-    showMessage ('in: ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
+    showMessage ('in : ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
 
     if (inScenario && waitingFor.length < 1) {
        // log ('onInputEvent: !waitingFor.length', waiting);
