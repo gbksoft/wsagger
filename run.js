@@ -16,7 +16,7 @@ var data     = JSON.parse (fs.readFileSync (dataFile));
 var exitus   = [];
 var tryData  = {};
 
-console.log('DATA IS READED: ' + dataFile);
+// console.log('DATA IS READED: ' + dataFile);
 
 runner.bootstrap (io, prepareData(data), captureNot, captureNot, capture, captureNot);
 
@@ -50,7 +50,7 @@ if (worker) {
 
             var parameters = ['run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
          
-            console.log ("execFile('node')", parameters);
+            // console.log ("execFile('node')", parameters);
          
             execFile('node', parameters, (error, stdout, stderr) => {
                finish(!error, 'fron execFile:', stdout); 
@@ -68,7 +68,7 @@ if (worker) {
 
 
 function capture () {
-   console.log (arguments);
+   console.log.apply (console, arguments);
 }   
 
 
@@ -76,10 +76,10 @@ function captureNot () {
 }   
 
 
-function finish (result, flowOrigin, flow, waitingFor) {
-   --numWorkers; if (!result) success = false;
+function finish () {              // result, flowOrigin, flow, waitingFor
+   --numWorkers; if (!arguments[0]) success = false;
    
-   console.log (result, "\n\nflowOrigin", flowOrigin, "\n\nflow", flow, "\n\nwaitingFor", waitingFor);
+   // console.log(arguments);
    
    if (!numWorkers) {
       console.log(success ? '!!! SUCCESS !!!' : '??? FAIL ???');

@@ -67,15 +67,13 @@ function tryConnect (dataNum, token) {
         reload_ = config.autoreload ? window.setTimeout (function () { location.reload (); }, 2000) : undefined;
 
         socket.on ('connect', function () {
-            if (socket.connected) {
-                if (reload_) window.clearTimeout (reload_);
-                notifyOnTop ('Socket connected to ' + frontUrl, 'green');
-                setHTML ('connect', '');
-                announce('connect'); // custom event
-            } else {
-                notifyOnTop("New socket is disconnected :-(", 'red');
 
-            }
+            // socket.emit("sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"});
+
+            if (reload_) window.clearTimeout (reload_);
+            notifyOnTop ('Socket connected to ' + frontUrl, 'green');
+            setHTML ('connect', '');
+            announce('connect'); // custom event
 
         });
         socket.on ('error',      function () {
@@ -137,13 +135,7 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     
     tryData[dataNum].server = {}; for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum].server[key] = parameters[key];
     flowOrigin = tryData[dataNum].data[scenarioNum];
-
-    // console.log(flowOrigin[0]); 
-
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
-
-    // console.log(flow[0].waitForResponse.data); 
-    // process.exit();
 
     doStep ();
 }
@@ -151,7 +143,7 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
 function doStep () {
     var step;
     while (step = flow.shift()) {
-        log ('worker doStep:', theWorker, step);
+        // log ('worker doStep:', theWorker, step);
 
         setParameters(step.data, parameters);
 
@@ -178,14 +170,12 @@ function doStep () {
                showMessage('abort: no socket found :-(', 'socketLog', 'red');
                return;
             }
+
             var p = setParameters(step.data, parameters);
-            log (p);
-
-            /*
             socket.emit.apply(socket, p);
-            */
 
-            socket.emit(p[0], p[1]);
+            // socket.emit("sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"});
+            // socket.emit(p[0], p[1]);
 
         }
         if (step.waitForResponse) return;
@@ -238,7 +228,8 @@ function finishWaiting() {
 function setParameters(data, parameters) {
    if (typeof data === 'string') {
       if ((data.substr(0, 2) == '{{') && (data.substr(-2) == '}}')) {
-         data = parameters[data.substr(2, data.length - 4)];
+         var key = data.substr(2, data.length - 4);
+         if (key in parameters) data = parameters[key];
       
       } else {
          // for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), str_ (parameters[key]));

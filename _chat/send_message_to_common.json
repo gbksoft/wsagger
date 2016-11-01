@@ -23,7 +23,6 @@
    "scenarios": [
        {
           "name": "send message to common group",
-          "summary": "",
           "parameters": [
              { "in": "formData", "name": "token",       "description": "", "dataType": "string" },
              { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" }
