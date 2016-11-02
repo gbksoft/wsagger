@@ -16,12 +16,8 @@
    "user" : {"token": "{{token}}"},
 
    "user_" : {
-       "token2":     { "token": "2" },
-       "tokenapi25": { "token": "api25" },
-       "pavlo":      { "username": "pavlo",    "password": "pavlo" },
-       "alexr":      { "username": "alexr",    "password": "alexr" },
-       "roman":      { "username": "roman",    "password": "roman" },
-       "olexandr":   { "username": "olexandr", "password": "olexandr" }
+       "1000002":  { "token": "2" },
+       "1000003":  { "token": "3" }
    },
 
    "scenarios": [
@@ -31,7 +27,6 @@
           "parameters": [
              { "in": "formData", "name": "token", "description": "", "dataType": "string" }
           ],
-          "operationId": "connect",
           "flow": [
              { "action": "connect", "key": "", "data": [{"token": "{{token}}"}],
                "waitForResponse": {

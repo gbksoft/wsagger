@@ -12,26 +12,24 @@
    },
 
    "user_" : {
-       "1000002":     { "token": "2" },
-       "1000003":     { "token": "3" }
+       "1000002":  { "token": "2" },
+       "1000003":  { "token": "3" }
    },
 
    "autoStart": [0],
 
    "scenarios": [
        {
-          "name": "send message to common group",
+          "name": "change group",
           "parameters": [
-             { "in": "formData", "name": "token",       "description": "", "dataType": "string" },
-             { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" }
+             { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
+             { "in": "formData", "name": "groupId", "description": "", "dataType": "string" }
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
                "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
-             { 
-               "waitForResponse": { "delay": 3000, "data": [                 ] }},
-             { "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["messageGroup",   {}]] }}
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {}]] }}
           ]
        }
     ]
