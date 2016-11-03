@@ -7,13 +7,15 @@
    },
 
    "server_" : {
-      "localhost":                   { "proto": "socket.io", "host": "127.0.0.1",                   "port": "28780", "path": "/front_space" },
-      "chat-nodejs.dev.gbksoft.net": { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net", "port": "28781", "path": "/front_space" }
+      "loc":  { "proto": "socket.io", "host": "127.0.0.1",                    "port": "28780", "path": "/front_space" },
+      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/front_space" },
+      "test": { "proto": "socket.io", "host": "chat-nodejs.test.gbksoft.net", "port": "28782", "path": "/front_space" },
+      "live": { "proto": "socket.io", "host": "chat-nodejs.live.gbksoft.net", "port": "28783", "path": "/front_space" }
    },
 
    "user_" : {
-       "1000002":  { "token": "2" },
-       "1000003":  { "token": "3" }
+       "2":  { "token": "2" },
+       "3":  { "token": "3" }
    },
 
    "autoStart": [0],
@@ -29,8 +31,13 @@
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
                "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+
              { "action": "request", "data": ["sendMessage", {"type": "user", "recipientId": "{{recipientId}}", "messageText": "{{messageText}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["messageUser",   {}]] }}
+               "waitForResponse": { "delay": 3000, "data": [["messageUser",   {"id0": "{{!id0}}"}]] }},
+
+             { "action": "request", "data": ["deleteMessage", "{{id0}}"], 
+               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId0": "{{id0}}"}]] }}
+
           ]
        }
     ]

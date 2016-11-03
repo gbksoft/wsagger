@@ -5,7 +5,6 @@
       "version": "1.0.0",
       "title": "GBKSOFT chat API"
    },
-
    "server_" : {
       "loc":  { "proto": "socket.io", "host": "127.0.0.1",                    "port": "28780", "path": "/front_space" },
       "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/front_space" },
@@ -22,20 +21,20 @@
 
    "scenarios": [
        {
-          "name": "restrict user",
+          "name": "change group",
           "parameters": [
-             { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
-             { "in": "formData", "name": "userId",  "description": "", "dataType": "string" }
+             { "in": "formData", "name": "token",     "description": "", "dataType": "string" },
+             { "in": "formData", "name": "groupName", "description": "", "dataType": "string" }
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["connected", {"userId": "{{!userId}}"}]] }},
 
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
                "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
 
-             { "action": "request", "data": ["restrictUsers", {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}], 
-               "waitForResponse": { "delay": 3000, "data": [["restrictedRights",  {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}]] }}
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}", "usersHere": [{"id": "{{userId}}", "moderateGroup": "{{groupId}}"}]}]] }}
           ]
        }
     ]

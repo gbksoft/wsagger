@@ -22,7 +22,7 @@
 
    "scenarios": [
        {
-          "name": "restrict user",
+          "name": "change user role",
           "parameters": [
              { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
              { "in": "formData", "name": "userId",  "description": "", "dataType": "string" }
@@ -34,8 +34,8 @@
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
                "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
 
-             { "action": "request", "data": ["restrictUsers", {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}], 
-               "waitForResponse": { "delay": 3000, "data": [["restrictedRights",  {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}]] }}
+             { "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}], 
+               "waitForResponse": { "delay": 3000, "data": [["newRole",  {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}]] }}
           ]
        }
     ]

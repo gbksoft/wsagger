@@ -7,29 +7,28 @@
    },
 
    "server_" : {
-      "localhost":                   { "proto": "socket.io", "host": "127.0.0.1",                   "port": "28780", "path": "/front_space" },
-      "chat-nodejs.dev.gbksoft.net": { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net", "port": "28781", "path": "/front_space" }
+      "loc":  { "proto": "socket.io", "host": "127.0.0.1",                    "port": "28780", "path": "/front_space" },
+      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/front_space" },
+      "test": { "proto": "socket.io", "host": "chat-nodejs.test.gbksoft.net", "port": "28782", "path": "/front_space" },
+      "live": { "proto": "socket.io", "host": "chat-nodejs.live.gbksoft.net", "port": "28783", "path": "/front_space" }
    },
 
    "user_" : {
-       "token2":     { "token": "2"                                   },
-       "pavlo":      { "username": "pavlo",    "password": "pavlo"    },
-       "alexr":      { "username": "alexr",    "password": "alexr"    },
-       "roman":      { "username": "roman",    "password": "roman"    },
-       "olexandr":   { "username": "olexandr", "password": "olexandr" }
+       "2":  { "token": "2" },
+       "3":  { "token": "3" }
    },
+
 
    "scenarios": [
       {
          "name": "send and receive message in common group",
          "parameters": [
-            { "in": "slave",    "name": "tokenSlave",  "description": "", "dataType": "string" },
             { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" }
          ],
          "flow": [
-            { "worker": "slave",  "action": "connect", "data": [{"token": "{{tokenSlave}}"}], 
+            { "worker": "2",  "action": "connect", "data": [{"token": "2"}], 
               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
-            { "worker": "slave",  
+            { "worker": "2",  
               "waitForResponse": { "delay": 3000, "data": [["messageGroup", {"messageText" : "{{messageText}}"}]] }},
 
             { "action": "connect", "data": [{"token": "{{token}}"}], 
