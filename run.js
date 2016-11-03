@@ -2,23 +2,19 @@ var fs       = require ('fs'),
     io       = require ('socket.io-client'),
     execFile = require ('child_process').execFile,
     runner   = require ('./js/runner');
-
-//console.log ('http://localhost:28780/front_space', { query: 'token=2' });
-//io('http://localhost:28780/front_space', { query: 'token=2' });
-//process.exit();
-    
+  
 var dataFile = process.argv[2];
-var server   = process.argv[3] || 'chat-nodejs.dev.gbksoft.net';
-var user     = process.argv[4] || 'token2';
+var server   = process.argv[3] || 'loc';
+var user     = process.argv[4] || '2';
 var worker   = process.argv[5] || '';
 
 var data     = JSON.parse (fs.readFileSync (dataFile));
-var exitus   = [];
-var tryData  = {};
 
 // console.log('DATA IS READED: ' + dataFile);
 
-runner.bootstrap (io, prepareData(data), captureNot, captureNot, capture, captureNot);
+var tryData = prepareData(data);
+
+runner.bootstrap (io, tryData, captureNot, captureNot, capture, captureNot);
 
 var variants = {
    server: data.server_,
@@ -49,8 +45,6 @@ if (worker) {
          if (i < workers.length - 1) {
 
             var parameters = ['run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
-         
-            // console.log ("execFile('node')", parameters);
          
             execFile('node', parameters, (error, stdout, stderr) => {
                finish(!error, 'fron execFile:', stdout); 
@@ -90,7 +84,7 @@ function finish () {              // result, flowOrigin, flow, waitingFor
 
 function prepareData (data) {
 
-   tryData = {};
+   var tryData = {};
    elem = data;
    dataNum = 0;
 

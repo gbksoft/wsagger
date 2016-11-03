@@ -5,13 +5,15 @@ if (typeof exports !== 'undefined') {
    config = {};
 }
 
-
 var socket, reload_, iam, tryData = {}, io_client, theWorker;
 
 function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
    if (tryData_)     tryData     = tryData_; 
+
+   log (tryData);   
+
    if (showMessage_) showMessage = showMessage_;
    if (setHTML_)     setHTML     = setHTML_; 
    if (notifyOnTop_) notifyOnTop = notifyOnTop_;
