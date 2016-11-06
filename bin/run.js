@@ -1,7 +1,7 @@
 var fs       = require ('fs'),
     io       = require ('socket.io-client'),
     execFile = require ('child_process').execFile,
-    runner   = require ('./js/runner');
+    runner   = require ('../js/runner');
   
 var dataFile = process.argv[2];
 var server   = process.argv[3] || 'loc';
@@ -44,7 +44,7 @@ if (worker) {
       for (var i = -1; ++i < workers.length;) {
          if (i < workers.length - 1) {
 
-            var parameters = ['run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
+            var parameters = ['bin/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
          
             execFile('node', parameters, (error, stdout, stderr) => {
                finish(!error, 'fron execFile:', stdout); 

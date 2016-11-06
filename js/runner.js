@@ -5,14 +5,12 @@ if (typeof exports !== 'undefined') {
    config = {};
 }
 
-var socket, reload_, iam, tryData = {}, io_client, theWorker;
+var socket, reload_, tryData = {}, io_client, theWorker;
 
 function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
    if (tryData_)     tryData     = tryData_; 
-
-   log (tryData);   
 
    if (showMessage_) showMessage = showMessage_;
    if (setHTML_)     setHTML     = setHTML_; 
@@ -26,29 +24,27 @@ function onConnected (message) {
 
 }
 
+
 function onServerError(message) {
    if (message.error) { notifyOnTop (message.error, 'red'); }
 }
 
+
 function tryConnect (dataNum, token) {
    var server = tryData[dataNum].server;
 
-   // var frontUrl = 'http://' + window.location.hostname + ':' + config.port + config.namespace;
-
    var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
-   if (iam) {
-      notifyOnTop ('Друга спроба конекту неможлива :-( Треба перезавантажити сторінку', "red");
-      return;
+   if (socket) {
+      socket.io.disconnect();
+      socket.io.opts.query = "token=" + token;  
    }
-
-   iam = true;
 
    var query = {query: "token=" + token};
 
    log('connecting:', frontUrl, query);
 
-   socket    = io_client(frontUrl, query);
+   socket = io_client(frontUrl, query);
 
    if (socket) {
         var onevent = socket.onevent;

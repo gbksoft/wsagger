@@ -2,11 +2,11 @@
    "$schema": "http://json-schema.org/draft-04/schema#",
    "title": "wsagger.json",
    "type": "object",
-   "required": ["wsagger", "info", "server", "scenarios"],
+   "required": ["wsagger", "info", "server_", "scenarios"],
    "properties": {
       "wsagger": {
          "type": "string",
-         "description": "Wsagger internal ID"
+         "description": "Wsagger version"
       },
       "info": {
          "type": "object",
@@ -23,27 +23,11 @@
             }
          }
       },
-      "server": {
-         "type": "object",
-         "required": ["proto", "host", "port", "path"],
-         "properties": {
-            "proto": {
-               "type": "string",
-               "description": "server proto"
-            },
-            "host": {
-               "type": "string",
-               "description": "server host"
-            },
-            "port": {
-               "type": "string",
-               "description": "server port"
-            },
-            "path": {
-               "type": "string",
-               "description": "server path"
-            }   
-         }   
+      "server_": {
+         "type": "object"
+      },
+      "user_": {
+         "type": "object"
       },
       "scenarios": {
          "title": "API test scenarios array",
@@ -56,20 +40,11 @@
                "name": {
                   "type": "string"
                },
-               "summary": {
-                  "type": "string"
-               },
-               "condition": {
-                  "type": "string"
-               },
-               "operationId": {
-                  "type": "string"
-               },
                "parameters": {
                   "type": "array",
                   "items": {
                      "type": "object",
-                     "required": ["name", "description", "in", "dataType"],
+                     "required": ["in", "name", "description", "dataType"],
                      "properties": {
                         "name": {
                            "type": "string"
@@ -78,11 +53,10 @@
                            "type": "string"
                         },
                         "in": { 
-                           "enum": ["formData", "data"] 
-                        },
-                        "data": {
+                           "type": "string"
                         },
                         "dataType": {
+                           "type": "string"
                         }
                      }
                   }  
@@ -91,15 +65,21 @@
                   "type": "array",
                   "items": {
                      "type": "object",
-                     "required": ["action", "key", "data"],
                      "properties": {
+                        "worker": {
+                           "type": "string"
+                        },
                         "action": {
                            "type": "string"
                         },
-                        "key": {
-                           "type": "string"
-                        },
-                        "data": {
+                        "waitForResponse": {
+                           "type": "object", 
+                           "required": ["delay"],
+                           "properties": {
+                              "delay": {
+                                 "type": "integer"
+                              }
+                           }
                         }
                      }   
                   } 

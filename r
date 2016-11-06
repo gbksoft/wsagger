@@ -7,4 +7,4 @@
 
 
 
-node run.js $1 $2 $3
+node bin/run.js $1 $2 $3

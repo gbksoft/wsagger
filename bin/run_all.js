@@ -14,15 +14,18 @@ console.log(files);
 rundataFile();
 
 function rundataFile() {
-   var dataFile = files.shift();
-   if (dataFile) {
-      console.log(dataFile + '...');
-      finished[dataFile] = '';
-      var parameters = ['run.js', dataPath + '/' + dataFile, server, user]; 
-      execFile('node', parameters, (error, stdout, stderr) => {
-         finish(dataFile, error, stdout, stderr); 
-      });
-      timeout = setTimeout (rundataFile, 10000);
+
+   if (files.length) {
+      var dataFile = files.shift();
+      if (fs.statSync(dataPath + '/' + dataFile).isFile()) {
+         console.log(dataFile + '...');
+         finished[dataFile] = '';
+         var parameters = ['bin/run.js', dataPath + '/' + dataFile, server, user]; 
+         execFile('node', parameters, (error, stdout, stderr) => {
+            finish(dataFile, error, stdout, stderr); 
+         });
+         timeout = setTimeout (rundataFile, 10000);
+      }
    
    } else {
       var notFinished = Object.keys(finished).filter((k) => { return !finished[k]; });

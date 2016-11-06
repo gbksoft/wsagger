@@ -1,7 +1,7 @@
 const fs  = require('fs'),
-validator = require('./js/validator');  
+validator = require('../js/validator');  
 
-const schemaFile = 'wsagger.schema.json', 
+const schemaFile = 'schema/wsagger.schema.json', 
           schema = JSON.parse(fs.readFileSync(schemaFile));
 
 let schemaErrors = validator.schemaErrors(schema);
