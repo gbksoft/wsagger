@@ -1,11 +1,9 @@
 ## WSagger — валідація
 
-Схема живе в файлі wsagger.schema.json
+Схема живе в файлі schema/wsagger.schema.json
 Приклад для валідації живе в файлі wsagger.json
 
-Запуск валідатора: ./node validate.js
-
-В схемі є деякі "порожні поля" — parameter.data, parameter.dataType, flow.data, flow.dataType — тобто для них поки що дозволені які завгодно значення. Кінцева їх валідація, думаю, простіше зробиться в рантаймі (data згідно відповідного dataType). Але можна намагатись допиляти все це засобами "JSON Schema".    
+Запуск валідатора: ./v <filename>
 
 
 ## WSagger — інтерфейс
@@ -16,140 +14,7 @@
 Користувач може:
 
 * вибрати файл опису інтерфейсу (який небудь wsagger.json) по URL або завантаженням з диска
-* отримати токен для авторизації на WS-сервері - по REST API
-     
-
-### Файл опису інтерфейсу
-
-Обʼєкт наступної структури (плюс-мінус крокодил):
-
-    {
-       "wsagger": "0.0.1",
-       "info": {
-          "description": "API for GBK chat",
-          "version": "1.0.0",
-          "title": "GBKSOFT chat API"
-       },
-       "scenarios": []
-    }
-
-
-### Сценарії
-
-Сценарій (елемент списку "scenarios") — це масив наступної структури (для прикладу):
-    [
-       {
-          "name": "connect to socket.io",
-          "summary": " ",
-          "parameters": [
-             {             
-                "in": "formData",
-                "name": "namespace",
-                "description": "connect to socket.io",
-                "dataType": "string"
-             }
-          ],
-          "operationId": "connect",
-          "flow": [
-             {
-                "action": "connect", 
-                "key": "socket.io", 
-                "data": {"token": "@"},
-                "dataType": "object"
-             }
-          ]
-       },
-       {
-          "name": "sendBroadcastMessage",
-          "summary": " ",
-          "parameters": [
-             { 
-               "in": "formData",
-               "name": "messageText",
-               "description": "broadcast message text",
-                "dataType": "string"
-             }
-          ],
-          "condition": "connect",
-          "operationId": "",
-          "flow": [
-             {
-                "action": "request", 
-                "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "broadcast"},
-                "dataType": "object"
-             }
-          ]
-       },
-       {
-          "name": "sendGroupMessage",
-          "summary": " ",
-          "parameters": [
-             {
-                "in": "formData",
-                "name": "messageText",
-                "description": "group message text",
-                "dataType": "string"
-             },
-             {
-                "in": "formData",
-                "name": "groupId",
-                "description": "group id",
-                "dataType": "string"
-             }
-          ],
-          "condition": "connect",
-          "operationId": "",
-          "flow": [
-             {
-                "action": "request", 
-                "key": "changeGroup", 
-                "data": {"groupId": "@"},
-                "dataType": "object"
-             },
-             {
-                "action": "request", 
-                "key": "sendMessage", 
-                "data": {"groupId": "@"},
-                "dataType": "object"
-             },
-             {
-                "action": "response", 
-                "key": "message", 
-                "data": {"messageText": "@", "groupId": "@"},
-                "dataType": "object"
-             }
-          ]
-       },
-       {
-          "name": "sendUserMessage",
-          "summary": " ",
-          "parameters": [
-             {
-                "in": "formData",
-                "name": "messageText",
-                "description": "user message text",
-                "dataType": "string"
-             },
-             {
-                "in": "formData",
-                "name": "recipientId",
-                "description": "recipient id",
-                "dataType": "string"
-             }
-          ],
-          "operationId": "",
-          "condition": "connect",
-          "flow": [
-             {
-                "action": "request", 
-                "key": "sendMessage", 
-                "data": {"messageText": "@", "type": "user", "recipientId": "@"},
-                "dataType": "object"
-             }
-          ]
-       }   
-    ]
+* отримати токен для авторизації на WS-сервері - по REST API  
 
 
 ### Виконання сценаріїв

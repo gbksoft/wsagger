@@ -5,6 +5,7 @@
       "version": "1.0.0",
       "title": "GBKSOFT chat API"
    },
+
    "server_" : {
       "loc":  { "proto": "socket.io", "host": "127.0.0.1",                    "port": "28780", "path": "/front_space" },
       "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/front_space" },
@@ -19,21 +20,40 @@
 
    "scenarios": [
        {
-          "name": "change group",
+          "name": "usersCnt",
           "parameters": [
              { "in": "formData", "name": "token",     "description": "", "dataType": "string" },
              { "in": "formData", "name": "groupName", "description": "", "dataType": "string" }
           ],
           "flow": [
+             { "worker": "2",  "action": "connect", "data": [{"token": "6"}], 
+               "waitForResponse": { "delay": 3000, "data": [
+                  ["connected", {}], 
+                  ["newGroup", {"name": "{{groupName}}", "id": "{{!groupId}}","usersCnt": 2}]
+               ]}
+             },
+
+             { "worker": "2",  "action": "request", "data": ["changeGroup", "{{!groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [
+                  ["joinedTo", {"groupId": "{{groupId}}"}],
+                  ["restrictedRights", {"groupId": "{{groupId}}"}]
+               ]}
+             },
+
              { "action": "connect", "data": [{"token": "{{token}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["connected", {"userId": "{{!userId}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
 
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "open"}], 
                "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}", "usersInGroup": [{"id": "{{userId}}", "moderateGroup": "{{groupId}}"}]}]] }}
+             { "action": "request", "data": ["addUser", {"groupId": "{{groupId}}", "userIds": ["5", "6"]}], 
+               "waitForResponse": { "delay": 3000, "data": [["groupCnt",  {"groupId": "{{groupId}}", "usersCnt": 3}]] }},
+
+             { "action": "request", "data": ["restrictUsers", {"groupId": "{{groupId}}", "userIds": ["6"], "period": -1}], 
+               "waitForResponse": { "delay": 3000, "data": [["groupCnt",  {"groupId": "{{groupId}}", "usersCnt": 2}]] }}
+
           ]
        }
     ]
 }
+

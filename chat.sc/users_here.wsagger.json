@@ -17,8 +17,6 @@
        "3":  { "token": "3" }
    },
 
-   "autoStart": [0],
-
    "scenarios": [
        {
           "name": "change group",

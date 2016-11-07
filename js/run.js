@@ -8,13 +8,26 @@ var server   = process.argv[3] || 'loc';
 var user     = process.argv[4] || '2';
 var worker   = process.argv[5] || '';
 
-var data     = JSON.parse (fs.readFileSync (dataFile));
+var isFile;
 
-// console.log('DATA IS READED: ' + dataFile);
+try {
+   isFile = fs.statSync(dataFile).isFile();
+   if (!isFile) {
+      console.log('NOT A FILE: ' + dataFile);
+      process.exit();
+   }
 
-var tryData = prepareData(data);
+} catch (err) {
+   console.log('NOT A FILE: ' + dataFile, err);
+   process.exit();
 
-runner.bootstrap (io, tryData, captureNot, captureNot, capture, captureNot);
+}
+
+var data     = JSON.parse(fs.readFileSync(dataFile));
+
+var tryData  = prepareData(data);
+
+runner.bootstrap (io, tryData, undefined, captureNot, capture, captureNot);
 
 var variants = {
    server: data.server_,
@@ -44,7 +57,7 @@ if (worker) {
       for (var i = -1; ++i < workers.length;) {
          if (i < workers.length - 1) {
 
-            var parameters = ['bin/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
+            var parameters = ['js/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
          
             execFile('node', parameters, (error, stdout, stderr) => {
                finish(!error, 'fron execFile:', stdout); 

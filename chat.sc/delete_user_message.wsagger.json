@@ -18,15 +18,13 @@
        "3":  { "token": "3" }
    },
 
-   "autoStart": [0],
-
    "scenarios": [
        {
           "name": "send message to user",
           "parameters": [
              { "in": "formData", "name": "token",       "description": "", "dataType": "string" },
              { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" },
-             { "in": "formData", "name": "recipientId", "description": "", "dataType": "string" }
+             { "in": "1000005",  "name": "recipientId", "description": "", "dataType": "string" }
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
@@ -36,7 +34,7 @@
                "waitForResponse": { "delay": 3000, "data": [["messageUser",   {"id0": "{{!id0}}"}]] }},
 
              { "action": "request", "data": ["deleteMessage", "{{id0}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId0": "{{id0}}"}]] }}
+               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId": "{{id0}}"}]] }}
 
           ]
        }

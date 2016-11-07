@@ -17,20 +17,27 @@
        "3":  { "token": "3" }
    },
 
-   "autoStart": [0],
-
    "scenarios": [
        {
           "name": "change group",
           "parameters": [
-             { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
-             { "in": "formData", "name": "groupId", "description": "", "dataType": "string" }
+             { "in": "formData", "name": "token", "description": "", "dataType": "string" }
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
                "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+
+             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "usersCnt": 1, "name": "{{groupName}}"}]] }},
+
              { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {}]] }}
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}"}]] }},
+
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "the same group"}]] }},
+
+             { "action": "request", "data": ["changeGroup", "-1"], 
+               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "no such group"}]] }}
           ]
        }
     ]

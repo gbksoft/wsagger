@@ -18,21 +18,27 @@
        "3":  { "token": "3" }
    },
 
-   "autoStart": [0],
-
    "scenarios": [
        {
           "name": "change user role",
           "parameters": [
              { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
-             { "in": "formData", "name": "userId",  "description": "", "dataType": "string" }
+             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
                "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
+             { "action": "request", "data": ["createGroup", {"type": "closed"}], 
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}"}]] }},
+
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [
+                  ["joinedTo",  {"groupId": "{{groupId}}"}],
+                  ["history"]
+               ]}
+             },
+
 
              { "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}], 
                "waitForResponse": { "delay": 3000, "data": [["newRole",  {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}]] }}

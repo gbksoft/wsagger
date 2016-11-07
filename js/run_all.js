@@ -7,7 +7,7 @@ var user     = process.argv[4] || '2';
 
 var numSuccess = 0, numFail = 0, finished = {}, timeout;
 
-var files = fs.readdirSync(dataPath).filter((f) => { return (f.substr(-5) === '.json'); });
+var files = fs.readdirSync(dataPath).filter((f) => { return (f.substr(-13) === '.wsagger.json'); });
 
 console.log(files);
 
@@ -20,7 +20,7 @@ function rundataFile() {
       if (fs.statSync(dataPath + '/' + dataFile).isFile()) {
          console.log(dataFile + '...');
          finished[dataFile] = '';
-         var parameters = ['bin/run.js', dataPath + '/' + dataFile, server, user]; 
+         var parameters = ['js/run.js', dataPath + '/' + dataFile, server, user]; 
          execFile('node', parameters, (error, stdout, stderr) => {
             finish(dataFile, error, stdout, stderr); 
          });

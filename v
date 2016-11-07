@@ -1,3 +1,3 @@
 #!/bin/bash
 
-node bin/validate.js $1
+node js/validate.js $1

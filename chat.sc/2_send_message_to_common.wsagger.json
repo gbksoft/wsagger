@@ -15,7 +15,8 @@
 
    "user_" : {
        "2":  { "token": "2" },
-       "3":  { "token": "3" }
+       "3":  { "token": "3" },
+       "4":  { "token": "4" }
    },
 
 
@@ -26,14 +27,12 @@
             { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" }
          ],
          "flow": [
-            { "worker": "2",  "action": "connect", "data": [{"token": "2"}], 
-              "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
-            { "worker": "2",  
-              "waitForResponse": { "delay": 3000, "data": [["messageGroup", {"messageText" : "{{messageText}}"}]] }},
+            { "worker": "2",  "action": "connect", "data": [{"token": "4"}], 
+              "waitForResponse": { "delay": 3000, "data": [["connected", {}], ["messageGroup", {"messageText" : "{{messageText}}"}]] }},
 
             { "action": "connect", "data": [{"token": "{{token}}"}], 
               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},             
-            { "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"}], 
+            { "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "0", "messageText": "{{messageText}}"}], 
               "waitForResponse": { "delay": 3000, "data": [["message", {}]] }}
           ]
       }

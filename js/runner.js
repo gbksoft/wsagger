@@ -5,14 +5,19 @@ if (typeof exports !== 'undefined') {
    config = {};
 }
 
-var socket, reload_, tryData = {}, io_client, theWorker;
+var socket, reload_, tryData = {}, io_client, theWorker, received = [];
+
+function addToReceived () {
+   received.push([arguments]);
+}
 
 function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
    if (tryData_)     tryData     = tryData_; 
 
-   if (showMessage_) showMessage = showMessage_;
+   showMessage = showMessage_ ? showMessage_ : addToReceived; 
+
    if (setHTML_)     setHTML     = setHTML_; 
    if (notifyOnTop_) notifyOnTop = notifyOnTop_;
    if (announce_)    announce    = announce_;   
@@ -38,6 +43,7 @@ function tryConnect (dataNum, token) {
    if (socket) {
       socket.io.disconnect();
       socket.io.opts.query = "token=" + token;  
+      socket.io.connect();
    }
 
    var query = {query: "token=" + token};
@@ -106,6 +112,7 @@ function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback
 var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
 
 function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNum, worker, callback) {
+
     if (inScenario) {
        alert ('tryScenario simultaneously running is not allowed!');
        return; 
@@ -127,14 +134,17 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
        parameters.path  = variants.server[selected.server].path;
     }
 
+
     for (var key in updatedParameters) parameters[key] = updatedParameters[key];
+
+    // console.log (22222222222, parameters);
 
     theWorker = worker;
     
     tryData[dataNum].server = {}; for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum].server[key] = parameters[key];
     flowOrigin = tryData[dataNum].data[scenarioNum];
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
-
+   
     doStep ();
 }
 
@@ -146,13 +156,13 @@ function doStep () {
         setParameters(step.data, parameters);
 
         if (step.waitForResponse) {
+            received = [];
             waitingFor = setParameters(step.waitForResponse.data, parameters);
             waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
             // log ('setTimeout', waiting);
         }  
-        step.data = array_(step.data);
         showMessage(
-           'out : ' + (step.action ? step.action + ' / ' + step.data.map((d) => { return JSON.stringify(d); }).join(' / ') : '') 
+           'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '') 
            + (step.waitForResponse ? ' : waitForResponse : ' + JSON.stringify(step.waitForResponse) : ''), 
            'socketLog', 
            'brown');
@@ -212,7 +222,11 @@ function finishWaiting() {
 
    clearTimeout(waiting);
    if (waitingFor.length) {
+      console.log('!!! FAILED WAITING: ', waitingFor, 'RECEIVED: ', received);
+
       waitingFor = [];
+      received   = [];
+
       inScenario = false;
       var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
       _scenarioCallback(false, flowOrigin, flow, waitingFor);
@@ -281,24 +295,45 @@ function checkData(data, proto, parameters) {
       checked = false; 
 
    }
-
    return checked;
 }
 
-function divideFlow (A) {
+function copia(data) {
+   if (typeof data === 'string') {
+      return '' + data;  
+
+   } else if (data instanceof Array) {
+      return data.map((e) => {return copia(e); });
+
+   } else if (data instanceof Object) {
+      var data_ = {}; for (var i in data) data_[i] = copia(data[i]);
+      return data_;
+
+   }
+   return data; 
+}
+
+
+function divideFlow(A) {
     var flow_ = {};
     for (var step of array_(A)) {
        if (step && (typeof step == 'object')) {
           var worker = step.worker ? step.worker : 0;
-          if (worker in flow_) { flow_[worker].push(step); } 
-          else                 { flow_[worker] = [step];}
+          if (worker in flow_) { flow_[worker].push(copia(step)); } 
+          else                 { flow_[worker] = [copia(step)];}
        }
     }
 
     return flow_; 
 }
 
-function log () {
+function str_ (data) {
+   return ((typeof data === 'object') && data) ? JSON.stringify(data) : data;
+
+}
+
+
+function log() {
     var t = '', a;
     for (var i = -1; ++i < arguments.length;) {
         var a = arguments[i];

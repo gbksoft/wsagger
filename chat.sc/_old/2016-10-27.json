@@ -22,10 +22,6 @@
       "path": "/front_space"
    },
 
-   "autoStart": [0],
-
-   "testSequence": [2,3,4,5,6,7,8,9],
-
    "scenarios": [
        {
           "name": "connect to socket.io with tokenapi25",
