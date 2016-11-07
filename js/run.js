@@ -27,7 +27,7 @@ var data     = JSON.parse(fs.readFileSync(dataFile));
 
 var tryData  = prepareData(data);
 
-runner.bootstrap (io, tryData, undefined, captureNot, capture, captureNot);
+runner.bootstrap (io, tryData, true, captureNot, capture, captureNot);
 
 var variants = {
    server: data.server_,

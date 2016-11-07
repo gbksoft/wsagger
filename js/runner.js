@@ -16,7 +16,7 @@ function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, 
 
    if (tryData_)     tryData     = tryData_; 
 
-   showMessage = showMessage_ ? showMessage_ : addToReceived; 
+   if (showMessage_) showMessage = addToReceived; 
 
    if (setHTML_)     setHTML     = setHTML_; 
    if (notifyOnTop_) notifyOnTop = notifyOnTop_;
