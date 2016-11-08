@@ -23,25 +23,39 @@
           "name": "change user role",
           "parameters": [
              { "in": "formData", "name": "token",   "description": "", "dataType": "string" },
-             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
+             { "in": "7", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+             },
 
              { "action": "request", "data": ["createGroup", {"type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}"}]] }
+             },
+
+             { "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}], 
+               "waitForResponse": { "delay": 3000, "data": [["newRole",  {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
                "waitForResponse": { "delay": 3000, "data": [
-                  ["joinedTo",  {"groupId": "{{groupId}}"}],
-                  ["history"]
+                  ["joinedTo",  {"groupId": "{{groupId}}", "usersInGroup": [{},{"id":"{{userId}}", "moderateGroup":"{{groupId}}"}]}]
                ]}
              },
 
+             { "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "role": "user", "userIds": ["{{userId}}"]}], 
+               "waitForResponse": { "delay": 3000, "data": [["newRole",  {"groupId": "{{groupId}}", "role": "user", "userIds": ["{{userId}}"]}]] }
+             },
 
-             { "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}], 
-               "waitForResponse": { "delay": 3000, "data": [["newRole",  {"groupId": "{{groupId}}", "role": "moderator", "userIds": ["{{userId}}"]}]] }}
+             { "action": "request", "data": ["changeGroup", "0"] 
+             },
+
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [
+                  ["joinedTo",  {"groupId": "{{groupId}}", "usersInGroup": [{},{"id":"{{userId}}"}]}]
+               ]}
+             }
           ]
        }
     ]
