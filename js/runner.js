@@ -34,6 +34,8 @@ function onServerError(message) {
    if (message.error) { notifyOnTop (message.error, 'red'); }
 }
 
+var firstTime = true;
+
 
 function tryConnect (dataNum, token) {
    var server = tryData[dataNum].server;
@@ -53,8 +55,9 @@ function tryConnect (dataNum, token) {
    socket = io_client(frontUrl, query);
 
    if (socket) {
-        var onevent = socket.onevent;
-        
+     if (firstTime) {
+        firstTime = false; 
+        var onevent = socket.onevent;       
         socket.onevent = function (packet) {
             var args = packet.data || [];
             onevent.call (this, packet);    // original call
@@ -88,6 +91,8 @@ function tryConnect (dataNum, token) {
             notifyOnTop ("Socket is disconnected", 'red');
             announce('disconnect'); // custom event
         });
+
+      }  
 
    } else {
         notifyOnTop ("Can't connect to socket", 'red');
