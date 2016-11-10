@@ -33,7 +33,7 @@
 
 Запуск валідатора для файлу зі сценарієм: ./v <filename>. Наприклад:
 
-./v chat.sc/delete_group_message.wsagger.json 
+./v chat.sc/delete_group_message.wsagger.json   
 
 Поля файла сценаріїв:
  
@@ -76,18 +76,21 @@
 
 Запуск сценарію на виконання: ./r <filename> <server> <user>. Наприклад:
 
-./r chat.sc/connect_with_token.wsagger.json dev 2   - успіх 
-./r chat.sc/delete_group_message.wsagger.json dev 2 - помилка (дебаг-інфу треба вивести якось краще)
+    ./r chat.sc/connect_with_token.wsagger.json dev 2   
+    // успіх 
+    
+    ./r chat.sc/delete_group_message.wsagger.json dev 2 
+    // помилка (дебаг-інфу треба вивести якось краще)
 
 Параметри <server> і <user> — це ключі з відповідних обʼєктів server_ і user_ у файлі сценарію.
 
 Запуск на виконання всіх сценаріїв з деякого каталогу : ./ra <dirname> <server> <user>. Наприклад:
 
-./ra chat.sc dev 2
+    ./ra chat.sc dev 2
 
-> ...
-> numSuccess: 14
-> numFail: 3
+    > ...   
+    > numSuccess: 14   
+    > numFail: 3   
 
 
 
