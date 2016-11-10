@@ -43,15 +43,19 @@ function tryConnect (dataNum, token) {
 
    if (socket) {
       socket.io.disconnect();
-      socket.io.opts.query = "token=" + token;  
+      socket.io.opts.query    = "token=" + token;  
+      
+      // socket.io.opts.host     = server.host;  
+      // socket.io.opts.hostname = server.host;  
+      // socket.io.opts.port     = server.port;  
+      // socket.io.opts.path     = server.path;  
+
       socket.io.connect();
-   }
 
+   } 
    var query = {query: "token=" + token};
-
-   log('connecting:', frontUrl, query);
-
    socket = io_client(frontUrl, query);
+   log('connecting:', frontUrl, query);
 
    if (socket) {
      if (firstTime) {
@@ -124,6 +128,8 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     scenarioCallback = function (result, flowOrigin, flow, waitingFor) { scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};     
+
+    log(tryData, tryData[dataNum]);
 
     for (var s of ['REST', 'server']) {
        tryData[dataNum][s] = {}; 

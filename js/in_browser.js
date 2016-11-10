@@ -39,7 +39,7 @@ $('#jsonloader').submit(function (evt) {
     }
 });
 
-var selectedKeys = {}, select_ = {}, selectors = ['REST', 'server', 'user'];
+var selectedKeys = {}, select_ = {}, selectors = [];
 
 function select(source) {
     var el = document.getElementById(source + '_');
@@ -53,9 +53,9 @@ function jsonLoadSuccessHandler(res) {  // success callback
     var text = '';
     tryData = {};
 
-    select_.REST   = res.REST_;
-    select_.server = res.server_;
-    select_.user   = res.user_;
+    if (select_.REST   = res.REST_)   selectors.push('REST');
+    if (select_.server = res.server_) selectors.push('server');
+    if (select_.user   = res.user_)   selectors.push('user');
     
     elem = res;
     dataNum = 0;
@@ -63,7 +63,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
     tryData[dataNum] = {server: elem.server, data: {}};
 
     for (var sel of selectors ) {
-       var options = Object.keys(res[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');       
+       var options = Object.keys(res[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');
        document.getElementById('select_' + sel).innerHTML = '<select id="' + sel + '_" onchange="select(\'' + sel + '\')">' + options + '</select>';
        select(sel);
     }
@@ -194,6 +194,8 @@ function clearFeedback(){
         });
 
         for (var sel of selectors ) select(sel);
+
+        log (555555, selectors);
         tryScenario(select_, selectedKeys, updatedParameters, tryDataNum, tryScenarioNum);
 
     });
