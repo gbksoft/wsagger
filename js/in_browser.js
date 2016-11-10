@@ -39,10 +39,7 @@ $('#jsonloader').submit(function (evt) {
     }
 });
 
-var selectedKeys = {}, select_ = {};
-
-select('server');
-select('user');
+var selectedKeys = {}, select_ = {}, selectors = ['REST', 'server', 'user'];
 
 function select(source) {
     var el = document.getElementById(source + '_');
@@ -56,45 +53,44 @@ function jsonLoadSuccessHandler(res) {  // success callback
     var text = '';
     tryData = {};
 
+    select_.REST   = res.REST_;
     select_.server = res.server_;
     select_.user   = res.user_;
     
-
-    // res.forEach(function (elem, dataNum) {  // for each in JSON
-
     elem = res;
     dataNum = 0;
 
-        tryData[dataNum] = {server: elem.server, data: {}};
+    tryData[dataNum] = {server: elem.server, data: {}};
 
-        // text += '<li class="wsagger">'
+    for (var sel of selectors ) {
+       var options = Object.keys(res[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');       
+       document.getElementById('select_' + sel).innerHTML = '<select id="' + sel + '_" onchange="select(\'' + sel + '\')">' + options + '</select>';
+       select(sel);
+    }
 
-        /* WSagger version & info  */
 
-        text += '<div class="wsagger__summary">'
-            + '<p><span class="wsagger__title">wsagger</span> ' +  JSON.stringify (elem.wsagger)
-            + '<p><span class="wsagger__title">info</span> ' + JSON.stringify (elem.info.title) + ' / '  +  JSON.stringify (elem.info.description) + ' / '  +  JSON.stringify (elem.info.version) 
-            + '</div>';
+    text += '<div class="wsagger__summary">'
+          + '<p><span class="wsagger__title">wsagger</span> ' +  JSON.stringify (elem.wsagger)
+          + '<p><span class="wsagger__title">info</span> ' + JSON.stringify (elem.info.title) + ' / '  +  JSON.stringify (elem.info.description) + ' / '  +  JSON.stringify (elem.info.version) 
+          + '</div>';
 
-        /* WSagger methods */
+    elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
 
-        elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
+        var idToToggle = 'id' + scenarioNum;
 
-            var idToToggle = 'id' + scenarioNum;
+        text += '<div class="method panel panel-info">';
 
-            text += '<div class="method panel panel-info">';
-
-            text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
+        text += '<h5 class="method__header panel-heading" data-toggle="collapse" data-target="#'+ idToToggle +'">'
                 + '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'
                 + elem.name
                 + '</h5>';
 
-            text += '<div class="method__body panel-body collapse" id="'+ idToToggle +'">';
+        text += '<div class="method__body panel-body " id="'+ idToToggle +'">'; // collapse
 
-            text += '<ul class="method__details">';
-            var s = elem;
+        text += '<ul class="method__details">';
+        var s = elem;
 
-            for (var v in s) {
+        for (var v in s) {
                 var divOrPre = (v === 'parameters' || v === 'flow')? 'pre' : 'div'; // use PRE or DIV tag for description
                 var hasFormdata = (  s[v][0] && s[v][0].in === 'formData' );  // if scenarios.parameters.in === formData
                 text += (v === "parameters")?
@@ -115,23 +111,19 @@ function jsonLoadSuccessHandler(res) {  // success callback
                             text += '</' + divOrPre + '>';
 
                 text += '</li>';
-            }
+        }
 
-            text += '</ul>';
+        text += '</ul>';
 
-            tryData[dataNum].data[scenarioNum] = s.flow;
-            // text += '<button class="btn btn-xs btn-info" onclick="tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
-            text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
-            text += '<span class="red">Pls establish socket connect first</span>';
+        tryData[dataNum].data[scenarioNum] = s.flow;
+        // text += '<button class="btn btn-xs btn-info" onclick="select('REST'); select('server'); select('user'); tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
+        text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
+        text += '<span class="red">Pls establish socket connect first</span>';
 
-            text += '</div>';
-            text += '</div>';
+        text += '</div>';
+        text += '</div>';
 
-        });
-
-        // text += '</li>';
-
-    // });
+    });
 
     setHTML ('data', text);
     $('#jsonloader').find('.feedback').html( "JSON was loaded successfully" ).delay(1000).fadeOut('slow');
@@ -201,6 +193,7 @@ function clearFeedback(){
             else if (parameters[ii].in != 'formData')        { updatedParameters[parameters[ii].name] = parameters[ii].in; }
         });
 
+        for (var sel of selectors ) select(sel);
         tryScenario(select_, selectedKeys, updatedParameters, tryDataNum, tryScenarioNum);
 
     });
@@ -224,15 +217,19 @@ function announce(evtName, domEl){
     domEl.trigger(evtName);
 }
 
-function tryLoginAndConnect(dataNum, username, password) {
-    var server = tryData[dataNum].server;
-    $.ajax({
+function tryLoginAndConnect(dataNum, proto, host, port, path_, path2, data) {
+    var options = {
         method: "POST",
-        url: "http://" + server.host + ':' + server.port + "/rest/v1/user/login",
-        data: {username: username, password: password}
-    })
-    .done(function(msg) {
-        tryConnect(dataNum, msg.result.token);
+        url: proto + host + ':' + port + path_ + path2,
+        data: data
+    };
+    
+    $.ajax(options).done(function(msg) {
+        // log (55555, msg.result); 
+    
+        var token = msg.result.token ? msg.result.token : msg.result.accessToken.token;
+
+        tryConnect(dataNum, token);
     });
 }
 

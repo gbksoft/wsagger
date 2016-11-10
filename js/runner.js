@@ -11,16 +11,15 @@ function addToReceived () {
    received.push([arguments]);
 }
 
-function bootstrap (io_client_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
+function bootstrap (io_client_, tryLoginAndConnect_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
-   if (tryData_)     tryData     = tryData_; 
-
-   if (showMessage_) showMessage = addToReceived; 
-
-   if (setHTML_)     setHTML     = setHTML_; 
-   if (notifyOnTop_) notifyOnTop = notifyOnTop_;
-   if (announce_)    announce    = announce_;   
+   if (tryData_)            tryData            = tryData_; 
+   if (tryLoginAndConnect_) tryLoginAndConnect = tryLoginAndConnect_
+   if (showMessage_)        showMessage        = addToReceived; 
+   if (setHTML_)            setHTML            = setHTML_; 
+   if (notifyOnTop_)        notifyOnTop        = notifyOnTop_;
+   if (announce_)           announce           = announce_;   
 }
 
 function onConnected (message) {
@@ -125,28 +124,24 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     scenarioCallback = function (result, flowOrigin, flow, waitingFor) { scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};     
-   
+
+    for (var s of ['REST', 'server']) {
+       tryData[dataNum][s] = {}; 
+       if (variants[s] && variants[s][selected[s]]) {
+          for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum][s][key] = variants[s][selected[s]][key];   
+       }
+    }
+
     if (variants.user && variants.user[selected.user]) {
+       parameters.userId   = variants.user[selected.user].userId;
        parameters.token    = variants.user[selected.user].token;
        parameters.username = variants.user[selected.user].username;
        parameters.password = variants.user[selected.user].password;
     }
-    
-    if (variants.server && variants.server[selected.server]) {
-       parameters.proto = variants.server[selected.server].proto;
-       parameters.host  = variants.server[selected.server].host;
-       parameters.port  = variants.server[selected.server].port;
-       parameters.path  = variants.server[selected.server].path;
-    }
-
-
     for (var key in updatedParameters) parameters[key] = updatedParameters[key];
-
-    // console.log (22222222222, parameters);
 
     theWorker = worker;
     
-    tryData[dataNum].server = {}; for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum].server[key] = parameters[key];
     flowOrigin = tryData[dataNum].data[scenarioNum];
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
    
@@ -176,7 +171,9 @@ function doStep () {
             tryConnect(dataNum, step.data[0].token);
 
         } if (step.action === 'login_and_connect') {
-            tryLoginAndConnect(dataNum, step.data[0].username, step.data[0].password);
+            var REST_ = tryData[dataNum].REST;
+
+            tryLoginAndConnect(dataNum, REST_.proto, REST_.host, REST_.port, REST_.path, step.data[0].path, step.data[1]);
 
         } else if (step.action === 'request') {
             if (!socket) {
