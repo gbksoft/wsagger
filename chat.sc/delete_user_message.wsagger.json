@@ -31,10 +31,10 @@
                "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
 
              { "action": "request", "data": ["sendMessage", {"type": "user", "recipientId": "{{recipientId}}", "messageText": "{{messageText}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["messageUser",   {"id0": "{{!id0}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["messageUser",   {"messagId": "{{!messagId}}"}]] }},
 
-             { "action": "request", "data": ["deleteMessage", "{{id0}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId": "{{id0}}"}]] }}
+             { "action": "request", "data": ["deleteMessage", "{{messagId}}"], 
+               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId": "{{messagId}}"}]] }}
 
           ]
        }

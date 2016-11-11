@@ -178,7 +178,6 @@ function doStep () {
 
         } if (step.action === 'login_and_connect') {
             var REST_ = tryData[dataNum].REST;
-
             tryLoginAndConnect(dataNum, REST_.proto, REST_.host, REST_.port, REST_.path, step.data[0].path, step.data[1]);
 
         } else if (step.action === 'request') {

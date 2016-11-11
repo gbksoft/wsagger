@@ -28,7 +28,7 @@
           ],
           "flow": [
              { "action": "connect", "data": [{"token": "{{token}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["history", {"type": "group", "typeId": "0", "messages": [{"id0": "{{!messageId}}"}]}]] }
+               "waitForResponse": { "delay": 3000, "data": [["history", {"type": "group", "typeId": "0", "messages": [{"messagId": "{{!messageId}}"}]}]] }
              },
 
              { "action": "request", "data": ["deleteMessage", "{{messageId}}"], 
