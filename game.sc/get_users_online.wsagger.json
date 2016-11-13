@@ -1,52 +1,49 @@
 {
    "wsagger": "0.0.3",
-
    "info": {
-      "description": "",
+      "description": "GBKSOFT chat API",
       "version": "1.0.0",
-      "title": "Gambling Game socket.io API: getUsersOnline"
-   },
-
-   "REST_" : {
-      "game": { "proto": "http", "host": "gambling-game-api.dev.gbksoft.net", "port": "80", "path": "/rest/v1/users/current" }
+      "title": "GBKSOFT chat API"
    },
 
    "server_" : {
       "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
-      "game": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" }
+      "game": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
+      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",        "port": "28781", "path": "/front_space" },
+      "test": { "proto": "socket.io", "host": "chat-nodejs.test.gbksoft.net",       "port": "28782", "path": "/front_space" },
+      "live": { "proto": "socket.io", "host": "chat-nodejs.live.gbksoft.net",       "port": "28783", "path": "/front_space" }
    },
 
    "user_" : {
-       "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "5"},
-       "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+       "2":  { "token": "2" },
+       "3":  { "token": "3" }
    },
 
    "scenarios": [
        {
-          "name": "getUsersOnline",
-          
+          "name": "connect to socket.io with arbitrary token",
+          "summary": " ",
           "parameters": [
-             { "in": "formData", "name": "username", "description": "", "dataType": "string", "default_in": "stalker.fenix@gmail.com" },
-             { "in": "formData", "name": "password", "description": "", "dataType": "string", "default_in": "123456" }
+             { "in": "formData", "name": "token", "description": "", "dataType": "string" }
           ],
-          
           "flow": [
-             { 
-               "action": "login_and_connect", "data": [{"username": "{{username}}", "password": "{{password}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["connectedTo", {"userId": "{{!userId}}"}]] }
+             { "action": "connect", "data": [{"token": "{{token}}"}],
+               "waitForResponse": {
+                  "delay": 3000, 
+                  "data": [
+                     ["connectedTo", {"APIVersion": "Gambling.1.0.0"}]
+                  ]
+               }
              },
-
+             
              { 
                "action": "request", "data": ["getUsersOnline", {"type": "facebook"}], 
                "waitForResponse": { "delay": 3000, "data": [["usersOnline",  {"type": "facebook", "userIds": []}]] }
-             },
-             { 
-               "action": "wait", "data": [{"delay": 1000}]
-             },
-             { 
-               "action": "disconnect"
              }
+                          
+             
           ]
        }
     ]
 }
+
