@@ -1,6 +1,7 @@
 var fs       = require ('fs'),
     io       = require ('socket.io-client'),
     execFile = require ('child_process').execFile,
+    rest     = require ('../js/rest'),
     runner   = require ('../js/runner');
   
 var dataFile = process.argv[2];
@@ -27,17 +28,20 @@ var data     = JSON.parse(fs.readFileSync(dataFile));
 
 var tryData  = prepareData(data);
 
-runner.bootstrap (io, undefined, tryData, true, captureNot, capture, captureNot);
+runner.bootstrap (io, rest.tryLogin, tryData, true, captureNot, capture, captureNot);
+
 
 var variants = {
+   REST  : data.REST_,
    server: data.server_,
    user  : data.user_
 }
 
 
 var selected = {
+   REST:   server, 
    server: server, 
-   user: user 
+   user:   user 
 }
 
 
@@ -56,9 +60,7 @@ if (worker) {
 
       for (var i = -1; ++i < workers.length;) {
          if (i < workers.length - 1) {
-
             var parameters = ['js/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
-         
             execFile('node', parameters, (error, stdout, stderr) => {
                finish(!error, 'fron execFile:', stdout); 
             });

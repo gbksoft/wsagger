@@ -11,15 +11,15 @@ function addToReceived () {
    received.push([arguments]);
 }
 
-function bootstrap (io_client_, tryLoginAndConnect_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
+function bootstrap (io_client_, tryLogin_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
-   if (tryData_)            tryData            = tryData_; 
-   if (tryLoginAndConnect_) tryLoginAndConnect = tryLoginAndConnect_
-   if (showMessage_)        showMessage        = addToReceived; 
-   if (setHTML_)            setHTML            = setHTML_; 
-   if (notifyOnTop_)        notifyOnTop        = notifyOnTop_;
-   if (announce_)           announce           = announce_;   
+   if (tryData_)      tryData            = tryData_; 
+   if (tryLogin_)     tryLogin = tryLogin_
+   if (showMessage_)  showMessage        = addToReceived; 
+   if (setHTML_)      setHTML            = setHTML_; 
+   if (notifyOnTop_)  notifyOnTop        = notifyOnTop_;
+   if (announce_)     announce           = announce_;   
 }
 
 function onConnected (message) {
@@ -27,7 +27,6 @@ function onConnected (message) {
    if (message.socketId) { setHTML ('socketId', message.socketId); }
 
 }
-
 
 function onServerError(message) {
    if (message.error) { notifyOnTop (message.error, 'red'); }
@@ -129,7 +128,7 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     inScenario = true;
     parameters = {};     
 
-    log(tryData, tryData[dataNum]);
+    // log(tryData, tryData[dataNum]);
 
     for (var s of ['REST', 'server']) {
        tryData[dataNum][s] = {}; 
@@ -157,8 +156,6 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
 function doStep () {
     var step;
     while (step = flow.shift()) {
-        // log ('worker doStep:', theWorker, step);
-
         setParameters(step.data, parameters);
 
         if (step.waitForResponse) {
@@ -177,8 +174,8 @@ function doStep () {
             tryConnect(dataNum, step.data[0].token);
 
         } if (step.action === 'login_and_connect') {
-            var REST_ = tryData[dataNum].REST;
-            tryLoginAndConnect(dataNum, REST_.proto, REST_.host, REST_.port, REST_.path, step.data[0].path, step.data[1]);
+            var REST = tryData[dataNum].REST;
+            tryLogin(dataNum, REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
 
         } else if (step.action === 'request') {
             if (!socket) {

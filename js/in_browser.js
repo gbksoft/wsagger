@@ -1,4 +1,5 @@
 bootstrap (io);
+bootstrap (io);
 
 var config = {},
     fileInUrl = getUrlParamByName('url'),
@@ -219,7 +220,7 @@ function announce(evtName, domEl){
     domEl.trigger(evtName);
 }
 
-function tryLoginAndConnect(dataNum, proto, host, port, path_, path2, data) {
+function tryLogin(dataNum, proto, host, port, path_, path2, data, callback) {
     var options = {
         method: "POST",
         url: proto + host + ':' + port + path_ + path2,
@@ -227,11 +228,8 @@ function tryLoginAndConnect(dataNum, proto, host, port, path_, path2, data) {
     };
     
     $.ajax(options).done(function(msg) {
-        // log (55555, msg.result); 
-    
         var token = msg.result.token ? msg.result.token : msg.result.accessToken.token;
-
-        tryConnect(dataNum, token);
+        callback(dataNum, token);
     });
 }
 
