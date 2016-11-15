@@ -1,15 +1,30 @@
 bootstrap (io);
-bootstrap (io);
 
 var config = {},
     fileInUrl = getUrlParamByName('url'),
     jsonData;
 
-/* --- JSON radio buttons --- */
-$('#jsonloader').on('change', 'input[type=radio]', function(){
-    var val = $(this).val();
-    $('div.json-url').find('input').attr({'type':val});
-    clearFeedback();
+function updateFileTypeSelect() {
+    var val = $('#jsonloader input:checked[name=optradio]').val();
+
+    var controls = {
+        'text': $('.show-if-json-text').hide(),
+        'file': $('.show-if-json-file').hide()
+    };
+
+    controls[val].show();
+}
+
+$(function(){
+    // Initialize on page load
+    updateFileTypeSelect();
+
+    /* --- JSON radio buttons --- */
+    $('#jsonloader input[type=radio]').on('change', updateFileTypeSelect);
+
+    $('#jsonloader :file').on('change', function() {
+        $('#jsonloader').submit();
+    });
 });
 
 /* JSON loading and parsing >>> */
@@ -32,10 +47,12 @@ $('#jsonloader').submit(function (evt) {
             jsonLoadSuccessHandler(JSON.parse(this.result));
         });
 
-        if (document.forms[0][2].files[0]) {
-            reader.readAsText(document.forms[0][2].files[0]);
+        var fileObj = $('#jsonloader :file')[0].files[0];
+
+        if (fileObj) {
+            reader.readAsText(fileObj);
         } else {
-            jsonLoadErrorHandler(localOrRemote)
+            jsonLoadErrorHandler(localOrRemote);
         }
     }
 });
@@ -57,7 +74,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
     if (select_.REST   = res.REST_)   selectors.push('REST');
     if (select_.server = res.server_) selectors.push('server');
     if (select_.user   = res.user_)   selectors.push('user');
-    
+
     elem = res;
     dataNum = 0;
 
@@ -72,7 +89,7 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
     text += '<div class="wsagger__summary">'
           + '<p><span class="wsagger__title">wsagger</span> ' +  JSON.stringify (elem.wsagger)
-          + '<p><span class="wsagger__title">info</span> ' + JSON.stringify (elem.info.title) + ' / '  +  JSON.stringify (elem.info.description) + ' / '  +  JSON.stringify (elem.info.version) 
+          + '<p><span class="wsagger__title">info</span> ' + JSON.stringify (elem.info.title) + ' / '  +  JSON.stringify (elem.info.description) + ' / '  +  JSON.stringify (elem.info.version)
           + '</div>';
 
     elem.scenarios.forEach(function(elem, scenarioNum){   // for each in JSON/scenarios
@@ -184,11 +201,11 @@ function clearFeedback(){
         var tryDataNum     = $(this).data("datanum"),
             tryScenarioNum = $(this).data("scenarionum");
 
-        var parameters    = elem.scenarios[tryDataNum].parameters, 
+        var parameters    = elem.scenarios[tryDataNum].parameters,
         parametersForms   = $(this).prev().find('.parameters').find('form')
         updatedParameters = {};
-        
-        parametersForms.each(function (ii, el) { 
+
+        parametersForms.each(function (ii, el) {
             var newValue = $(el).find('input').val();
             if ((newValue != '') && (newValue != undefined)) { updatedParameters[parameters[ii].name] = newValue; }
             else if (parameters[ii].in != 'formData')        { updatedParameters[parameters[ii].name] = parameters[ii].in; }
@@ -226,7 +243,7 @@ function tryLogin(dataNum, proto, host, port, path_, path2, data, callback) {
         url: proto + host + ':' + port + path_ + path2,
         data: data
     };
-    
+
     $.ajax(options).done(function(msg) {
         var token = msg.result.token ? msg.result.token : msg.result.accessToken.token;
         callback(dataNum, token);
