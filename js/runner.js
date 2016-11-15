@@ -7,8 +7,6 @@ if (typeof exports !== 'undefined') {
 
 var socket, reload_, tryData = {}, io_client, theWorker, received = [];
 
-var dataNum = 0;
-
 function addToReceived () {
    received.push([arguments]);
 }
@@ -37,8 +35,8 @@ function onServerError(message) {
 var firstTime = true;
 
 
-function tryConnect (dataNum, token) {
-   var server = tryData[dataNum].server;
+function tryConnect (token) {
+   var server = tryData.server;
 
    var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
@@ -120,7 +118,7 @@ function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback
 
 var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
 
-function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNum, worker, callback) {
+function tryScenario (variants, selected, updatedParameters, scenarioNum, worker, callback) {
 
     if (inScenario) {
        alert ('tryScenario simultaneously running is not allowed!');
@@ -130,15 +128,15 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
     inScenario = true;
     parameters = {};     
 
-    // log(tryData, tryData[dataNum]);
-
     for (var s of ['REST', 'server']) {
-       tryData[dataNum][s] = {}; 
+       tryData[s] = {}; 
        if (variants[s] && variants[s][selected[s]]) {
-          for (var key of ['proto', 'host', 'port', 'path']) tryData[dataNum][s][key] = variants[s][selected[s]][key];   
+          for (var key of ['proto', 'host', 'port', 'path']) tryData[s][key] = variants[s][selected[s]][key];   
        }
     }
 
+    // console.log (22222222222, variants.user, selected.user);
+    
     if (variants.user && variants.user[selected.user]) {
        parameters.userId   = variants.user[selected.user].userId;
        parameters.token    = variants.user[selected.user].token;
@@ -149,7 +147,9 @@ function tryScenario (variants, selected, updatedParameters, dataNum, scenarioNu
 
     theWorker = worker;
     
-    flowOrigin = tryData[dataNum].data[scenarioNum];
+    // console.log(111111111111,tryData);
+    
+    flowOrigin = tryData.data[scenarioNum];
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
    
     doStep ();
@@ -173,11 +173,11 @@ function doStep () {
            'brown');
 
         if (step.action === 'connect') {
-            tryConnect(dataNum, step.data[0].token);
+            tryConnect(step.data[0].token);
 
         } if (step.action === 'login_and_connect') {
-            var REST = tryData[dataNum].REST;
-            tryLogin(dataNum, REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
+            var REST = tryData.REST;
+            tryLogin(REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
 
         } else if (step.action === 'request') {
             if (!socket) {

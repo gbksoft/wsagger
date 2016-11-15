@@ -1,13 +1,14 @@
-var fs       = require ('fs'),
-    io       = require ('socket.io-client'),
-    execFile = require ('child_process').execFile,
-    rest     = require ('../js/rest'),
-    runner   = require ('../js/runner');
+var fs            = require ('fs'),
+    io            = require ('socket.io-client'),
+    child_process = require ('child_process'),
+    rest          = require ('../js/rest'),
+    runner        = require ('../js/runner');
   
-var dataFile = process.argv[2];
-var server   = process.argv[3] || 'loc';
-var user     = process.argv[4] || '2';
-var worker   = process.argv[5] || '';
+var dataFile    = process.argv[2];
+var server      = process.argv[3] || 'loc';
+var user        = process.argv[4] || '2';
+var worker      = process.argv[5] || '';
+var scenarioNum = 0;
 
 var isFile;
 
@@ -47,10 +48,10 @@ var success = true, numWorkers;
 
 if (worker) {
    numWorkers = 1;
-   runner.tryScenario (variants, selected, parameters, 0, 0, worker, finish);
+   runner.tryScenario (variants, selected, parameters, 0, worker, finish);
 
 } else {
-   var flow_ = runner.divideFlow (tryData[0].data[0]);
+   var flow_ = runner.divideFlow (tryData.data[0]);
    numWorkers = Object.keys(flow_).length;
    if (numWorkers >= 1) {
       var workers = []; for (var worker in flow_) { if (worker) workers.push(worker); }
@@ -58,14 +59,14 @@ if (worker) {
 
       for (var i = -1; ++i < workers.length;) {
          if (i < workers.length - 1) {
-            var parameters = ['js/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
-            execFile('node', parameters, (error, stdout, stderr) => {
-               finish(!error, 'fron execFile:', stdout); 
-            });
+            // var parameters = ['js/run.js'].concat(process.argv.slice(2,5)).concat([workers[i]]); 
+            // child_process.execFile('node', parameters, (error, stdout, stderr) => { finish(!error, 'fron execFile:', stdout); });
+            
+            var command = 'node js/run.js ' + process.argv.slice(2,5).concat([workers[i]]).join(' '); 
+            child_process.exec(command, (error, stdout, stderr) => { finish(dataFile, error, stdout, stderr); });
 
          } else {
-            var dataNum = 0, scenarioNum = 0;
-            runner.tryScenario (variants, selected, tryData[dataNum].parameters[scenarioNum], dataNum, scenarioNum, worker, finish);
+            runner.tryScenario (variants, selected, tryData.parameters[scenarioNum], scenarioNum, worker, finish);
 
          }
       }
@@ -105,15 +106,11 @@ function prepareParameters(parameters_) {
 
 function prepareData (data) {
 
-   var tryData = {};
-   elem = data;
-   dataNum = 0;
+   var tryData = {data: {}, parameters: {}};
 
-   tryData[dataNum] = {server: elem.server, data: {}, parameters: {}};
-
-   elem.scenarios.forEach(function(s, scenarioNum){   
-      tryData[dataNum].parameters[scenarioNum] = prepareParameters(s.parameters);
-      tryData[dataNum].data[scenarioNum]       = s.flow;
+   data.scenarios.forEach(function(s, scenarioNum){   
+      tryData.parameters[scenarioNum] = prepareParameters(s.parameters);
+      tryData.data[scenarioNum]       = s.flow;
    });
 
    return tryData;

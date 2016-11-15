@@ -2,7 +2,7 @@
    "wsagger": "0.0.3",
    "info": {
       "description": "GBKSOFT chat API",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "GBKSOFT chat API"
    },
 
@@ -30,21 +30,27 @@
 
 
    "scenarios": [
-       {
-          "name": "change group",
-          "parameters": [
-             { "in": "formData", "name": "groupName", "description": "", "dataType": "string" }
-          ],
-          "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["connected", {"userId": "{{!userId}}"}]] }},
+      {
+         "name": "send and receive message in common group",
+         "parameters": [
+            { "in": "!!!!!!!!", "name": "messageText", "description": "", "dataType": "string" }
+         ],
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "open"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
+         "flow": [
+            { "worker": "2", 
+              "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
+              "waitForResponse": { "delay": 3000, "data": [["connected", {}], ["messageGroup", {"messageText" : "{{messageText}}"}]] }},
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}", "usersInGroup": [{"id": "{{userId}}", "moderateGroup": "{{groupId}}"}]}]] }}
+            { 
+              "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
+              "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+            },
+            
+            { 
+              "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "0", "messageText": "{{messageText}}"}], 
+              "waitForResponse": { "delay": 3000, "data": [["messageGroup111", {}]] }
+            }
           ]
-       }
-    ]
+      }
+   ]
 }

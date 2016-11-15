@@ -36,19 +36,21 @@
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+             },
 
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo", {"groupId": "{{groupId}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo", {"groupId": "{{groupId}}"}]] }
+             },
 
              { "action": "request", "data": ["addUser", {"groupId": "{{groupId}}", "userIds": ["5", "6"]}], 
-               "waitForResponse": { "delay": 3000, "data": [["groupCnt",  {"groupId": "{{groupId}}", "usersCnt": 3}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["groupCnt",  {"groupId": "{{groupId}}", "usersCnt": 3}]] }
+             }
 
-             { "action": "request", "data": ["restrictUsers", {"groupId": "{{groupId}}", "userIds": ["6"], "period": -1}], 
-               "waitForResponse": { "delay": 3000, "data": [["groupCnt",  {"groupId": "{{groupId}}", "usersCnt": 2}]] }}
 
           ]
        }

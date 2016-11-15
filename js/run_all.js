@@ -1,5 +1,5 @@
-var fs       = require ('fs'),
-    execFile = require ('child_process').execFile;
+var fs            = require ('fs'),
+    child_process = require ('child_process');
   
 var dataPath = process.argv[2];
 var server   = process.argv[3] || 'loc';
@@ -20,10 +20,13 @@ function rundataFile() {
       if (fs.statSync(dataPath + '/' + dataFile).isFile()) {
          console.log(dataFile + '...');
          finished[dataFile] = '';
-         var parameters = ['js/run.js', dataPath + '/' + dataFile, server, user]; 
-         execFile('node', parameters, (error, stdout, stderr) => {
-            finish(dataFile, error, stdout, stderr); 
-         });
+         
+         // var parameters = ['js/run.js', dataPath + '/' + dataFile, server, user]; 
+         // child_process.execFile('node', parameters, (error, stdout, stderr) => { finish(dataFile, error, stdout, stderr); });
+         
+         var command = 'node js/run.js ' + dataPath + '/' + dataFile + ' ' + server + ' ' + user; 
+         child_process.exec(command, (error, stdout, stderr) => { finish(dataFile, error, stdout, stderr); });
+
          timeout = setTimeout (rundataFile, 10000);
       }
    

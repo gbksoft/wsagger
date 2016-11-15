@@ -25,14 +25,12 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
       res.on('data',  (chunk) => { responseData += chunk; });
       res.on('end',   ()      => {
 
-         // console.log(222222222222222, res.headers, responseData);
 
          try         { callback(JSON.parse(responseData)); } 
          catch (err) { callback({error: ['REST data problem: ', responseData, 'error:', err]});  }
       });
    });
 
-   // console.log (1112344511111111, options, '', queryData);
    
    req.end(queryData, 'utf8');
 }
@@ -42,18 +40,18 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
 // restQuery('POST', 'localhost', 28780, '/rest/v1/user/login', 'username=pavlo&password=pavlo', console.log);
 
 
-function tryLogin(dataNum, proto, host, port, path_, path2, data, callback) {
+function tryLogin(proto, host, port, path_, path2, data, callback) {
    restQuery('POST', host, port, path_ + path2, data, (response) => {
       
       console.log ('!!! tryLogin (response): ', response)
       
       if (response.result) {
          if (response.result.token) {
-            callback(dataNum, response.result.token);
+            callback(response.result.token);
             return;
 
          } else if (response.result.accessToken && response.result.accessToken.token) {
-            callback(dataNum, response.result.accessToken.token);
+            callback(response.result.accessToken.token);
             return;
          
          } 

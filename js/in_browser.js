@@ -64,21 +64,17 @@ function select(source) {
     if (el) selectedKeys[source] = el.options[el.selectedIndex].value;
 }
 
-function jsonLoadSuccessHandler(res) {  // success callback
+function jsonLoadSuccessHandler(elem) {  // success callback
     clearSocketLog();
-    jsonData = res; // save JSON globally, for future use
+    jsonData = elem; // save JSON globally, for future use
 
     var text = '';
-    tryData = {};
 
     if (select_.REST   = res.REST_)   selectors.push('REST');
     if (select_.server = res.server_) selectors.push('server');
     if (select_.user   = res.user_)   selectors.push('user');
 
-    elem = res;
-    dataNum = 0;
-
-    tryData[dataNum] = {server: elem.server, data: {}};
+    tryData = {data: {}};
 
     for (var sel of selectors ) {
        var options = Object.keys(res[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');
@@ -133,9 +129,9 @@ function jsonLoadSuccessHandler(res) {  // success callback
 
         text += '</ul>';
 
-        tryData[dataNum].data[scenarioNum] = s.flow;
-        // text += '<button class="btn btn-xs btn-info" onclick="select('REST'); select('server'); select('user'); tryScenario ('+ dataNum + ',' + scenarioNum + ')">Try!</button>';
-        text += '<button class="btn btn-xs btn-info btn-try" data-datanum="'+dataNum+'" data-scenarionum="'+scenarioNum+'">Try!</button>';
+        tryData.data[scenarioNum] = s.flow;
+        // text += '<button class="btn btn-xs btn-info" onclick="select('REST'); select('server'); select('user'); tryScenario (' + scenarioNum + ')">Try!</button>';
+        text += '<button class="btn btn-xs btn-info btn-try" data-scenarionum="'+scenarioNum+'">Try!</button>';
         text += '<span class="red">Pls establish socket connect first</span>';
 
         text += '</div>';
@@ -198,10 +194,9 @@ function clearFeedback(){
     // TRY button >>>
     $('body').on('click', '.btn-try', function () {
 
-        var tryDataNum     = $(this).data("datanum"),
-            tryScenarioNum = $(this).data("scenarionum");
+        var tryScenarioNum = $(this).data("scenarionum");
 
-        var parameters    = elem.scenarios[tryDataNum].parameters,
+        var parameters    = elem.scenarios[tryScenarioNum].parameters,
         parametersForms   = $(this).prev().find('.parameters').find('form')
         updatedParameters = {};
 
@@ -214,8 +209,7 @@ function clearFeedback(){
 
         for (var sel of selectors ) select(sel);
 
-        log (555555, selectors);
-        tryScenario(select_, selectedKeys, updatedParameters, tryDataNum, tryScenarioNum);
+        tryScenario(select_, selectedKeys, updatedParameters, tryScenarioNum);
 
     });
     // <<< TRY button
@@ -238,7 +232,7 @@ function announce(evtName, domEl){
     domEl.trigger(evtName);
 }
 
-function tryLogin(dataNum, proto, host, port, path_, path2, data, callback) {
+function tryLogin(proto, host, port, path_, path2, data, callback) {
     var options = {
         method: "POST",
         url: proto + host + ':' + port + path_ + path2,
@@ -247,7 +241,7 @@ function tryLogin(dataNum, proto, host, port, path_, path2, data, callback) {
 
     $.ajax(options).done(function(msg) {
         var token = msg.result.token ? msg.result.token : msg.result.accessToken.token;
-        callback(dataNum, token);
+        callback(token);
     });
 }
 
