@@ -25,7 +25,8 @@
 }
 
 body {
-    font: 13px Helvetica, Arial;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
     height: 100vh;
 }
 
@@ -66,15 +67,28 @@ body {
     display: none;
 }
 
+.container-fluid table {
+    margin-top: 5%;
+}
+
+.container-fluid div#status {
+    margin: 4% 0 2% 0;
+}
+
+.container-fluid div.user-info span {
+    color: blue;
+}
+
 .filters {
     position: fixed;
-    right: 1.2em;
+    right: 16.2em;
     top: 0;
     background: #dddddd;
     padding: 4px 10px;
     border-radius: 0 0 5px 5px;
     border: 1px solid #bbbbbb;
 }
+
 .filters input {
     vertical-align: bottom;
 }
@@ -84,10 +98,7 @@ body {
 }
 
 #jsonloader {
-    margin-top: 20px;
-}
-
-#jsonloader .url {
+    margin-top: 10px;
 }
 
 #jsonloader .feedback {
@@ -95,7 +106,16 @@ body {
     clear: both;
 }
 
-#jsonloader .submit {
+#jsonloader div.radio {
+    width: 80%;
+}
+
+#jsonloader div.radio span {
+    margin: 5px;
+}
+
+#jsonloader input.form-check-input {
+    margin-top: 2px;
 }
 
 /* SUMMARY BLOCK*/
@@ -113,11 +133,10 @@ body {
 
 /* METHOD block */
 
-.method {
-}
 .method__header {
     margin: 0;
 }
+
 .method__header span{
     margin-right:10px;
 }
@@ -126,30 +145,40 @@ body {
 
 }
 
-    .btn-try + .red {
-        display: none;
-        margin-left: 0.5em;
-    }
-    .btn-try:disabled + .red {
-        display: inline-block;
-    }
+.btn-try + .red {
+    display: none;
+    margin-left: 0.5em;
+}
+
+.btn-try:disabled + .red {
+    display: inline-block;
+}
 
 .method__details {
     padding-left: 1.2em;
 }
-    .method__item, .method__descr {
-        display: inline-block;
-    }
-    .method__descr {
-        line-height: 100%;
-        vertical-align: top;
-        width: 100%;
-    }
-        .formData+.formData {
-            margin-top: 0.5em;
-            padding-top: 0.5em;
-            border-top: 1px dashed #999999;
-        }
+
+.method__details button {
+    margin: 0 0 2% 70%;
+    width: 20%;
+    font-size: 14px;
+}
+
+.method__item, .method__descr {
+    display: inline-block;
+}
+
+.method__descr {
+    line-height: 100%;
+    vertical-align: top;
+    width: 100%;
+}
+
+.formData+.formData {
+    margin-top: 0.5em;
+    padding-top: 0.5em;
+    border-top: 1px dashed #999999;
+}
 
 .btn-file {
     position: relative;
@@ -175,3 +204,21 @@ body {
 .show-if-json-text, .show-if-json-file {
     display: none;
 }
+
+tr, td {
+    padding: 4px;
+}
+
+select {
+    padding: 3px 6px;
+    width: 70px;
+    box-shadow: none;
+    background: #d9edf7;
+    border-color: #bce8f1;
+    cursor:pointer;
+}
+
+select:focus {
+    outline: none;
+}
+
