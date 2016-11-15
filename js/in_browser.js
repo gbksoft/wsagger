@@ -70,14 +70,14 @@ function jsonLoadSuccessHandler(elem) {  // success callback
 
     var text = '';
 
-    if (select_.REST   = res.REST_)   selectors.push('REST');
-    if (select_.server = res.server_) selectors.push('server');
-    if (select_.user   = res.user_)   selectors.push('user');
+    if (select_.REST   = elem.REST_)   selectors.push('REST');
+    if (select_.server = elem.server_) selectors.push('server');
+    if (select_.user   = elem.user_)   selectors.push('user');
 
     tryData = {data: {}};
 
     for (var sel of selectors ) {
-       var options = Object.keys(res[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');
+       var options = Object.keys(elem[sel + '_']).map((o) => { return '<option>' + o + '</option>'; }).join('\n');
        document.getElementById('select_' + sel).innerHTML = '<select id="' + sel + '_" onchange="select(\'' + sel + '\')">' + options + '</select>';
        select(sel);
     }
