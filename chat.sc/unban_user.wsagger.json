@@ -2,7 +2,7 @@
    "wsagger": "0.0.3",
    "info": {
       "description": "GBKSOFT chat API",
-      "version": "1.1.0",
+      "version": "1.0.0",
       "title": "GBKSOFT chat API"
    },
 
@@ -30,21 +30,25 @@
 
    "scenarios": [
        {
-          "name": "restrict user",
+          "name": "connect to socket.io with username/password",
+          "summary": " ",
           "parameters": [
-             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "4" }
+             { "in": "formData", "name": "username", "description": "", "dataType": "string", "default_in": "pavlo" },
+             { "in": "formData", "name": "password", "description": "", "dataType": "string", "default_in": "pavlo" }
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
              },
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}],
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }
+             {
+               "action": "request", "data": ["restrictUsers", {"groupId": "0", "period": 0, "userIds": ["7"]}],
+               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "period": 0, "userIds": ["7"]}]] }
              },
 
-             { "action": "request", "data": ["restrictUsers", {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}], 
-               "waitForResponse": { "delay": 3000, "data": [["restrictedRights",  {"groupId": "{{groupId}}", "period": -1, "userIds": ["{{userId}}"]}]] }
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
+               "wait": { "delay": 3000, "expected": [["connected"]]  }
              }
           ]
        }
