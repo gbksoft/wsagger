@@ -2,7 +2,8 @@ bootstrap (io);
 
 var config = {},
     fileInUrl = getUrlParamByName('url'),
-    jsonData;
+    jsonData,
+    testElem;
 
 function updateFileTypeSelect() {
     var val = $('#jsonloader input:checked[name=optradio]').val();
@@ -110,8 +111,8 @@ function jsonLoadSuccessHandler(elem) {  // success callback
                 text += (v === "parameters")?
                         "<li class='parameters'>" : "<li>";
 
-                            text += '<div class="method__item">' + v + '</div>:<br>'
-                                + '<'+ divOrPre + ' class="method__descr">';
+                            text += '<div class="method__item">' + v + '</div>:' +
+                            '<br>' + '<'+ divOrPre + ' class="method__descr">';
                                 if (hasFormdata) {    // we either show a form...
 
                                     s[v].forEach(function (item, formDataItemNum) {   // for each in JSON/scenarios/parameters
@@ -129,9 +130,10 @@ function jsonLoadSuccessHandler(elem) {  // success callback
 
         text += '</ul>';
 
+        text = text.replace('flow</div>:', 'flow</div>: <button class="btn btn-xs btn-info btn-try" data-scenarionum="'+scenarioNum+'">Try!</button>');
+
         tryData.data[scenarioNum] = s.flow;
         // text += '<button class="btn btn-xs btn-info" onclick="select('REST'); select('server'); select('user'); tryScenario (' + scenarioNum + ')">Try!</button>';
-        text += '<button class="btn btn-xs btn-info btn-try" data-scenarionum="'+scenarioNum+'">Try!</button>';
         text += '<span class="red">Pls establish socket connect first</span>';
 
         text += '</div>';
@@ -152,6 +154,8 @@ function jsonLoadSuccessHandler(elem) {  // success callback
             .siblings('.method__body')
             .find('.btn-try').click();
     }
+
+    testElem = elem;
 }
 
 function jsonLoadErrorHandler(error) {  // error callback
@@ -196,7 +200,7 @@ function clearFeedback(){
 
         var tryScenarioNum = $(this).data("scenarionum");
 
-        var parameters    = elem.scenarios[tryScenarioNum].parameters,
+        var parameters    = testElem.scenarios[tryScenarioNum].parameters,
         parametersForms   = $(this).prev().find('.parameters').find('form')
         updatedParameters = {};
 
