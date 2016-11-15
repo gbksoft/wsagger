@@ -1,5 +1,4 @@
 bootstrap (io);
-bootstrap (io);
 
 var config = {},
     fileInUrl = getUrlParamByName('url'),
