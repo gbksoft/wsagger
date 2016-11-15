@@ -2,7 +2,7 @@
    "wsagger": "0.0.3",
    "info": {
       "description": "GBKSOFT chat API",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "GBKSOFT chat API"
    },
 
@@ -24,34 +24,29 @@
        "pavlo":      { "username": "pavlo",    "password": "pavlo" },
        "alexr":      { "username": "alexr",    "password": "alexr" },
        "roman":      { "username": "roman",    "password": "roman" },
-       "olexandr":   { "username": "olexandr", "password": "olexandr" }
+       "olexandr":   { "username": "olexandr", "password": "olexandr" },
+       "petr":       { "username": "petr",     "password": "petr" }
    },
-
-   "flow_":  { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "{\"username\":\"{{username}}\",\"password\":\"{{password}}\"}"}] },
 
    "scenarios": [
        {
-          "name": "connect to socket.io with username/password",
-          "summary": " ",
+          "name": "edit group message",
           "parameters": [
-             { "in": "formData", "name": "username", "description": "", "dataType": "string" },
-             { "in": "formData", "name": "password", "description": "", "dataType": "string" }
+             { "in": "formData", "name": "messageText", "description": "", "dataType": "string", "default_in": "!!!!!" }
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": {
-                   "delay": 3000, 
-                   "data": [
-                      ["connected", {"APIVersion": "Animal.1.1.0"}],
-                      ["joinedTo",  {}],
-                      ["history",   {}],
-                      ["users",     {}],
-                      ["unread",    {}]
-                   ]
-                }   
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+             },
+
+             { "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "0", "messageText": "{{messageText}}"}], 
+               "waitForResponse": { "delay": 3000, "data": [["messageGroup",   {"messageId": "{{!messageId}}", "groupId": "0", "messageText": "{{messageText}}"}]] }},
+
+             { "action": "request", "data": ["editMessage", {"messageId": "{{messageId}}", "messageText": "edited"}], 
+               "waitForResponse": { "delay": 3000, "data": [["messageIsEdited", {"messageId": "{{messageId}}", "messageText": "edited"}]] }
              }
+
           ]
        }
     ]
 }
-

@@ -24,12 +24,10 @@ try {
 
 }
 
-var data     = JSON.parse(fs.readFileSync(dataFile));
-
-var tryData  = prepareData(data);
+var data    = JSON.parse(fs.readFileSync(dataFile));
+var tryData = prepareData(data);
 
 runner.bootstrap (io, rest.tryLogin, tryData, true, captureNot, capture, captureNot);
-
 
 var variants = {
    REST  : data.REST_,
@@ -49,7 +47,7 @@ var success = true, numWorkers;
 
 if (worker) {
    numWorkers = 1;
-   runner.tryScenario (variants, selected, {}, 0, 0, worker, finish);
+   runner.tryScenario (variants, selected, parameters, 0, 0, worker, finish);
 
 } else {
    var flow_ = runner.divideFlow (tryData[0].data[0]);
@@ -66,7 +64,8 @@ if (worker) {
             });
 
          } else {
-            runner.tryScenario (variants, selected, {}, 0, 0, worker, finish);
+            var dataNum = 0, scenarioNum = 0;
+            runner.tryScenario (variants, selected, tryData[dataNum].parameters[scenarioNum], dataNum, scenarioNum, worker, finish);
 
          }
       }
@@ -85,10 +84,8 @@ function captureNot () {
 }   
 
 
-function finish () {              // result, flowOrigin, flow, waitingFor
+function finish () {              
    --numWorkers; if (!arguments[0]) success = false;
-   
-   // console.log(arguments);
    
    if (!numWorkers) {
       console.log(success ? '!!! SUCCESS !!!' : '??? FAIL ???');
@@ -97,16 +94,26 @@ function finish () {              // result, flowOrigin, flow, waitingFor
 }
 
 
+function prepareParameters(parameters_) {
+   var parameters = {};   
+   for (var p of parameters_) {
+      if      (p.in != 'formData') { parameters[p.name] = p.in; } 
+      else if ('default_in' in p)  { parameters[p.name] = p.default_in; } 
+   }
+   return parameters;
+}
+
 function prepareData (data) {
 
    var tryData = {};
    elem = data;
    dataNum = 0;
 
-   tryData[dataNum] = {server: elem.server, data: {}};
+   tryData[dataNum] = {server: elem.server, data: {}, parameters: {}};
 
-   elem.scenarios.forEach(function(s, scenarioNum){   // for each in JSON/scenarios
-      tryData[dataNum].data[scenarioNum] = s.flow;
+   elem.scenarios.forEach(function(s, scenarioNum){   
+      tryData[dataNum].parameters[scenarioNum] = prepareParameters(s.parameters);
+      tryData[dataNum].data[scenarioNum]       = s.flow;
    });
 
    return tryData;

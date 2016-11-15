@@ -7,6 +7,8 @@ if (typeof exports !== 'undefined') {
 
 var socket, reload_, tryData = {}, io_client, theWorker, received = [];
 
+var dataNum = 0;
+
 function addToReceived () {
    received.push([arguments]);
 }
