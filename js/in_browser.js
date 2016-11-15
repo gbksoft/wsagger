@@ -200,6 +200,7 @@ function clearFeedback(){
 
         var tryScenarioNum = $(this).data("scenarionum");
 
+
         var parameters    = testElem.scenarios[tryScenarioNum].parameters,
         parametersForms   = $(this).prev().find('.parameters').find('form')
         updatedParameters = {};

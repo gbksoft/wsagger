@@ -34,20 +34,57 @@
           "parameters": [
           ],
           "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+             },
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "usersCnt": 1, "name": "{{groupName}}"}]] }},
+             {
+               "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}],
+               "wait": { "delay": 3000, "expected": [["newGroup",  {"id": "{{!groupId}}", "usersCnt": 1, "name": "{{groupName}}"}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}"}]] }},
+             {
+               "action": "request", "data": ["changeGroup", "{{groupId}}"],
+               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}", "role": "owner"}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "the same group"}]] }},
+             {
+               "action": "request", "data": ["changeGroup", "{{groupId}}"],
+               "wait": { "delay": 3000, "expected": [["serverError",  {"type": "the same group"}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "-1"], 
-               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "no such group"}]] }}
+             {
+               "action": "request", "data": ["changeGroup", "-1"],
+               "wait": { "delay": 3000, "expected": [["serverError",  {"type": "no such group"}]] }
+             },
+
+             {
+               "action": "request", "data": ["changeGroup", "0"],
+               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "0", "role": "user"}]] }
+             },
+
+             {
+               "action": "request", "data": ["changeUsersRoles", {"groupId": "{{groupId}}", "userIds": ["2"], "role": "admin"}],
+               "wait": { "delay": 3000, "expected": [["newRole",  {"groupId": "{{groupId}}", "role": "admin", "userIds": ["2"]}]] }
+             },
+
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=roman&password=roman"}],
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+             },
+
+             {
+               "action": "request", "data": ["changeGroup", "{{groupId}}"],
+               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}", "role": "admin", "userIds": ["2"]}]] }
+             },
+
+
+             - користувач "2" ("roman") конектиться і заходить в групу groupId — успіх, його роль — "admin"
+             - користувач "3" ("olexandr") конектиться і заходить в групу groupId — невдача, "no rights to join"
+
+
+
           ]
        }
     ]

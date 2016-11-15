@@ -1,7 +1,7 @@
 if (typeof exports !== 'undefined') {
-   exports.bootstrap   = bootstrap; 
-   exports.tryScenario = tryScenario; 
-   exports.divideFlow  = divideFlow; 
+   exports.bootstrap   = bootstrap;
+   exports.tryScenario = tryScenario;
+   exports.divideFlow  = divideFlow;
    config = {};
 }
 
@@ -14,12 +14,12 @@ function addToReceived () {
 function bootstrap (io_client_, tryLogin_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
    io_client = io_client_;
 
-   if (tryData_)      tryData            = tryData_; 
+   if (tryData_)      tryData            = tryData_;
    if (tryLogin_)     tryLogin = tryLogin_
-   if (showMessage_)  showMessage        = addToReceived; 
-   if (setHTML_)      setHTML            = setHTML_; 
+   if (showMessage_)  showMessage        = addToReceived;
+   if (setHTML_)      setHTML            = setHTML_;
    if (notifyOnTop_)  notifyOnTop        = notifyOnTop_;
-   if (announce_)     announce           = announce_;   
+   if (announce_)     announce           = announce_;
 }
 
 function onConnected (message) {
@@ -42,24 +42,24 @@ function tryConnect (token) {
 
    if (socket) {
       socket.io.disconnect();
-      socket.io.opts.query    = "token=" + token;  
-      
-      // socket.io.opts.host     = server.host;  
-      // socket.io.opts.hostname = server.host;  
-      // socket.io.opts.port     = server.port;  
-      // socket.io.opts.path     = server.path;  
+      socket.io.opts.query    = "token=" + token;
+
+      // socket.io.opts.host     = server.host;
+      // socket.io.opts.hostname = server.host;
+      // socket.io.opts.port     = server.port;
+      // socket.io.opts.path     = server.path;
 
       socket.io.connect();
 
-   } 
+   }
    var query = {query: "token=" + token};
    socket = io_client(frontUrl, query);
    log('connecting:', frontUrl, query);
 
    if (socket) {
      if (firstTime) {
-        firstTime = false; 
-        var onevent = socket.onevent;       
+        firstTime = false;
+        var onevent = socket.onevent;
         socket.onevent = function (packet) {
             var args = packet.data || [];
             onevent.call (this, packet);    // original call
@@ -68,7 +68,7 @@ function tryConnect (token) {
         };
 
         socket
-            .on ("*",           onInputEvent) 
+            .on ("*",           onInputEvent)
             .on ('connected',   onConnected)
             .on ('serverError', onServerError)
         ;
@@ -94,7 +94,7 @@ function tryConnect (token) {
             announce('disconnect'); // custom event
         });
 
-      }  
+      }
 
    } else {
         notifyOnTop ("Can't connect to socket", 'red');
@@ -104,16 +104,16 @@ function tryConnect (token) {
 
 var num = 0;
 
-function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {   
+function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {
     showMessage(
-       ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''), 
-       'socketLog', 
+       ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
+       'socketLog',
        'blue'
     );
-     
+
     if (callback) {
        callback(result, flowOrigin, flow, waitingFor);
-    }  
+    }
 };
 
 var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
@@ -122,21 +122,21 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
 
     if (inScenario) {
        alert ('tryScenario simultaneously running is not allowed!');
-       return; 
+       return;
     }
     scenarioCallback = function (result, flowOrigin, flow, waitingFor) { scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
-    parameters = {};     
+    parameters = {};
 
     for (var s of ['REST', 'server']) {
-       tryData[s] = {}; 
+       tryData[s] = {};
        if (variants[s] && variants[s][selected[s]]) {
-          for (var key of ['proto', 'host', 'port', 'path']) tryData[s][key] = variants[s][selected[s]][key];   
+          for (var key of ['proto', 'host', 'port', 'path']) tryData[s][key] = variants[s][selected[s]][key];
        }
     }
 
     // console.log (22222222222, variants.user, selected.user);
-    
+
     if (variants.user && variants.user[selected.user]) {
        parameters.userId   = variants.user[selected.user].userId;
        parameters.token    = variants.user[selected.user].token;
@@ -146,44 +146,53 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
     for (var key in updatedParameters) parameters[key] = updatedParameters[key];
 
     theWorker = worker;
-    
-    // console.log(111111111111,tryData);
-    
+
     flowOrigin = tryData.data[scenarioNum];
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
-   
+
     doStep ();
 }
 
 function doStep () {
     var step;
     while (step = flow.shift()) {
+        if (step.waitForResponse)         { step.wait = step.waitForResponse;    delete step.waitForResponse; }
+        if (step.wait && step.wait.data ) { step.wait.expected = step.wait.data; delete step.wait.data; }
+
         setParameters(step.data, parameters);
 
-        if (step.waitForResponse) {
+        if (step.wait) {
+          if (step.wait.expected) {
             received = [];
-            waitingFor = setParameters(step.waitForResponse.data, parameters);
-            waiting = setTimeout(finishWaiting, step.waitForResponse.delay);
-            // log ('setTimeout', waiting);
-        }  
+            waitingFor = setParameters(step.wait.expected, parameters);
+
+          } else {
+            waitingFor = [];
+
+          }
+          waiting = setTimeout(finishWaiting, step.wait.delay);
+          // log ('setTimeout', waiting);
+        }
+
         showMessage(
-           'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '') 
-           + (step.waitForResponse ? ' : waitForResponse : ' + JSON.stringify(step.waitForResponse) : ''), 
-           'socketLog', 
+           'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '')
+           + (step.wait ? ' : wait : ' + JSON.stringify(step.wait) : ''),
+           'socketLog',
            'brown');
 
         if (step.action === 'connect') {
             tryConnect(step.data[0].token);
+
+        } else if (step.action === 'disconnect') {
+          if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
+          socket.io.disconnect();
 
         } if (step.action === 'login_and_connect') {
             var REST = tryData.REST;
             tryLogin(REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
 
         } else if (step.action === 'request') {
-            if (!socket) {
-               showMessage('abort: no socket found :-(', 'socketLog', 'red');
-               return;
-            }
+            if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
 
             var p = setParameters(step.data, parameters);
             socket.emit.apply(socket, p);
@@ -192,7 +201,7 @@ function doStep () {
             // socket.emit(p[0], p[1]);
 
         }
-        if (step.waitForResponse) return;
+        if (step.wait) return;
     }
     if (waiting) clearTimeout(waiting);
     inScenario = false;
@@ -207,7 +216,7 @@ function onInputEvent(event, data) {
     for (var i=-1; ++i < waitingFor.length;) {
        if (checkData([event, data], waitingFor[i], parameters)) {
           waitingFor.splice(i, 1);
-          color = 'green'; 
+          color = 'green';
           break;
        } else {
           // log ('checkData failed', [event, data], waitingFor[i]);
@@ -219,9 +228,9 @@ function onInputEvent(event, data) {
        // log ('onInputEvent: !waitingFor.length', waiting);
 
        if (waiting) clearTimeout(waiting);
-       doStep();  
+       doStep();
     }
-}    
+}
 
 function finishWaiting() {
    // log ('\n\nfinishWaiting', waiting, waitingFor);
@@ -248,7 +257,7 @@ function setParameters(data, parameters) {
       if ((data.substr(0, 2) == '{{') && (data.substr(-2) == '}}')) {
          var key = data.substr(2, data.length - 4);
          if (key in parameters) data = parameters[key];
-      
+
       } else {
          // for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'), str_ (parameters[key]));
          for (var key in parameters) data = data.replace(new RegExp('{{' + key + '}}', 'g'),         parameters[key]);
@@ -265,40 +274,40 @@ function setParameters(data, parameters) {
       }
 
    }
-   return data; 
+   return data;
 }
 
 function checkData(data, proto, parameters) {
    var checked = true;
    if (typeof proto === 'string') {
       var r = proto.match(/^\{\{!(.*?)\}\}$/);
-      if (r)                   { parameters[r[1]] = data; } 
-      else if (data !== proto) { checked = false; }  
+      if (r)                   { parameters[r[1]] = data; }
+      else if (data !== proto) { checked = false; }
 
    } else if (proto instanceof Array) {
       if ((data instanceof Array) && (data.length >= proto.length)) {
          for (var i=-1; ++i < proto.length;) {
-            if (!checkData(data[i], proto[i], parameters)) checked = false; 
-         }   
-
-      } else {
-         checked = false; 
-
-      }
-   
-   } else if (proto instanceof Object) {
-      if (data instanceof Object) {
-         for (var i in proto) { 
-            if (!checkData(data[i], proto[i], parameters)) checked = false; 
+            if (!checkData(data[i], proto[i], parameters)) checked = false;
          }
 
       } else {
-         checked = false; 
+         checked = false;
 
       }
-   
+
+   } else if (proto instanceof Object) {
+      if (data instanceof Object) {
+         for (var i in proto) {
+            if (!checkData(data[i], proto[i], parameters)) checked = false;
+         }
+
+      } else {
+         checked = false;
+
+      }
+
    } else if (data !== proto) {
-      checked = false; 
+      checked = false;
 
    }
    return checked;
@@ -306,7 +315,7 @@ function checkData(data, proto, parameters) {
 
 function copia(data) {
    if (typeof data === 'string') {
-      return '' + data;  
+      return '' + data;
 
    } else if (data instanceof Array) {
       return data.map((e) => {return copia(e); });
@@ -316,7 +325,7 @@ function copia(data) {
       return data_;
 
    }
-   return data; 
+   return data;
 }
 
 
@@ -325,12 +334,12 @@ function divideFlow(A) {
     for (var step of array_(A)) {
        if (step && (typeof step == 'object')) {
           var worker = step.worker ? step.worker : 0;
-          if (worker in flow_) { flow_[worker].push(copia(step)); } 
+          if (worker in flow_) { flow_[worker].push(copia(step)); }
           else                 { flow_[worker] = [copia(step)];}
        }
     }
 
-    return flow_; 
+    return flow_;
 }
 
 function str_ (data) {
@@ -362,4 +371,3 @@ function dict_ (A) {
 function array_ (A) {
     return (A === null || A === undefined) ? [] : (typeof A !== 'object') ? [A] : ('length' in A) ? A  : [A];
 }
-
