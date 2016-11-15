@@ -30,7 +30,7 @@
 
    "scenarios": [
        {
-          "name": "send message to user",
+          "name": "edit group message",
           "parameters": [
              { "in": "formData", "name": "messageText", "description": "", "dataType": "string", "default_in": "!!!!!" }
           ],
@@ -42,8 +42,8 @@
              { "action": "request", "data": ["sendMessage", {"type": "group", "groupId": "0", "messageText": "{{messageText}}"}], 
                "waitForResponse": { "delay": 3000, "data": [["messageGroup",   {"messageId": "{{!messageId}}", "groupId": "0", "messageText": "{{messageText}}"}]] }},
 
-             { "action": "request", "data": ["deleteMessage", "{{messageId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["messageIsDeleted", {"messageId": "{{messageId}}"}]] }
+             { "action": "request", "data": ["editMessage", {"messageId": "{{messageId}}", "messageText": "edited"}], 
+               "waitForResponse": { "delay": 3000, "data": [["messageIsEdited", {"messageId": "{{messageId}}", "messageText": "edited"}]] }
              }
 
           ]

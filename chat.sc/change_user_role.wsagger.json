@@ -32,7 +32,7 @@
        {
           "name": "change user role",
           "parameters": [
-             { "in": "7", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
+             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 

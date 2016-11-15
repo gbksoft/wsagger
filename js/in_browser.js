@@ -191,6 +191,7 @@ function clearFeedback(){
             var newValue = $(el).find('input').val();
             if ((newValue != '') && (newValue != undefined)) { updatedParameters[parameters[ii].name] = newValue; }
             else if (parameters[ii].in != 'formData')        { updatedParameters[parameters[ii].name] = parameters[ii].in; }
+            else if ('default_in' in parameters[ii])         { updatedParameters[parameters[ii].name] = parameters[ii].default_in; }
         });
 
         for (var sel of selectors ) select(sel);
