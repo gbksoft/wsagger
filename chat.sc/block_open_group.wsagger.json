@@ -30,23 +30,34 @@
 
    "scenarios": [
        {
-          "name": "create/change open group",
+          "name": "block open group",
           "parameters": [
-             { "in": "formData", "name": "groupId", "description": "", "dataType": "string" },
-             { "in": "formData", "name": "groupName", "description": "", "dataType": "string" }
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
-               "wait": { "delay": 3000, "expected": [["connected", {}]] }},
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+             },
 
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "open"}],
-               "wait": { "delay": 3000, "expected": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
+               "wait": { "delay": 3000, "expected": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }
+             },
+
+             { "action": "request", "data": ["blockGroup", {"groupId": "{{groupId}}", "reason": "reason"}],
+               "wait": { "delay": 3000, "expected": [["groupIsBlocked",  {"groupId": "{{groupId}}", "reason": "reason"}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "{{groupId}}"],
-               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}"}]] }},
+               "wait": { "delay": 3000, "expected": [["serverError",  {"type": "group is blocked"}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "0"],
-               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "0"}]] }}
+             { "action": "request", "data": ["unblockGroup", {"groupId": "{{groupId}}", "reason": "reason"}],
+               "wait": { "delay": 3000, "expected": [["groupIsUnblocked",  {"groupId": "{{groupId}}", "reason": "reason"}]] }
+             },
+
+             { "action": "request", "data": ["changeGroup", "{{groupId}}"],
+               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}"}]] }
+             }
+
           ]
        }
     ]

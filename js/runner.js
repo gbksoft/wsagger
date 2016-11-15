@@ -166,6 +166,8 @@ function doStep () {
             received = [];
             waitingFor = setParameters(step.wait.expected, parameters);
 
+            // console.log(waitingFor);
+
           } else {
             waitingFor = [];
 

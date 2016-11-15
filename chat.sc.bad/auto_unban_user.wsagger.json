@@ -30,23 +30,35 @@
 
    "scenarios": [
        {
-          "name": "create/change open group",
+          "name": "restrict user",
           "parameters": [
-             { "in": "formData", "name": "groupId", "description": "", "dataType": "string" },
-             { "in": "formData", "name": "groupName", "description": "", "dataType": "string" }
+             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "4" }
           ],
           "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
-               "wait": { "delay": 3000, "expected": [["connected", {}]] }},
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+             },
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "open"}],
-               "wait": { "delay": 3000, "expected": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }},
+             {
+               "action": "request", "data": ["restrictUsers", {"groupId": "0", "period": 60000, "userIds": ["7"]}],
+               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "period": 60000, "userIds": ["7"]}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"],
-               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}"}]] }},
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
+               "wait": { "delay": 3000, "expected": [["restrictedRights", {}]] }
+             },
 
-             { "action": "request", "data": ["changeGroup", "0"],
-               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "0"}]] }}
+             {
+               "wait": { "delay": 120000 }
+             },
+
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
+               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+             }
+
           ]
        }
     ]
