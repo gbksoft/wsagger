@@ -35,19 +35,28 @@
           ],
           "flow": [
              { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+             },
 
              { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "usersCnt": 1, "name": "{{groupName}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}", "usersCnt": 1, "name": "{{groupName}}"}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "{{groupId}}", "role": "owner"}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "{{groupId}}"], 
-               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "the same group"}]] }},
+               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "the same group"}]] }
+             },
 
              { "action": "request", "data": ["changeGroup", "-1"], 
-               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "no such group"}]] }}
+               "waitForResponse": { "delay": 3000, "data": [["serverError",  {"type": "no such group"}]] }
+             },
+
+             { "action": "request", "data": ["changeGroup", "0"], 
+               "waitForResponse": { "delay": 3000, "data": [["joinedTo",  {"groupId": "0", "role": "user"}]] }
+             }
           ]
        }
     ]
