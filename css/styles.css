@@ -46,7 +46,6 @@ body {
 }
 
 #argumentum, #titulus {
-    padding-top: 20px;
     z-index: 999;
     max-height: 100%;
     width: 40%;
@@ -71,8 +70,15 @@ body {
     margin-top: 5%;
 }
 
+.container-fluid div.fixed-container {
+    position: fixed;
+    top: 0;
+    background-color: white;
+    width: 100%;
+}
+
 .container-fluid div#status {
-    margin: 4% 0 2% 0;
+    margin: 4% 0 1% 0;
 }
 
 .container-fluid div.user-info span {
@@ -97,8 +103,47 @@ body {
     list-style: none;
 }
 
+ul.tabs-caption {
+    list-style: none;
+    height: 30px;
+    border-bottom: 1px solid #9acde6;
+    margin-bottom: 0;
+}
+
+ul.tabs-caption li {
+    float: left;
+    border: 1px solid #d8d8d8;
+    padding: 5px 40px;
+    margin: 0;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+ul.tabs-caption li:hover {
+    background-color: #d0d0d0;
+}
+
+ul.tabs-caption li.active {
+    background-color: #d9edf7;
+    border: 1px solid #9acde6;
+    border-bottom: 1px solid #d9edf7;
+}
+
+.tabs-content {
+  display: none;
+}
+
+.tabs-content.active {
+  display: block;
+  overflow: scroll;
+  height: 73vh;
+}
+
 #jsonloader {
     margin-top: 10px;
+    margin-left: -6px;
 }
 
 #jsonloader .feedback {
@@ -116,6 +161,7 @@ body {
 
 #jsonloader input.form-check-input {
     margin-top: 2px;
+    margin-left: -16px;
 }
 
 /* SUMMARY BLOCK*/
@@ -220,5 +266,59 @@ select {
 
 select:focus {
     outline: none;
+}
+
+.spacer {
+    width: 100%;
+    height: 25vh;
+}
+
+::-webkit-input-placeholder {
+    color: #dadada;
+    font-size: 12px;
+    font-family: Helvetica, sans-serif;
+}
+
+::-moz-placeholder {
+    color: #dadada;
+    font-size: 12px;
+    font-family: Helvetica, sans-serif;
+}
+
+:-ms-input-placeholder {
+    color: #dadada;
+    font-size: 12px;
+    font-family: Helvetica, sans-serif;
+}
+
+:-moz-placeholder {
+    color: #dadada;
+    font-size: 12px;
+    font-family: Helvetica, sans-serif;
+}
+
+pre {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+input.formData__name-input {
+    padding: 3px 8px;
+    margin-top: 3px;
+}
+
+input.formData__name-input:focus::-webkit-input-placeholder {
+    color:transparent;
+}
+
+input.formData__name-input:focus:-moz-placeholder {
+    color:transparent;
+}
+
+input.formData__name-input:focus::-moz-placeholder {
+    color:transparent;
+}
+
+input.formData__name-input:focus:-ms-input-placeholder {
+    color:transparent;
 }
 

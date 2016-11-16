@@ -42,7 +42,7 @@
             </tr>
         </table>
 
-        <div>&nbsp;
+        <div>
             <ul id="data">
                 <!-- container for Wsagger data -->
             </ul>
@@ -51,67 +51,92 @@
 
     <!-- RIGHT PANEL -->
     <div id="argumentum" class="container-fluid">
-        <div id="status"></div>
 
-        <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
-        <div class="user-info">
-            <p>User id / name:
-                <span id="userId"></span>
-                <span>/</span>
-                <span id="userName"></span>
-            </p>
+        <div class="status-container">
+            <div class="fixed-container">
 
-            <p>Socket id:
-                <span id="socketId"></span>
-            </p>
+                <div id="status"></div>
+
+                <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
+                <div class="user-info">
+                    <p>User id / name:
+                        <span id="userId"></span>
+                        <span>/</span>
+                        <span id="userName"></span>
+                    </p>
+
+                    <p>Socket id:
+                        <span id="socketId"></span>
+                    </p>
+                </div>
+
+                <ul class="tabs-caption">
+                    <li class="active">Flow</li>
+                    <li id="tab-scenario">Scenario</li>
+                </ul>
+
+            </div>
+
+            <div class="spacer">
+                &nbsp;
+            </div>
+
+            <div class="tabs-content active">
+
+                <div class="filters">
+                    Show output for:&nbsp;
+                    <label>
+                        <input type="checkbox" value="green" id="filter-response" checked>
+                        <span class="green">Responses</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" value="brown" id="filter-request" checked>
+                        <span class="brown">Requests</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" value="gray" id="filter-other" checked>
+                        <span class="gray">Other</span>
+                    </label>
+                </div>
+
+                <form action="" id="jsonloader" class="row" name="json-load">
+                    <div class="col-xs-12 col-md-7 radio">
+                        <label class="form-check-inline">
+                            <input class="form-check-input" type="radio" name="optradio" value="file" required>
+                            <span>local JSON</span>
+                        </label>
+                        <label class="form-check-inline">
+                            <input class="form-check-input" type="radio" name="optradio" value="text" required checked>
+                            <span>remote JSON</span>
+                        </label>
+                    </div>
+                    <div class="col-xs-12 col-md-4 show-if-json-text">
+                        <!-- load JSON -->
+                        <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
+                    </div>
+                    <div class="col-xs-12 col-md-4 show-if-json-file">
+                        <!-- WSagger File Input -->
+                        <span class="btn btn-success btn-block btn-file">
+                            Choose JSON File <input type="file">
+                        </span>
+                    </div>
+                    <div class="col-xs-12 col-md-7 show-if-json-text">
+                        <!-- WSagger URL -->
+                        <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
+                        <span class="feedback"></span>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="tabs-content" id="tab-scenario">
+                <ul id="socketLog">
+                    <!-- container for output (messages) of Wsagger methods  -->
+                </ul>
+            </div>
+
         </div>
 
-        <form action="" id="jsonloader" class="row" name="json-load">
-            <div class="col-xs-12 col-md-7 radio">
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="optradio" value="file" required>
-                    <span>local JSON</span>
-                </label>
-                <label class="form-check-inline">
-                    <input class="form-check-input" type="radio" name="optradio" value="text" required checked>
-                    <span>remote JSON</span>
-                </label>
-            </div>
-            <div class="col-xs-12 col-md-4 show-if-json-text">
-                <!-- load JSON -->
-                <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
-            </div>
-            <div class="col-xs-12 col-md-4 show-if-json-file">
-                <!-- WSagger File Input -->
-                <span class="btn btn-success btn-block btn-file">
-                    Choose JSON File <input type="file">
-                </span>
-            </div>
-            <div class="col-xs-12 col-md-7 show-if-json-text">
-                <!-- WSagger URL -->
-                <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
-                <span class="feedback"></span>
-            </div>
-        </form>
-
-        <div class="filters">
-            Show output for:&nbsp;
-            <label>
-                <input type="checkbox" value="gray" id="filter-other" checked>
-                <span class="gray">Other</span>
-            </label>
-            <label>
-                <input type="checkbox" value="green" id="filter-response" checked>
-                <span class="green">Responses</span>
-            </label>
-            <label>
-                <input type="checkbox" value="brown" id="filter-request" checked>
-                <span class="brown">Requests</span>
-            </label>
-        </div>
-        <ul id="socketLog">
-            <!-- container for output (messages) of Wsagger methods  -->
-        </ul>
     </div>
 
 <!--<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>-->
