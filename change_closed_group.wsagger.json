@@ -71,8 +71,13 @@
 
              {
                "action": "request", "data": ["changeGroup", "{{groupId}}"],
-               "wait": { "delay": 3000, "expected": [["serverError",  {"type": "no rights to join"}]] }
+               "wait": { "delay": 30000, "expected": [["serverError",  {"type": "no rights to join"}]] }
+             },
+
+             {
+               "wait": { "delay": 3000 }
              }
+
           ]
        }
     ]

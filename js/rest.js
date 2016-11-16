@@ -24,14 +24,10 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
       res.on('error', (err)   => { callback({error: ['REST problem', err]}); });
       res.on('data',  (chunk) => { responseData += chunk; });
       res.on('end',   ()      => {
-
-
          try         { callback(JSON.parse(responseData)); }
          catch (err) { callback({error: ['REST data problem: ', responseData, 'error:', err]});  }
       });
    });
-
-
    req.end(queryData, 'utf8');
 }
 
@@ -42,9 +38,6 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
 
 function tryLogin(proto, host, port, path_, path2, data, callback) {
    restQuery('POST', host, port, path_ + path2, data, (response) => {
-
-      // console.log ('!!! tryLogin (response): ', response)
-
       if (response.result) {
          if (response.result.token) {
             callback(response.result.token);

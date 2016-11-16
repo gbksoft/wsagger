@@ -54,7 +54,7 @@ function tryConnect (token) {
    }
    var query = {query: "token=" + token};
    socket = io_client(frontUrl, query);
-   log('connecting:', frontUrl, query);
+   // log('connecting:', frontUrl, query);
 
    if (socket) {
      if (firstTime) {
@@ -105,7 +105,7 @@ function tryConnect (token) {
 var num = 0;
 
 function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {
-  log('------------------------');
+  log('scenarioCallbackDefault --> callback');
   showMessage(
      ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
      'socketLog',
@@ -124,7 +124,7 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
        alert ('tryScenario simultaneously running is not allowed!');
        return;
     }
-    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { log('+++++++++++++++++++++'); scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
+    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { log('--> scenarioCallback'); scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};
 
@@ -156,10 +156,11 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
 
 function doStep () {
 
-  log ("!!!STEP " + num++);
-
   var step;
   while (step = flow.shift()) {
+
+    log ("\nSTEP ", num++, step, '\n');
+
     if (step.waitForResponse)         { step.wait = step.waitForResponse;    delete step.waitForResponse; }
     if (step.wait && step.wait.data ) { step.wait.expected = step.wait.data; delete step.wait.data; }
 
@@ -192,9 +193,6 @@ function doStep () {
 
     // log(1);
     if (step.action === 'connect') {
-
-      log(2);
-
       tryConnect(step.data[0].token);
 
 
@@ -264,7 +262,7 @@ function onInputEvent(event, data) {
 function finishWaiting() {
    clearTimeout(waiting);
    if (waitingFor.length) {
-      console.log('!!! FAILED WAITING: ', waitingFor, 'RECEIVED: ', received);
+      console.log('\n\n!!! FAILED WAITING: ', waitingFor, 'RECEIVED: ', received);
 
       waitingFor = [];
 

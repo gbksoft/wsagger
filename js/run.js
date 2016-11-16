@@ -14,8 +14,6 @@ for (var i = process.argv.length; --i > 1 ;) {
    }
 }
 
-console.log (process.argv, debug);
-
 var dataFile    = process.argv[2];
 var server      = process.argv[3] || 'loc';
 var user        = process.argv[4] || '2';
@@ -44,7 +42,7 @@ if (debug) {
    runner.bootstrap (io, rest.tryLogin, tryData, capture, capture, capture, capture);
 
 } else {
-  runner.bootstrap (io, rest.tryLogin, tryData, captureNot, captureNot, capture, captureNot);
+  runner.bootstrap (io, rest.tryLogin, tryData, captureNot, captureNot, captureNot, captureNot);
 
 }
 
