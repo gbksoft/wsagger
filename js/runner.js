@@ -5,7 +5,7 @@ if (typeof exports !== 'undefined') {
    config = {};
 }
 
-var socket, reload_, tryData = {}, io_client, theWorker, received = [];
+var socket, reload_, tryData = {}, io_client, theWorker, received = [], tryLogin, showMessage, setHTML, notifyOnTop, announce;
 
 function addToReceived () {
    received.push([arguments]);
@@ -15,11 +15,12 @@ function bootstrap (io_client_, tryLogin_, tryData_, showMessage_, setHTML_, not
    io_client = io_client_;
 
    if (tryData_)      tryData            = tryData_;
-   if (tryLogin_)     tryLogin = tryLogin_
-   if (showMessage_)  showMessage        = addToReceived;
+   if (tryLogin_)     tryLogin           = tryLogin_
+   if (showMessage_)  showMessage        = showMessage_;
    if (setHTML_)      setHTML            = setHTML_;
    if (notifyOnTop_)  notifyOnTop        = notifyOnTop_;
    if (announce_)     announce           = announce_;
+
 }
 
 function onConnected (message) {
@@ -33,7 +34,6 @@ function onServerError(message) {
 }
 
 var firstTime = true;
-
 
 function tryConnect (token) {
    var server = tryData.server;
@@ -105,18 +105,18 @@ function tryConnect (token) {
 var num = 0;
 
 function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {
-    showMessage(
-       ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
-       'socketLog',
-       'blue'
-    );
+  log('------------------------');
+  showMessage(
+     ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
+     'socketLog',
+     'blue'
+  );
 
-    if (callback) {
-       callback(result, flowOrigin, flow, waitingFor);
-    }
+  if (callback) callback(result, flowOrigin, flow, waitingFor);
 };
 
 var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
+var num = 0;
 
 function tryScenario (variants, selected, updatedParameters, scenarioNum, worker, callback) {
 
@@ -124,7 +124,7 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
        alert ('tryScenario simultaneously running is not allowed!');
        return;
     }
-    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
+    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { log('+++++++++++++++++++++'); scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};
 
@@ -150,65 +150,92 @@ function tryScenario (variants, selected, updatedParameters, scenarioNum, worker
     flowOrigin = tryData.data[scenarioNum];
     flow = array_(divideFlow(flowOrigin)[worker ? worker : 0]);
 
+    num = 0;
     doStep ();
 }
 
 function doStep () {
-    var step;
-    while (step = flow.shift()) {
-        if (step.waitForResponse)         { step.wait = step.waitForResponse;    delete step.waitForResponse; }
-        if (step.wait && step.wait.data ) { step.wait.expected = step.wait.data; delete step.wait.data; }
 
-        setParameters(step.data, parameters);
+  log ("!!!STEP " + num++);
 
-        if (step.wait) {
-          if (step.wait.expected) {
-            received = [];
-            waitingFor = setParameters(step.wait.expected, parameters);
+  var step;
+  while (step = flow.shift()) {
+    if (step.waitForResponse)         { step.wait = step.waitForResponse;    delete step.waitForResponse; }
+    if (step.wait && step.wait.data ) { step.wait.expected = step.wait.data; delete step.wait.data; }
 
-            // console.log(waitingFor);
 
-          } else {
-            waitingFor = [];
+    // log (step.wait);
+    setParameters(step.data, parameters);
+    received = [];
 
-          }
-          waiting = setTimeout(finishWaiting, step.wait.delay);
-          // log ('setTimeout', waiting);
-        }
+    if (step.wait) {
+      // log(11)
+      if (step.wait.expected) {
 
-        showMessage(
-           'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '')
-           + (step.wait ? ' : wait : ' + JSON.stringify(step.wait) : ''),
-           'socketLog',
-           'brown');
+        // log(22)
+        waitingFor = setParameters(step.wait.expected, parameters);
 
-        if (step.action === 'connect') {
-            tryConnect(step.data[0].token);
+      } else {
+        // log(33)
+        waitingFor = [];
 
-        } else if (step.action === 'disconnect') {
-          if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
-          socket.io.disconnect();
-
-        } if (step.action === 'login_and_connect') {
-            var REST = tryData.REST;
-            tryLogin(REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
-
-        } else if (step.action === 'request') {
-            if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
-
-            var p = setParameters(step.data, parameters);
-            socket.emit.apply(socket, p);
-
-            // socket.emit("sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"});
-            // socket.emit(p[0], p[1]);
-
-        }
-        if (step.wait) return;
+      }
+      // log(44)
+      waiting = setTimeout(finishWaiting, step.wait.delay);
     }
-    if (waiting) clearTimeout(waiting);
-    inScenario = false;
-    var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
-    _scenarioCallback(true, flowOrigin, [], []);
+
+    showMessage(
+       'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '')
+       + (step.wait ? ' : wait : ' + JSON.stringify(step.wait) : ''),
+       'socketLog',
+       'brown');
+
+    // log(1);
+    if (step.action === 'connect') {
+
+      log(2);
+
+      tryConnect(step.data[0].token);
+
+
+    } else if (step.action === 'disconnect') {
+
+      // log(3);
+
+      if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
+      socket.io.disconnect();
+
+    } else if (step.action === 'login_and_connect') {
+
+      // log(4);
+
+      var REST = tryData.REST;
+      tryLogin(REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
+      // log(555555555);
+
+    } else if (step.action === 'request') {
+
+      // log(5);
+
+      if (!socket) { showMessage('abort: no socket found :-(', 'socketLog', 'red'); return; }
+
+      var p = setParameters(step.data, parameters);
+      socket.emit.apply(socket, p);
+
+      // socket.emit("sendMessage", {"type": "group", "groupId": "1", "messageText": "{{messageText}}"});
+      // socket.emit(p[0], p[1]);
+
+    }
+    // log(6);
+    if (step.wait) return;
+  }
+
+
+  // log(777777777);
+  if (waiting) clearTimeout(waiting);
+  inScenario = false;
+  var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
+  _scenarioCallback(true, flowOrigin, [], []);
 }
 
 
@@ -235,14 +262,11 @@ function onInputEvent(event, data) {
 }
 
 function finishWaiting() {
-   // log ('\n\nfinishWaiting', waiting, waitingFor);
-
    clearTimeout(waiting);
    if (waitingFor.length) {
       console.log('!!! FAILED WAITING: ', waitingFor, 'RECEIVED: ', received);
 
       waitingFor = [];
-      received   = [];
 
       inScenario = false;
       var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
@@ -348,7 +372,6 @@ function str_ (data) {
    return ((typeof data === 'object') && data) ? JSON.stringify(data) : data;
 
 }
-
 
 function log() {
     var t = '', a;
