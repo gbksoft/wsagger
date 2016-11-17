@@ -1,4 +1,7 @@
-(require('fundamentum'))('array_', 'object_', 'log', 'error');
+// (require('fundamentum'))('array_', 'object_', 'log', 'error');
+
+var error   = log;
+var object_ = dict_;
 
 
 if (typeof exports !== 'undefined') {
@@ -403,6 +406,7 @@ function log() {
     if (t) console.log(t);
     // ??? show caller.line
 }
+
 
 function dict_ (A) {
     return (A === null || A === undefined) ? {} : (typeof A !== 'object') ? { } : ('length' in A) ? {} :  A ;
