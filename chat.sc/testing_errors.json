@@ -1,0 +1,55 @@
+{
+   "wsagger": "0.0.3",
+   "info": {
+      "description": "GBKSOFT chat API",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+   },
+
+   "REST_" : {
+      "dev":  { "proto": "http://", "host": "chat-nodejs.dev.gbksoft.net", "port": "28781", "path": "/rest" }
+   },
+
+   "server_" : {
+      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net", "port": "28781", "path": "/front_space" }
+   },
+
+   "user_" : {
+       "pavlo":      { "username": "pavlo", "password": "pavlo" }
+   },
+
+   "scenarios": [
+       {
+          "name": "finding errors",
+          "parameters": [
+             { "in": "formData", "name": "username", "description": "", "dataType": "string", "default_in": "test },
+             { "in": "formData", "name": "password", "description": "", "dataType": "string", "default_in": "test" }
+          ],
+          "flow": [
+             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
+               "wait": {
+                   "delay": 3000,
+                   "expected": [
+                      ["connected", {"APIVersion": "Animal.1.1.0"}],
+                      ["joinedTo",  {"groupId": "0"}],
+                      ["history",   {}],
+                      ["users",     {}],
+                      ["unread",    {}]
+                   ]
+                }
+             },
+
+             {
+               "action": "request", "data": ["restrictUsers", {"groupId": "0", "period": -1, "userIds": ["7"]}],
+               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "period": -1, "userIds": ["7"]}]] }
+             },
+
+             {
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
+               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "userIds": ["7"], "type":"no rights to join"}]] }
+             }
+
+          ]
+       }
+    ]
+}

@@ -249,6 +249,7 @@ ul.tabs-caption li.active {
 
 .show-if-json-text, .show-if-json-file {
     display: none;
+    margin-bottom: 10px;
 }
 
 tr, td {
