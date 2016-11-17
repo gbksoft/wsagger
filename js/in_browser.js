@@ -44,8 +44,10 @@ $('#jsonloader').submit(function (evt) {
   } else {  // if local JSON
 
     var reader = new FileReader();
+
     reader.addEventListener('load', function() {
-      jsonLoadSuccessHandler(JSON.parse(this.result));
+      var json = safelyParseJSON(this.result);
+      if (json) jsonLoadSuccessHandler(json);
     });
 
     var fileObj = $('#jsonloader :file')[0].files[0];
@@ -335,4 +337,20 @@ $('ul.tabs-caption').on('click', 'li:not(.active)', function() {
   $(this).addClass('active').siblings().removeClass('active').closest('div.status-container')
   .find('div.tabs-content').removeClass('active').eq($(this).index()).addClass('active');
 });
+
+function safelyParseJSON (json) {
+  var parsed;
+
+  try {
+    parsed = jsonlint.parse(json);
+    $('.error-message').remove();
+  } catch (e) {
+    console.error('Error:', e.message);
+    $('.show-if-json-file').after($('<div>').text (e.message).css('color', 'red').css('clear', 'both').addClass('error-message'));  // show error info
+    setHTML ('data', '');
+    $('select').remove();
+  }
+
+  return parsed;
+}
 

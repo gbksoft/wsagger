@@ -56,7 +56,7 @@
                            "type": "string"
                         }
                      }
-                  }  
+                  }
                },
                "flow": {
                   "type": "array",
@@ -74,7 +74,7 @@
                         "result": {
                         },
                         "waitForResponse": {
-                           "type": "object", 
+                           "type": "object",
                            "required": ["delay"],
                            "properties": {
                               "delay": {
@@ -84,11 +84,11 @@
                               }
                            }
                         }
-                     }   
-                  } 
+                     }
+                  }
                }
             }
-         }   
+         }
       }
    }
-}   
+}
