@@ -57,22 +57,9 @@
 
                 <div id="status"></div>
 
-                <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
-                <div class="user-info">
-                    <p>User id / name:
-                        <span id="userId"></span>
-                        <span>/</span>
-                        <span id="userName"></span>
-                    </p>
-
-                    <p>Socket id:
-                        <span id="socketId"></span>
-                    </p>
-                </div>
-
                 <ul class="tabs-caption">
-                    <li class="active">Flow</li>
-                    <li id="tab-scenario">Scenario</li>
+                    <li class="active">Scenario</li>
+                    <li id="tab-flow">Flow</li>
                 </ul>
 
             </div>
@@ -82,22 +69,6 @@
             </div>
 
             <div class="tabs-content active">
-
-                <div class="filters">
-                    Show output for:&nbsp;
-                    <label>
-                        <input type="checkbox" value="green" id="filter-response" checked>
-                        <span class="green">Responses</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" value="brown" id="filter-request" checked>
-                        <span class="brown">Requests</span>
-                    </label>
-                    <label>
-                        <input type="checkbox" value="gray" id="filter-other" checked>
-                        <span class="gray">Other</span>
-                    </label>
-                </div>
 
                 <form action="" id="jsonloader" class="row" name="json-load">
                     <div class="col-xs-12 col-md-7 radio">
@@ -110,11 +81,11 @@
                             <span>remote JSON</span>
                         </label>
                     </div>
-                    <div class="col-xs-12 col-md-4 show-if-json-text">
+                    <div class="col-xs-12 col-md-3 show-if-json-text">
                         <!-- load JSON -->
                         <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
                     </div>
-                    <div class="col-xs-12 col-md-4 show-if-json-file">
+                    <div class="col-xs-12 col-md-3 show-if-json-file">
                         <!-- WSagger File Input -->
                         <span class="btn btn-success btn-block btn-file">
                             Choose JSON File <input type="file">
@@ -129,7 +100,46 @@
 
             </div>
 
-            <div class="tabs-content" id="tab-scenario">
+            <div class="tabs-content" id="tab-flow">
+
+                <div class="user-container">
+                    <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
+
+                    <div class="user-info">
+                        <p>User id / name:
+                            <span id="userId"></span>
+                            <span>/</span>
+                            <span id="userName"></span>
+                        </p>
+
+                        <p>Socket id:
+                            <span id="socketId"></span>
+                        </p>
+                    </div>
+
+                    <div class="filters">
+                        Show output for:&nbsp;
+                        <label>
+                            <input type="checkbox" value="green" id="filter-response" checked>
+                            <span class="green">Responses</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" value="brown" id="filter-request" checked>
+                            <span class="brown">Requests</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" value="gray" id="filter-other" checked>
+                            <span class="gray">Other</span>
+                        </label>
+                    </div>
+
+                </div>
+
+                <div class="user-spacer">
+                    &nbsp;
+                </div>
+
+
                 <ul id="socketLog">
                     <!-- container for output (messages) of Wsagger methods  -->
                 </ul>

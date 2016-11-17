@@ -216,8 +216,8 @@ $('body').on('connect disconnect dombuiltfromjson', function (evt) {
 // TRY button >>>
 $('body').on('click', '.btn-try', function () {
 
-  $('#tab-scenario').addClass('active').siblings().removeClass('active').closest('div.status-container')
-  .find('div.tabs-content').removeClass('active').eq($(this).index('#tab-scenario')).addClass('active');
+  $('#tab-flow').addClass('active').siblings().removeClass('active').closest('div.status-container')
+  .find('div.tabs-content').removeClass('active').eq($(this).index('#tab-flow')).addClass('active');
 
   var tryScenarioNum = $(this).data("scenarionum");
 
@@ -297,10 +297,11 @@ function notifyOnTop (message, color) {
 }
 
 function showMessage (text, type, color) {
+  text = text.replace(/,/g, ', ');
   if (color) {
-    $ ('#' + type).append ($ ('<li>').text (text).addClass (color));
+    $('#' + type).append($('<li>').text(text).addClass (color));
   } else {
-    $ ('#' + type).append ($ ('<li>').text (text));
+    $('#' + type).append($('<li>').text(text));
   }
   ScrollTo ();
 }
@@ -322,7 +323,7 @@ function showError (text) {
 }
 
 function ScrollTo () {
-  var el = document.getElementsByClassName('tabs-content');
+  var el = document.getElementById('socketLog');
   if (el) {
     // el.scrollTop = el.scrollHeight;  // immediate scroll to end
     $(el).scrollTo('max'); // scroll to end
