@@ -6,6 +6,7 @@
   "private": false,
   "dependencies": {
     "ajv": "^4.7.7",
+    "fundamentum": "^1.0.1",
     "socket.io-client": "^1.5.1",
     "traceback": "^0.3.1"
   },

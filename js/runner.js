@@ -1,3 +1,5 @@
+
+
 if (typeof exports !== 'undefined') {
    exports.bootstrap   = bootstrap;
    exports.tryScenario = tryScenario;
@@ -41,6 +43,7 @@ function tryConnect (token) {
    var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
    if (socket) {
+      console.log('!!! DISCONNECTING !!!');
       socket.io.disconnect();
       socket.io.opts.query    = "token=" + token;
 
@@ -49,12 +52,14 @@ function tryConnect (token) {
       // socket.io.opts.port     = server.port;
       // socket.io.opts.path     = server.path;
 
+      console.log('!!! RECONNECTING !!!');
       socket.io.connect();
 
+   } else {
+      var query = {query: "token=" + token};
+      socket = io_client(frontUrl, query);
+
    }
-   var query = {query: "token=" + token};
-   socket = io_client(frontUrl, query);
-   // log('connecting:', frontUrl, query);
 
    if (socket) {
      if (firstTime) {
@@ -104,15 +109,15 @@ function tryConnect (token) {
 
 var num = 0;
 
-function scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback) {
+function scenarioCallbackDefault (flowOrigin, error, flow, waitingFor, callback) {
   log('scenarioCallbackDefault --> callback');
   showMessage(
-     ('tryScenario ' + (result ? 'finished successfully.' : 'failed :-(')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
+     ('!!! tryScenario ' + (error ? 'failed :-(' : 'finished successfully.')) + ' / flowOrigin: ' + (flowOrigin ? JSON.stringify(flowOrigin) : '') + ' / flow: ' + (flow ? JSON.stringify(flow) : ''),
      'socketLog',
      'blue'
   );
 
-  if (callback) callback(result, flowOrigin, flow, waitingFor);
+  if (callback) callback(flowOrigin, error, flow, waitingFor);
 };
 
 var waiting, waitingFor = [], parameters = {}, flow = [], flowOrigin = [], scenarioCallback = scenarioCallbackDefault, inScenario;
@@ -121,10 +126,10 @@ var num = 0;
 function tryScenario (variants, selected, updatedParameters, scenarioNum, worker, callback) {
 
     if (inScenario) {
-       alert ('tryScenario simultaneously running is not allowed!');
+       alert ('!!! tryScenario simultaneously running is not allowed!');
        return;
     }
-    scenarioCallback = function (result, flowOrigin, flow, waitingFor) { log('--> scenarioCallback'); scenarioCallbackDefault (result, flowOrigin, flow, waitingFor, callback); }
+    scenarioCallback = function (flowOrigin, error, flow, waitingFor) { log('--> scenarioCallback'); scenarioCallbackDefault (flowOrigin, error, flow, waitingFor, callback); }
     inScenario = true;
     parameters = {};
 
@@ -186,7 +191,7 @@ function doStep () {
     }
 
     showMessage(
-       'out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '')
+       '--> out : ' + (step.action ? step.action + ' / ' + str_(step.data) : '')
        + (step.wait ? ' : wait : ' + JSON.stringify(step.wait) : ''),
        'socketLog',
        'brown');
@@ -233,7 +238,7 @@ function doStep () {
   if (waiting) clearTimeout(waiting);
   inScenario = false;
   var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
-  _scenarioCallback(true, flowOrigin, [], []);
+  _scenarioCallback(flowOrigin, false, [], []);
 }
 
 
@@ -249,7 +254,7 @@ function onInputEvent(event, data) {
           // log ('checkData failed', [event, data], waitingFor[i]);
        }
     }
-    showMessage ('in : ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
+    showMessage ('<-- in : ' + event + ' / ' + JSON.stringify (data), 'socketLog', color);
 
     if (inScenario && waitingFor.length < 1) {
        // log ('onInputEvent: !waitingFor.length', waiting);
@@ -268,7 +273,7 @@ function finishWaiting() {
 
       inScenario = false;
       var _scenarioCallback = scenarioCallback; scenarioCallback = scenarioCallbackDefault;
-      _scenarioCallback(false, flowOrigin, flow, waitingFor);
+      _scenarioCallback(flowOrigin, true, flow, waitingFor);
 
    } else {
       doStep();
@@ -354,12 +359,16 @@ function copia(data) {
 
 
 function divideFlow(A) {
-    var flow_ = {};
+    var flow_ = { };
     for (var step of array_(A)) {
        if (step && (typeof step == 'object')) {
           var worker = step.worker ? step.worker : 0;
-          if (worker in flow_) { flow_[worker].push(copia(step)); }
-          else                 { flow_[worker] = [copia(step)];}
+          if (worker in flow_) { 
+            flow_[worker].push(copia(step)); 
+
+          } else { 
+            flow_[worker] = [copia(step)];
+          }
        }
     }
 
