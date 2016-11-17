@@ -24,8 +24,6 @@ function runScenario(scenario) {
 
     scenario.runStep(scenario, step);
     if (scenario.haveToWait) return;
-
-    console.log(111111111111, scenario);
   }
 
   scenario.callback(scenario, true);

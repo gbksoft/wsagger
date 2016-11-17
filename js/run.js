@@ -44,10 +44,10 @@ var data    = JSON.parse(fs.readFileSync(dataFile));
 var tryData = prepareData(data);
 
 if (debug) {
-  runner.bootstrap (io, rest.tryLogin, tryData, capture, capture, capture, capture);
+  runner.bootstrap (io, rest.tryLogin, tryData, capture,    capture,    capture,    capture,    rest.tryLoginCID);
 
 } else {
-  runner.bootstrap (io, rest.tryLogin, tryData, captureNot, captureNot, captureNot, captureNot);
+  runner.bootstrap (io, rest.tryLogin, tryData, captureNot, captureNot, captureNot, captureNot, rest.tryLoginCID);
 
 }
 

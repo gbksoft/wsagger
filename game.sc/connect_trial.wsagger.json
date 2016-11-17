@@ -1,0 +1,33 @@
+{
+   "wsagger": "0.0.3",
+   "info": {
+      "description": "GBKSOFT chat API",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+   },
+
+   "server_" : {
+      "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
+      "dev":  { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" }
+   },
+
+   "user_" : {
+       "2":  { "token": "2" },
+       "3":  { "token": "3" }
+   },
+
+   "scenarios": [
+       {
+          "name": "connect to socket.io without token",
+          "summary": " ",
+          "parameters": [
+          ],
+          "flow": [
+             { "action": "connect", "data": [{ "token": ""}],
+               "waitForResponse": { "delay": 3000, "data": [["CID", {}]] }
+             }
+          ]
+       }
+    ]
+}
+

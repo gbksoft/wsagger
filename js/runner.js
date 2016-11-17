@@ -7,21 +7,22 @@ if (typeof exports !== 'undefined') {
    config = {};
 }
 
-var socket, reload_, tryData = {}, io_client, theWorker, received = [], tryLogin, showMessage, setHTML, notifyOnTop, announce;
+var socket, reload_, tryData = {}, io_client, theWorker, received = [], tryLogin, tryLoginCID, showMessage, setHTML, notifyOnTop, announce;
 
 function addToReceived () {
    received.push([arguments]);
 }
 
-function bootstrap (io_client_, tryLogin_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_) {
+function bootstrap (io_client_, tryLogin_, tryData_, showMessage_, setHTML_, notifyOnTop_, announce_, tryLoginCID_) {
    io_client = io_client_;
 
-   if (tryData_)      tryData            = tryData_;
-   if (tryLogin_)     tryLogin           = tryLogin_
-   if (showMessage_)  showMessage        = showMessage_;
-   if (setHTML_)      setHTML            = setHTML_;
-   if (notifyOnTop_)  notifyOnTop        = notifyOnTop_;
-   if (announce_)     announce           = announce_;
+   if (tryData_)      tryData      = tryData_;
+   if (tryLogin_)     tryLogin     = tryLogin_
+   if (tryLoginCID_)  tryLoginCID  = tryLoginCID_
+   if (showMessage_)  showMessage  = showMessage_;
+   if (setHTML_)      setHTML      = setHTML_;
+   if (notifyOnTop_)  notifyOnTop  = notifyOnTop_;
+   if (announce_)     announce     = announce_;
 
 }
 
@@ -215,6 +216,12 @@ function doStep () {
       var REST = tryData.REST;
       tryLogin(REST.proto, REST.host, REST.port, REST.path, step.data[0].path, step.data[0].queryData, tryConnect);
       // log(555555555);
+
+    } else if (step.action === 'login_and_register_cid_and_connect') {
+
+      var REST = tryData.REST;
+      tryLoginCID(REST.proto, REST.host, REST.port, REST.path, step.data[0], tryConnect);
+
 
     } else if (step.action === 'request') {
 

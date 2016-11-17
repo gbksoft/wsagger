@@ -7,11 +7,8 @@
    },
 
    "server_" : {
-      "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
-      "game": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
-      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",        "port": "28781", "path": "/front_space" },
-      "test": { "proto": "socket.io", "host": "chat-nodejs.test.gbksoft.net",       "port": "28782", "path": "/front_space" },
-      "live": { "proto": "socket.io", "host": "chat-nodejs.live.gbksoft.net",       "port": "28783", "path": "/front_space" }
+      "loc": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
+      "dev": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" }
    },
 
    "user_" : {
@@ -21,13 +18,13 @@
 
    "scenarios": [
        {
-          "name": "connect to socket.io with arbitrary token",
+          "name": "connect to socket.io with token",
           "summary": " ",
           "parameters": [
-             { "in": "formData", "name": "token", "description": "", "dataType": "string" }
+             { "in": "formData", "name": "token", "description": "", "dataType": "string", "default_in": "/front_space#Hgzj1AMHqR5qgB6fAAAD|48fcb6be303bfe74c98a3116f158826aa4ec8936c5013c7b05a8ec5f8f55b0735_BS-x101q7VaFzLq95EijBqcWHRTdJfTdz0pM_GK5dC3OoHnSYsDDw2tVA9fiKe" }
           ],
           "flow": [
-             { "action": "connect", "key": "", "data": [{"token": "{{token}}"}],
+             { "action": "connect", "data": [{"token": "{{token}}"}],
                "waitForResponse": {
                   "delay": 3000, 
                   "data": [
