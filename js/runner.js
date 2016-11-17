@@ -1,3 +1,4 @@
+(require('fundamentum'))('array_', 'object_', 'log', 'error');
 
 
 if (typeof exports !== 'undefined') {

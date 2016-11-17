@@ -1,22 +1,39 @@
-exports.tryLogin  = tryLogin;
-exports.restQuery = restQuery;
+var fs    = require('fs'),
+    http  = require('http'),
+    https = require('https')
+;
 
-var http = require('http');
+var SSL_KEY_PATH  = "/data/home/user/0/game/auth/key";
+var SSL_CERT_PATH = "/data/home/user/0/game/auth/crt";
 
-function restQuery(method, host, port, queryPath, queryData, callback) {
+var ssl_key  = fs.readFileSync(SSL_KEY_PATH);
+var ssl_cert = fs.readFileSync(SSL_CERT_PATH);
+
+function restQuery(method, proto, host, port, queryPath, queryData, headers, callback) {
    var options = {
       'method':   method,
       'hostname': host,
       'port':     port,
       'path':     queryPath,
-      'headers': {
-         'Content-Type': 'application/x-www-form-urlencoded',
-         // 'Content-Type': 'application/json',
-         'Accept': 'application/json'
-      },
+      'headers':  headers
    };
 
-   var req = http.request(options, function(res) {
+
+   var http_;
+   if (proto == 'https://') {
+      http_ = https;
+      options.rejectUnauthorized = false;
+      options.key                = ssl_key; 
+      options.cert               = ssl_cert; 
+   
+   } else {
+      http_ = http;
+
+   }
+
+   console.log (11111111111111, options, queryData);
+
+   var req = http_.request(options, function(res) {
       // console.log(55555555);
 
       var responseData = '';
@@ -24,9 +41,11 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
       res.on('error', (err)   => { callback({error: ['REST problem', err]}); });
       res.on('data',  (chunk) => { responseData += chunk; });
       res.on('end',   ()      => {
-         callback(responseData);
-         // try         { callback(JSON.parse(responseData)); }
-         // catch (err) { callback({error: ['REST data problem: ', responseData, 'error:', err]});  }
+
+         console.log (22222222222, responseData);
+
+         try         { callback(JSON.parse(responseData)); }
+         catch (err) { callback({error: ['REST data problem: ', responseData, 'error:', err]});  }
       });
    });
    req.end(queryData, 'utf8');
@@ -38,7 +57,13 @@ function restQuery(method, host, port, queryPath, queryData, callback) {
 
 
 function tryLogin(proto, host, port, path_, path2, data, callback) {
-   restQuery('POST', host, port, path_ + path2, data, (response) => {
+   var headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      // 'Content-Type': 'application/json',
+      'Accept': 'application/json'
+   }; 
+
+   restQuery('POST', proto, host, port, path_ + path2, data, headers, (response) => {
       if (response.result) {
          if (response.result.token) {
             callback(response.result.token);
@@ -55,21 +80,45 @@ function tryLogin(proto, host, port, path_, path2, data, callback) {
 }
 
 
-
 function tryLoginCID(proto, host, port, path_, data, callback) {
 
    var path2     = data.path;
    var queryData = data.queryData;
+   var CID_rest  = data.CID_rest;
+   var CID_node  = data.CID_node;
 
-   restQuery('POST', host, port, path_ + path2, queryData, (response) => {
+
+   var headers1 = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      // 'Content-Type': 'application/json',
+      'Accept': 'application/json'
+   }; 
+
+   restQuery('POST', proto, host, port, path_ + path2, queryData, headers1, (response) => {
       if (response.result) {
-         var token = response.result.token || (response.result.accessToken ? response.result.accessToken.token : false);         
+         var token = response.result.token || (response.result.accessToken ? response.result.accessToken.token : '');         
+         
+          
          if (token) {
+            var node_token = CID_node + '|' + token;
 
-            callback(token);
-            return;
+            var headers2 = {
+               'Content-Type': 'application/json',
+               'Accept': 'application/json'
+            }; 
+
+            restQuery('POST', proto, host, port, path_ + '/v1/connections', JSON.stringify({"connection_id": CID_rest}), headers2, (response) => {
+               callback(node_token);
+               return;
+            });
          }
       }
       console.error('/tryLogin (response): ', response);
    });
 }
+
+exports.restQuery   = restQuery;
+exports.tryLogin    = tryLogin;
+exports.tryLoginCID = tryLoginCID;
+
+//                "action": "login_and_register_cid_and_connect", "data": [{"CID_rest": "{{CID_rest}}", "CID_node": "{{CID_node}}", "path": "/v1/users/login", "queryData": "{\"email\": \"{{username}}\", \"password\": \"{{password}}\"}"}],
