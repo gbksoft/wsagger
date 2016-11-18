@@ -7,13 +7,14 @@
    },
 
    "server_" : {
-      "loc": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
-      "dev": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" }
+      "dev": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
+      "loc": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
    },
 
    "user_" : {
        "4":  { "token": "#nEIgMZTqGOovqIJvAAAB|5c0d4997800d79f8adeb2d0d4cad602a5a2d7821534fb777eaee5d65798af7944_2nQc326_GP7s9ElkuCld6NtC-P5R5xJtkMCKWGRXIkZ9uIJFN_6fFXCmXY0YkN" },
-       "5":  { "token": "#bbpd18zgT7XOEgVOAAAE|48fcb6be303bfe74c98a3116f158826aa4ec8936c5013c7b05a8ec5f8f55b0735_BS-x101q7VaFzLq95EijBqcWHRTdJfTdz0pM_GK5dC3OoHnSYsDDw2tVA9fiKe" }
+       "5":  { "token": "#bbpd18zgT7XOEgVOAAAE|48fcb6be303bfe74c98a3116f158826aa4ec8936c5013c7b05a8ec5f8f55b0735_BS-x101q7VaFzLq95EijBqcWHRTdJfTdz0pM_GK5dC3OoHnSYsDDw2tVA9fiKe" },
+       "p":  { "token": "#yfqhRdYYRZ_P6FtqAAA_|fde135e9ed58ccd04a159fd2d53912cc4d468bff21c1ff72e0bf100bc0ec724544_uIErd425G0tHSMAjK2k1NwbGW675HPhnW_lXko_TXyQioM6eQ6djvchBdocv-" }
    },
 
    "scenarios": [
