@@ -42,10 +42,10 @@
             </tr>
         </table>
 
-        <div>
-            <ul id="data">
+        <div class="data-part">
+            <div id="data">
                 <!-- container for Wsagger data -->
-            </ul>
+            </div>
         </div>
     </div>
 
@@ -68,7 +68,7 @@
                 &nbsp;
             </div>
 
-            <div class="tabs-content active">
+            <div class="tabs-content scenario-part active">
 
                 <form action="" id="jsonloader" class="row" name="json-load">
                     <div class="col-xs-12 col-md-7 radio">
@@ -100,7 +100,7 @@
 
             </div>
 
-            <div class="tabs-content" id="tab-flow">
+            <div class="tabs-content flow-part" id="tab-flow">
 
                 <div class="user-container">
                     <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
@@ -135,10 +135,9 @@
 
                 </div>
 
-                <div class="user-spacer">
+                <div class="spacer">
                     &nbsp;
                 </div>
-
 
                 <ul id="socketLog">
                     <!-- container for output (messages) of Wsagger methods  -->
@@ -159,6 +158,9 @@
 <script src="js/jsonlint.js"></script>
 <script src="js/runner.js"></script>
 <script src="js/in_browser.js"></script>
+<script src="js/data_part.js"></script>
+<script src="js/scenario_part.js"></script>
+<script src="js/flow_part.js"></script>
 
 </body>
 </html>

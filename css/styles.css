@@ -14,249 +14,28 @@ body {
     height: 100vh;
 }
 
+h5 {
+    display: inline-block;
+    margin: 4px auto;
+}
+
+h5::first-letter {
+    text-transform: uppercase;
+}
+
+p {
+    margin: 3px 0;
+}
+
 ul {
     list-style-type: none;
-
-}
-
-.green {
-    color: #008000;
-}
-
-.red {
-    color: #de2f2f;
-}
-
-.brown {
-    color: #bb7608;
-}
-
-.gray {
-    color: #616161;
-}
-
-.blue {
-    color:#4c4cca;
-}
-
-ul#socketLog {
     margin: 0;
     padding: 0;
-    overflow: scroll;
-    height: 75vh;
 }
 
-#socketLog li {
-    padding: 5px 10px;
-}
-
-#socketLog li:nth-child(odd) {
-    background: #eee;
-}
-
-#argumentum, #titulus {
-    z-index: 999;
-    max-height: 100%;
-    width: 40%;
-    float: left;
-    background-color: white;
-    overflow-y: auto;
-}
-
-#argumentum {
-    width: 60%;
-}
-
-/* show/hide messages according to checkboxes in Filters */
-#argumentum.hide-red li.red,
-#argumentum.hide-gray li.gray,
-#argumentum.hide-brown li.brown,
-#argumentum.hide-green li.green {
-    display: none;
-}
-
-.container-fluid table {
-    margin-top: 5%;
-}
-
-.container-fluid div.fixed-container {
-    position: fixed;
-    top: 0;
-    background-color: white;
-    width: 100%;
-}
-
-.container-fluid div#status {
-    margin: 1% 0 1% 0;
-}
-
-.tabs-content div.user-info span {
-    color: blue;
-}
-
-.filters {
-
-}
-
-.filters label {
-    font-weight: 500;
-    margin-right: 5px;
-    cursor: pointer;
-}
-
-#data {
-    list-style: none;
-}
-
-ul.tabs-caption {
-    height: 30px;
-    border-bottom: 1px solid #9acde6;
-    margin-bottom: 0;
-}
-
-ul.tabs-caption li {
-    float: left;
-    border: 1px solid #d8d8d8;
-    padding: 5px 40px;
-    margin: 0;
-    cursor: pointer;
-    background-color: #f1f1f1;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-ul.tabs-caption li:hover {
-    background-color: #d0d0d0;
-}
-
-ul.tabs-caption li.active {
-    background-color: #d9edf7;
-    border: 1px solid #9acde6;
-    border-bottom: 1px solid #d9edf7;
-}
-
-.tabs-content {
-  display: none;
-}
-
-.tabs-content.active {
-  display: block;
-}
-
-.user-container {
-    position: fixed;
-    top: 11vh;
-}
-
-#jsonloader {
-    margin-top: 10px;
-    margin-left: -6px;
-}
-
-#jsonloader .feedback {
-    float: left;
-    clear: both;
-}
-
-#jsonloader div.radio {
-    width: 80%;
-}
-
-#jsonloader div.radio span {
-    margin: 5px;
-}
-
-#jsonloader input.form-check-input {
-    margin-top: 2px;
-    margin-left: -16px;
-}
-
-/* SUMMARY BLOCK*/
-.wsagger {
-    margin-bottom: 30px;
-    border-top: 1px solid #eeeeee;
-}
-
-.wsagger__summary {
-}
-
-.wsagger__title {
-    font-weight: bold;
-}
-
-/* METHOD block */
-
-.method__header {
-    margin: 0;
-}
-
-.method__header span{
-    margin-right:10px;
-}
-
-.method__body {
-
-}
-
-.btn-try + .red {
-    display: none;
-    margin-left: 0.5em;
-}
-
-.btn-try:disabled + .red {
+li {
     display: inline-block;
-}
-
-.method__details {
-    padding-left: 1.2em;
-}
-
-.method__details button {
-    margin: 0 0 2% 70%;
-    width: 20%;
-    font-size: 14px;
-}
-
-.method__item, .method__descr {
-    display: inline-block;
-}
-
-.method__descr {
-    line-height: 100%;
-    vertical-align: top;
     width: 100%;
-}
-
-.formData+.formData {
-    margin-top: 0.5em;
-    padding-top: 0.5em;
-    border-top: 1px dashed #999999;
-}
-
-.btn-file {
-    position: relative;
-    overflow: hidden;
-}
-
-.btn-file input[type=file] {
-    position: absolute;
-    top: 0;
-    right: 0;
-    min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
-    text-align: right;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    outline: none;
-    background: white;
-    cursor: inherit;
-    display: block;
-}
-
-.show-if-json-text, .show-if-json-file {
-    display: none;
-    margin-bottom: 10px;
 }
 
 tr, td {
@@ -278,15 +57,34 @@ select:focus {
     outline: none;
 }
 
-.spacer {
-    width: 100%;
-    height: 10vh;
+input {
+    cursor: pointer;
+    padding: 3px 8px;
+    margin: 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
-.user-spacer {
-    width: 100%;
-    height: 12vh;
+input[type="radio"] {
+    margin: 2px 0 0;
 }
+
+input:focus::-webkit-input-placeholder {
+    color:transparent;
+}
+
+input:focus:-moz-placeholder {
+    color:transparent;
+}
+
+input:focus::-moz-placeholder {
+    color:transparent;
+}
+
+input:focus:-ms-input-placeholder {
+    color:transparent;
+}
+
 ::-webkit-input-placeholder {
     color: #dadada;
     font-size: 12px;
@@ -312,31 +110,224 @@ select:focus {
 }
 
 pre {
+    line-height: 1;
+}
+
+/* -----------------------------------*/
+/* ---------->>> COLORS <<<-----------*/
+/* -----------------------------------*/
+
+.green {
+    color: #008000;
+}
+
+.red {
+    color: #de2f2f;
+}
+
+.brown {
+    color: #bb7608;
+}
+
+.gray {
+    color: #616161;
+}
+
+.blue {
+    color:#4c4cca;
+}
+
+/* -----------------------------------*/
+/* -------->>> LEFT PANEL <<<---------*/
+/* -----------------------------------*/
+
+.container-fluid {
+    margin-top: 1vh;
+}
+
+#titulus {
+    max-height: 100%;
+    width: 30%;
+    float: left;
+    overflow-y: auto;
+}
+
+.wsagger__summary {
+    margin: 0.5vh auto 2vh 4px
+}
+
+/* -------->>> METHOD BLOCK <<<-------*/
+
+.method__header {
+    width: 100%;
+    margin-top: 0;
+}
+
+.glyphicon-plus {
+    margin-right: 5px;
+}
+
+.method__body {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.method__details button {
+    margin: 0 0 1% 70%;
+    width: 20%;
+    font-size: 14px;
+}
+
+.formData__name {
+    margin-left: 5px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-input[type=checkbox] {
+.btn-try + .red {
+    display: none;
+    margin-left: 0.5em;
+}
+
+.btn-try:disabled + .red {
+    display: inline-block;
+}
+
+.method__descr {
+
+}
+
+/* -----------------------------------*/
+/* -------->>> RIGHT PANEL <<<--------*/
+/* -----------------------------------*/
+
+#argumentum {
+    max-height: 100%;
+    width: 70%;
+    float: left;
+}
+
+/* show/hide messages according to checkboxes in Filters */
+#argumentum.hide-red li.red,
+#argumentum.hide-gray li.gray,
+#argumentum.hide-brown li.brown,
+#argumentum.hide-green li.green {
+    display: none;
+}
+
+.fixed-container {
+    position: fixed;
+    top: 2%;
+    width: 100%;
+}
+
+#status {
+    margin: 0.5% 0 0.5% 0;
+}
+
+.tabs-caption {
+    height: 30px;
+    border-bottom: 1px solid #9acde6;
+    margin-bottom: 0;
+}
+
+.tabs-caption li {
+    float: left;
+    width: 8vw;
+    border: 1px solid #d8d8d8;
+    padding: 5px 40px;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: center;
+}
+
+.tabs-caption li:hover {
+    background-color: #d0d0d0;
+}
+
+.tabs-caption li.active {
+    background-color: #d9edf7;
+    border: 1px solid #9acde6;
+    border-bottom: 1px solid #d9edf7;
+}
+
+.spacer {
+    width: 100%;
+    height: 9vh;
+}
+
+.tabs-content {
+    display: none;
+}
+
+.tabs-content.active {
+    display: block;
+}
+
+/* ---------->>> SCENARIO <<<---------*/
+
+#jsonloader div.radio {
+    width: 80%;
+}
+
+#jsonloader .form-check-inline span {
+    margin-left: 1px;
+    margin-right: 20px;
+}
+
+#jsonloader .feedback {
+    float: left;
+    clear: both;
+}
+
+.btn-file input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 100%;
+    min-height: 100%;
+    font-size: 100px;
+    text-align: right;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    background: white;
+    cursor: inherit;
+    display: block;
+}
+
+.show-if-json-text, .show-if-json-file {
+    display: none;
+    margin-bottom: 10px;
+}
+
+/* ------------>>> FLOW <<<-----------*/
+
+.tabs-content div.user-info span {
+    color: blue;
+}
+
+.user-container {
+    position: fixed;
+    top: 10vh;
+}
+
+.filters label {
+    font-weight: 500;
+    margin-right: 6px;
     cursor: pointer;
 }
 
-input.formData__name-input {
-    padding: 3px 8px;
-    margin-top: 3px;
+ul#socketLog {
+    overflow: scroll;
+    height: 80vh;
 }
 
-input.formData__name-input:focus::-webkit-input-placeholder {
-    color:transparent;
+#socketLog li {
+    padding: 5px 10px;
 }
 
-input.formData__name-input:focus:-moz-placeholder {
-    color:transparent;
+#socketLog li:nth-child(odd) {
+    background: #dcf3ff;
 }
-
-input.formData__name-input:focus::-moz-placeholder {
-    color:transparent;
-}
-
-input.formData__name-input:focus:-ms-input-placeholder {
-    color:transparent;
-}
-
