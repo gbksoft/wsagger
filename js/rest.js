@@ -10,6 +10,9 @@ var ssl_key  = fs.readFileSync(SSL_KEY_PATH);
 var ssl_cert = fs.readFileSync(SSL_CERT_PATH);
 
 function restQuery(method, proto, host, port, queryPath, queryData, headers, callback) {
+
+   headers['User-Agent'] = 'GBK node.js';
+
    var options = {
       'method':   method,
       'hostname': host,
