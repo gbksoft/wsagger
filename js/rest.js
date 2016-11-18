@@ -26,9 +26,9 @@ function restQuery(method, proto, host, port, queryPath, queryData, headers, cal
    if (proto == 'https://') {
       http_ = https;
       options.rejectUnauthorized = false;
-      options.key                = ssl_key; 
-      options.cert               = ssl_cert; 
-   
+      options.key                = ssl_key;
+      options.cert               = ssl_cert;
+
    } else {
       http_ = http;
 
@@ -64,7 +64,7 @@ function tryLogin(proto, host, port, path_, path2, data, callback) {
       'Content-Type': 'application/x-www-form-urlencoded',
       // 'Content-Type': 'application/json',
       'Accept': 'application/json'
-   }; 
+   };
 
    restQuery('POST', proto, host, port, path_ + path2, data, headers, (response) => {
       if (response.result) {
@@ -95,20 +95,20 @@ function tryLoginCID(proto, host, port, path_, data, callback) {
       'Content-Type': 'application/x-www-form-urlencoded',
       // 'Content-Type': 'application/json',
       'Accept': 'application/json'
-   }; 
+   };
 
    restQuery('POST', proto, host, port, path_ + path2, queryData, headers1, (response) => {
       if (response.result) {
-         var token = response.result.token || (response.result.accessToken ? response.result.accessToken.token : '');         
-         
-          
+         var token = response.result.token || (response.result.accessToken ? response.result.accessToken.token : '');
+
+
          if (token) {
             var node_token = CID_node + '|' + token;
 
             var headers2 = {
                'Content-Type': 'application/json',
                'Accept': 'application/json'
-            }; 
+            };
 
             restQuery('POST', proto, host, port, path_ + '/v1/connections', JSON.stringify({"connection_id": CID_rest}), headers2, (response) => {
                callback(node_token);

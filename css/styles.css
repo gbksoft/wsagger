@@ -1,7 +1,22 @@
+/* -----------------------------------*/
+/* ---------->>> GLOBAL <<<-----------*/
+/* -----------------------------------*/
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    height: 100vh;
+}
+
+ul {
+    list-style-type: none;
+
 }
 
 .green {
@@ -24,14 +39,7 @@
     color:#4c4cca;
 }
 
-body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 13px;
-    height: 100vh;
-}
-
 ul#socketLog {
-    list-style-type: none;
     margin: 0;
     padding: 0;
     overflow: scroll;
@@ -101,7 +109,6 @@ ul#socketLog {
 }
 
 ul.tabs-caption {
-    list-style: none;
     height: 30px;
     border-bottom: 1px solid #9acde6;
     margin-bottom: 0;

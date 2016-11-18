@@ -34,7 +34,7 @@ $('#jsonloader').submit(function (evt) {
   evt.preventDefault();
   clearFeedback();
 
-  var localOrRemote = $('#jsonloader').find('.json-url').find('input').attr('type');
+  var localOrRemote = $('#jsonloader').find('.form-check-inline').find('input:checked').val();
 
   if (localOrRemote === 'text') {  // if remote JSON
 
