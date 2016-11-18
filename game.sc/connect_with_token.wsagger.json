@@ -7,8 +7,8 @@
    },
 
    "server_" : {
-      "loc": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
-      "dev": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" }
+      "dev": { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
+      "loc": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
    },
 
    "user_" : {
