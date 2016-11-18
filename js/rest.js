@@ -37,7 +37,6 @@ function restQuery(method, proto, host, port, queryPath, queryData, headers, cal
    console.log (11111111111111, options, queryData);
 
    var req = http_.request(options, function(res) {
-      // console.log(55555555);
 
       var responseData = '';
       res.setEncoding('utf8');
@@ -78,7 +77,7 @@ function tryLogin(proto, host, port, path_, path2, data, callback) {
 
          }
       }
-      console.error('/tryLogin (response): ', response);
+      // console.error('/tryLogin (response): ', response);
    });
 }
 
@@ -103,11 +102,12 @@ function tryLoginCID(proto, host, port, path_, data, callback) {
 
 
          if (token) {
-            var node_token = CID_node + '|' + token;
+            var node_token = CID_node + token;
 
             var headers2 = {
                'Content-Type': 'application/json',
-               'Accept': 'application/json'
+               'Accept': 'application/json',
+               'Authorization': 'Bearer ' + token
             };
 
             restQuery('POST', proto, host, port, path_ + '/v1/connections', JSON.stringify({"connection_id": CID_rest}), headers2, (response) => {
@@ -116,7 +116,7 @@ function tryLoginCID(proto, host, port, path_, data, callback) {
             });
          }
       }
-      console.error('/tryLogin (response): ', response);
+      // console.error('/tryLogin (response): ', response);
    });
 }
 

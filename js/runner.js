@@ -47,6 +47,7 @@ function tryConnect (token) {
 
    var frontUrl = 'http://' + server.host + ':' + server.port + server.path;
 
+
    if (socket) {
       console.log('!!! DISCONNECTING !!!');
       socket.io.disconnect();
@@ -57,7 +58,7 @@ function tryConnect (token) {
       // socket.io.opts.port     = server.port;
       // socket.io.opts.path     = server.path;
 
-      console.log('!!! RECONNECTING !!!');
+      console.log('!!! RECONNECTING !!!', token);
       socket.io.connect();
 
    } else {
