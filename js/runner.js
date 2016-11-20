@@ -64,6 +64,8 @@ function tryConnect (token) {
    } else {
       var query = {query: "token=" + token};
       socket = io_client(frontUrl, query);
+      
+      log(io_client, frontUrl, query);
 
    }
 
