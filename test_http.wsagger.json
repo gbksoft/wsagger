@@ -1,0 +1,44 @@
+{
+  "wsagger": "0.0.3",
+  
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Gambling Game socket.io API: connect with login & password"
+  },
+  
+  "REST_" : {
+    "dev": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
+    "loc": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" }
+  },
+  
+   "user_" : {
+       "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "5"},
+       "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+   },
+  
+  "scenarios": [
+    {
+      "name": "https request",
+          
+      "parameters": [
+      ],
+          
+      "flow": [
+        { 
+          "action": 
+            "https.request", 
+          
+          "data": {
+            "method": "POST", 
+            "host": "{{REST.host}}", 
+            "port": "{{REST.port}}", 
+            "path": "{{REST.path}}/v1/users/login", 
+            "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+            "queryData":"email={{user.username}}&password={{user.password}}"
+          }
+        }
+      ]
+    }
+  ]
+}
