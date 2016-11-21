@@ -89,6 +89,8 @@
         },
 
         {
+          "action": "socket_io.expect",
+          "expected": [[ "usersOnline", {} ], [ "usersOffline", {} ]],
           "wait": { "delay": 30000 }
         }
       ]

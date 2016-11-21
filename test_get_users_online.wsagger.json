@@ -29,18 +29,13 @@
           
       "flow": [
         { 
-          "action": "exec.execSync",            
-          "wait": {"delay": 7000}, 
-          "expected": { "CID_node": "{{!CID_node_}}", "CID_rest": "{{!CID_rest_}}" },
+          "action": "socket_io.connect",           
+          "wait": {"delay": 3000}, 
+          "expected": [[ "CID", {"CID_rest": "{{!CID_rest}}", "CID_node": "{{!CID_node}}"}]],
           "data": { 
-            "action": "socket_io.connect",           
-            "wait": {"delay": 3000}, 
-            "expected": [[ "CID", {"CID_rest": "{{!CID_rest}}", "CID_node": "{{!CID_node}}"}]],
-            "data": { 
-              "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
-              "query": {}
-            }         
-          }
+            "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+            "query": {}
+          }         
         },
 
         { 
@@ -71,26 +66,30 @@
           "expected": { "code": 200 }
         },
 
-       	{
-          "action": "socket_io.connect",           
-          "wait": {"delay": 3000}, 
-          "expected": [[ "connectedTo", {}]],
-          "data": { 
-            "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
-            "query": { "query": "token={{CID_node}}{{token}}" }
-          }         
-        },
+        { 
+          "action": "exec.execSync",            
+          "wait": {"delay": 7000}, 
+          "expected": { "facebookFriends": [] },
+          "data": [
+          	{
+              "action": "socket_io.connect",           
+              "wait": {"delay": 3000}, 
+              "expected": [[ "connectedTo", {}]],
+              "data": { 
+                "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+                "query": { "query": "token={{CID_node}}{{token}}" }
+              }         
+            },
 
-        {
-          "action": "socket_io.emit",
-          "data": ["getUsersOnline", { "type": "facebook" }],
-          "wait": { "delay": 3000 },
-          "expected": [[ "usersOnline", { "type": "facebook", "userIds": "{{!facebookFriends}}" } ]]
-        },
+            {
+              "action": "socket_io.emit",
+              "data": ["getUsersOnline", { "type": "facebook" }],
+              "wait": { "delay": 3000 },
+              "expected": [[ "usersOnline", { "type": "facebook", "userIds": "{{!facebookFriends}}" } ]]
+            }
 
-        {
-          "wait": { "delay": 30000 }
-        }
+          ]
+        }  
       ]
     }
   ]  
