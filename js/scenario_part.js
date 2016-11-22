@@ -65,3 +65,113 @@ function safelyParseJSON (json) {
 
   return parsed;
 }
+
+////////////////////
+
+$('.load-schema :file').on('change', function() {
+  $('.load-schema').submit();
+});
+
+/* JSON Schema loading and parsing >>> */
+$('.load-schema').submit(function (evt) {
+
+  evt.preventDefault();
+
+  var reader = new FileReader();
+
+  reader.addEventListener('load', function() {
+    var json = safelyParseJSON(this.result);
+    if (json) parseSchema(json);
+    console.log(json);
+  });
+
+  var fileObj = $('.load-schema :file')[0].files[0];
+
+  if (fileObj) {
+    reader.readAsText(fileObj);
+  }
+});
+
+function parseSchema(schema) {
+
+  var text ='',
+      title = '';
+
+  title = '<h5>Arbor</h5> ' + schema.arbor + '<br>'
+    + '<h5>Info</h5> ' + schema.info.title + ' / ' + schema.info.description + ' / ' + schema.info.version;
+
+  setHTML('schema-info', title);
+
+  text += '<ul class="json-menu">';
+
+  schema.servers.forEach(function(item) {   // for each in JSON/servers
+
+    var serverName = Object.keys(item)[0];
+    var modules = item[serverName].modules;
+
+    text += '<li><a>' + serverName + '</a>';
+
+    if (modules && modules.length > 0) {
+      text += '<ul class="js-hideElement json-module">';
+
+      modules.forEach(function(item) {
+
+        var moduleName = Object.keys(item)[0];
+        var cases = item[moduleName].cases;
+
+        text += '<li><a class="json-module-tab">' + moduleName + '</a>';
+
+        if (cases && cases.length > 0) {
+          text += '<ul class="js-hideElement json-case">';
+
+          cases.forEach(function(item) {
+            text += '<li><a>' + item.name + '</a>'
+            + '<ul class="js-hideElement json-open"><li><a href="#">Open local JSON</a></li><li><a>Open remote JSON</a></li></ul></li>';
+          })
+
+          text += '</ul>';
+        }
+
+        text += '</li>';
+
+      });
+      text += '</ul>';
+    }
+
+    text += '</li>';
+
+  });
+
+  text += '</ul>';
+
+  $('#nav').css({ display: "block" });
+
+  setHTML('nav', text);
+
+  // add plus mark to li that have a sub menu
+  $('li:has("ul") > a').append('<span class="plusMark">+</span>');
+}
+
+//if li has a sub menu
+$('#nav').on('click', 'li:has("ul")', function(e) {
+
+  if ($(this).children('a').hasClass('js-openSubMenu')) {
+
+    $(this).children('a').find('.plusMark').empty().html('+');
+    $(this).children('a').removeClass('js-openSubMenu');
+    $(this).children('ul').removeClass('js-showElement');
+    $(this).children('ul').addClass('js-hideElement');
+    e.stopPropagation();
+
+  } else {
+
+    $(this).children('a').find('.plusMark').empty().html('-');
+    $(this).children('a').addClass('js-openSubMenu');
+    $(this).children('ul').removeClass('js-hideElement');
+    $(this).children('ul').addClass('js-showElement');
+    e.stopPropagation();
+
+  }
+
+});
+
