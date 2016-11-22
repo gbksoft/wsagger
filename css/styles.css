@@ -29,8 +29,7 @@ p {
 
 ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box;
 }
 
 li {
@@ -267,6 +266,10 @@ pre {
 
 /* ---------->>> SCENARIO <<<---------*/
 
+.row {
+    margin: 0;
+}
+
 #jsonloader div.radio {
     width: 80%;
 }
@@ -297,9 +300,96 @@ pre {
     display: block;
 }
 
-.show-if-json-text, .show-if-json-file {
+.show-if-json-text, .show-if-json-file, #nav {
     display: none;
-    margin-bottom: 10px;
+    margin: 5px 10px 10px 0;
+    padding: 0;
+}
+
+.show-if-json-text input {
+    margin: 0;
+}
+
+.load-schema {
+    padding: 10px 0;
+}
+
+#schema-info {
+    clear: both;
+    margin-bottom: 1vh;
+}
+
+#nav {
+    position: relative;
+    width: 20%;
+    color: #000;
+    clear: both;
+}
+
+#nav a {
+    text-decoration: none;
+    height: 100%;
+    display: block;
+    padding: 0 20px;
+    cursor: pointer;
+    background-color: #d9edf7;
+    text-align: center;
+    border-bottom: 1px solid rgba(191, 191, 191, 0.71);
+}
+
+#nav li:last-child {
+    text-align: center;
+}
+
+.plusMark {
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.json-menu {
+    height: 100%;
+    line-height: 40px;
+    margin: 0;
+}
+
+.json-module {
+    margin-left: 30%;
+    width: 100%;
+}
+
+.json-module a {
+    background-color: #ceefff !important;
+}
+
+.json-case {
+    margin-left: 30%;
+    width: 100%;
+}
+
+.json-case a {
+    background-color: #c2f6fb !important;
+}
+
+.json-open {
+    margin-left: 30%;
+    width: 100%;
+}
+
+.json-open a {
+    background-color: #c9efe1 !important;
+}
+
+#nav a:hover, #nav a:focus, #nav a.js-open {
+    background-color: #a0cce2;
+}
+
+#nav .js-hideElement {
+    display: none;
+}
+
+#nav .js-showElement {
+    display: block;
 }
 
 /* ------------>>> FLOW <<<-----------*/
