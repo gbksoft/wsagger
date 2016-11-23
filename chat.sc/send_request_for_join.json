@@ -2,7 +2,7 @@
    "wsagger": "0.0.3",
    "info": {
       "description": "GBKSOFT chat API",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "title": "GBKSOFT chat API"
    },
 
@@ -25,42 +25,27 @@
        "alexr":      { "username": "alexr",    "password": "alexr" },
        "roman":      { "username": "roman",    "password": "roman" },
        "olexandr":   { "username": "olexandr", "password": "olexandr" },
-       "petr":       { "username": "petr",     "password": "petr" },
-       "guest":      { "username": "guest",    "password": "guest" }
+       "petr":       { "username": "petr",     "password": "petr" }
    },
 
    "scenarios": [
        {
-          "name": "connect to socket.io with username/password",
-          "summary": " ",
+          "name": "change user role",
           "parameters": [
-             { "in": "formData", "name": "username", "description": "", "dataType": "string", "default_in": "pavlo" },
-             { "in": "formData", "name": "password", "description": "", "dataType": "string", "default_in": "pavlo" }
+             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
           ],
           "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
-               "wait": {
-                   "delay": 3000,
-                   "expected": [
-                      ["connected", {"APIVersion": "Animal.1.2.0"}],
-                      ["joinedTo",  {"groupId": "0"}],
-                      ["history",   {}],
-                      ["users",     {}],
-                      ["unread",    {}]
-                   ]
-                }
+             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
+               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
              },
 
-             {
-               "action": "request", "data": ["restrictUsers", {"groupId": "0", "period": -1, "userIds": ["7"]}],
-               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "period": -1, "userIds": ["7"]}]] }
+             { "action": "request", "data": ["createGroup", {"type": "closed"}], 
+               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}"}]] }
              },
 
-             {
-               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
-               "wait": { "delay": 3000, "expected": [["restrictedRights",  {"groupId": "0", "userIds": ["7"], "type":"no rights to join"}]] }
+             { "action": "request", "data": ["requestForJoin", {"groupId": "{{groupId}}", "messageText": "!!!"}], 
+               "waitForResponse": { "delay": 3000, "data": [["requestAccepted",  {"groupId": "{{groupId}}", "messageText": "!!!"}]] }
              }
-
           ]
        }
     ]

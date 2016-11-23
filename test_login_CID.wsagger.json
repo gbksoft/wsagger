@@ -86,11 +86,8 @@
           "data": ["getUsersOnline", { "type": "facebook" }],
           "wait": { "delay": 3000 },
           "expected": [[ "usersOnline", { "type": "facebook", "userIds": "{{!facebookFriends}}" } ]]
-        },
-
-        {
-          "wait": { "delay": 30000 }
         }
+
       ]
     }
   ]  
