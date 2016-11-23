@@ -21,6 +21,9 @@
     "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
   },
 
+  "in":  ["REST.host", "REST.port", "REST.path", "server.host", "server.port", "server.path", "user.username", "user.password"],
+  "out": ["doers.socket_io"],
+
   "scenarios": [
     {
       "name": "connect to socket.io without token",
@@ -79,15 +82,7 @@
             "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
             "query": { "query": "token={{CID_node}}{{token}}" }
           }         
-        },
-
-        {
-          "action": "socket_io.emit",
-          "data": ["getUsersOnline", { "type": "facebook" }],
-          "wait": { "delay": 3000 },
-          "expected": [[ "usersOnline", { "type": "facebook", "userIds": "{{!facebookFriends}}" } ]]
         }
-
       ]
     }
   ]  
