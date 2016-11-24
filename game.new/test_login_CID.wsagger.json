@@ -23,25 +23,26 @@
 
   "scenarios": [
     {
-      "name": "connect to socket.io without token",
+      "name": "connect to socket.io with token/CID",
       "parameters": [
       ],
           
-      "flow": [
+      "data": [
         {
           "action"  : "load.loadJSON",
-          "wait"    : {"delay": 3000}, 
+          "wait"    : { "delay": 3000 }, 
           "data"    : "login_CID.wsagger.json", 
-          "out_key" : "login_CID",
-          "expected": {}
+          "keysOut" : "login_CID",
+          "expected": { }
         },
 
 
         { 
           "action"  : "call.callWsagger",
-          "wait"    : {"delay": 30000}, 
+          "wait"    : { "delay": 30000 }, 
           "data"    :  "{{login_CID}}",
-          "expected": { "doers.socket_io": {} }
+          "expected": { "doer.socket_io": {} },
+          "keysOut" : [ "doer.socket_io" ]
         }
       
       ]
