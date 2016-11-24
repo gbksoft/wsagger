@@ -1,0 +1,51 @@
+{
+  "wsagger": "0.0.3",
+  "info": {
+      "description": "GBKSOFT chat API",
+      "version": "1.0.0",
+      "title": "GBKSOFT chat API"
+  },
+
+  "REST_" : {
+    "dev": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
+    "loc": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" }
+  },
+  
+  "user_" : {
+    "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "5"},
+    "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+  },
+  
+  "server_" : {
+    "dev":  { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
+    "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
+  },
+
+  "scenarios": [
+    {
+      "name": "connect to socket.io without token",
+      "parameters": [
+      ],
+          
+      "flow": [
+        {
+          "action"  : "load.loadJSON",
+          "wait"    : {"delay": 3000}, 
+          "data"    : "login_CID.wsagger.json", 
+          "out_key" : "login_CID",
+          "expected": {}
+        },
+
+
+        { 
+          "action"  : "call.callWsagger",
+          "wait"    : {"delay": 30000}, 
+          "data"    :  "{{login_CID}}",
+          "expected": { "doers.socket_io": {} }
+        }
+      
+      ]
+    }
+  ]  
+}
+
