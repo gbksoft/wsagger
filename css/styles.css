@@ -289,8 +289,8 @@ pre {
     top: 0;
     right: 0;
     min-width: 100%;
-    min-height: 100%;
-    font-size: 100px;
+/*     min-height: 100%;
+    font-size: 100px; */
     text-align: right;
     filter: alpha(opacity=0);
     opacity: 0;
@@ -321,7 +321,7 @@ pre {
 
 #nav {
     position: relative;
-    width: 20%;
+    width: 11%;
     color: #000;
     clear: both;
 }
@@ -330,26 +330,20 @@ pre {
     text-decoration: none;
     height: 100%;
     display: block;
-    padding: 0 20px;
     cursor: pointer;
-    background-color: #d9edf7;
-    text-align: center;
+    text-align: left;
     border-bottom: 1px solid rgba(191, 191, 191, 0.71);
 }
 
-#nav li:last-child {
-    text-align: center;
-}
-
 .plusMark {
-    margin-left: 10px;
-    font-size: 18px;
+    margin-left: 7px;
+    font-size: 15px;
     font-weight: 500;
 }
 
 .json-menu {
     height: 100%;
-    line-height: 40px;
+    line-height: 25px;
     margin: 0;
 }
 
@@ -358,26 +352,9 @@ pre {
     width: 100%;
 }
 
-.json-module a {
-    background-color: #ceefff !important;
-}
-
 .json-case {
     margin-left: 30%;
     width: 100%;
-}
-
-.json-case a {
-    background-color: #c2f6fb !important;
-}
-
-.json-open {
-    margin-left: 30%;
-    width: 100%;
-}
-
-.json-open a {
-    background-color: #c9efe1 !important;
 }
 
 #nav a:hover, #nav a:focus, #nav a.js-open {

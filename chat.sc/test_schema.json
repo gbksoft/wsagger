@@ -6,11 +6,11 @@
       "title": "GBKSOFT chat API"
    },
 
-   "servers" : 
+   "servers" :
    [
-      { 
-        "loc": 
-         { 
+      {
+        "loc":
+         {
             "name": "loc", "proto": "socket.io", "host": "127.0.0.1", "port": "28780", "path": "/front_space",
             "modules": [
                 {
@@ -20,17 +20,17 @@
                          {
                             "name": "first cool test",
                             "path": "/first/cool/test.wsagger.json"
-                         }, 
-                         
+                         },
+
                          {
                             "name": "second cool test",
                             "path": "/second/cool/test.wsagger.json"
-                         }, 
-                         
+                         },
+
                          {
                             "name": "third cool test",
                             "path": "/third/cool/test.wsagger.json"
-                         } 
+                         }
                       ]
                    }
                 },
@@ -53,13 +53,13 @@
                       ]
                    }
                 }
-            ] 
+            ]
          }
       },
 
-      { 
-        "dev": 
-         { 
+      {
+        "dev":
+         {
             "name": "dev", "proto": "socket.io", "host": "dev.gbksoft.net", "port": "28780", "path": "/front_space",
             "modules": [
                 {
@@ -67,7 +67,7 @@
                       "name": "1111111"
                    }
                 }
-            ] 
+            ]
          }
       }
    ]

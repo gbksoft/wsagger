@@ -119,14 +119,13 @@ function parseSchema(schema) {
         var moduleName = Object.keys(item)[0];
         var cases = item[moduleName].cases;
 
-        text += '<li><a class="json-module-tab">' + moduleName + '</a>';
+        text += '<li><a>' + moduleName + '</a>';
 
         if (cases && cases.length > 0) {
           text += '<ul class="js-hideElement json-case">';
 
           cases.forEach(function(item) {
-            text += '<li><a>' + item.name + '</a>'
-            + '<ul class="js-hideElement json-open"><li><a href="#">Open local JSON</a></li><li><a>Open remote JSON</a></li></ul></li>';
+            text += '<li><a href="#">' + item.name + '</a></li>';
           })
 
           text += '</ul>';
@@ -151,6 +150,40 @@ function parseSchema(schema) {
   // add plus mark to li that have a sub menu
   $('li:has("ul") > a').append('<span class="plusMark">+</span>');
 }
+
+$('.json-open input').on('click', function() {
+  $('.json-open').submit();
+});
+
+$('json-open').submit(function (evt) {
+
+  evt.preventDefault();
+
+  var localOrRemote = $('.json-open').find('input');
+
+  // if (localOrRemote === 'text') {  // if remote JSON
+
+  //   var jsonPromise = $.getJSON($(this).find('.url').val())
+  //     .then(jsonLoadSuccessHandler, jsonLoadErrorHandler(localOrRemote));
+
+  // } else {  // if local JSON
+
+  //   var reader = new FileReader();
+
+  //   reader.addEventListener('load', function() {
+  //     var json = safelyParseJSON(this.result);
+  //     if (json) jsonLoadSuccessHandler(json);
+  //   });
+
+  //   var fileObj = $('#jsonloader :file')[0].files[0];
+
+  //   if (fileObj) {
+  //     reader.readAsText(fileObj);
+  //   } else {
+  //     jsonLoadErrorHandler(localOrRemote);
+  //   }
+  // }
+});
 
 //if li has a sub menu
 $('#nav').on('click', 'li:has("ul")', function(e) {
