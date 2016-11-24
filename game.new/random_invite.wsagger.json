@@ -12,8 +12,8 @@
   },
   
   "user_" : {
-    "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "1"},
-    "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+    "fenix":  { "username": "stalker.fenix@gmail.com",  "password": "123456", "id": "1"},
+    "geralt": { "username": "stalker.geralt@gmail.com", "password": "123456", "id": "2"}
   },
   
   "server_" : {
@@ -36,17 +36,23 @@
           "expected": { }
         },
 
-
         { 
           "action"  : "call.callWsagger",
           "wait"    : { "delay": 30000 }, 
-          "data"    :  "{{login_CID}}",
+          "data"    : "{{login_CID}}",
           "expected": { "doer.socket_io": {} },
           "keysOut" : [ "doer.socket_io" ]
+        },
+
+        {
+          "action"  : "socket_io.emit",
+          "data"    : ["inviteRandom", {"rate": 0}],
+          "wait"    : { "delay": 30000 },
+          "expected": [[ "gameStarting", {"opponentId": "{{!opponentId}}", "gameId": "{{!gameId}}", "rate": 0} ]]
         }
-      
       ]
     }
   ]  
 }
+
 

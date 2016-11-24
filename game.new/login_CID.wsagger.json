@@ -12,8 +12,8 @@
   },
   
   "user_" : {
-    "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "5"},
-    "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+    "fenix":  { "username": "stalker.fenix@gmail.com",  "password": "123456", "id": "1"},
+    "geralt": { "username": "stalker.geralt@gmail.com", "password": "123456", "id": "2"}
   },
   
   "server_" : {
@@ -34,7 +34,7 @@
         { 
           "action": "exec.execSync",            
           "wait": {"delay": 7000}, 
-          "expected": { "CID_node": "{{!CID_node_}}", "CID_rest": "{{!CID_rest_}}" },
+          "expected": { "CID_node": "{{!CID_node}}", "CID_rest": "{{!CID_rest}}" },
           "keysOut": ["CID_node", "CID_rest"],
           "data": { 
             "action": "socket_io.connect",           
