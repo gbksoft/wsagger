@@ -67,7 +67,7 @@
 
              {
                 "action"  : "socket_io.emit",
-                "data"    : ["storeFile", { "fileName": "test.png" }, "{{data}}"],
+                "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953 }, "{{data}}"],
                 "expected": [[ "fileIsStored", { } ]], 
                 "wait"    : { "delay": 3000 }
              }
