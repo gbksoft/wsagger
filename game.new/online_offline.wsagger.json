@@ -32,16 +32,15 @@
           "action"  : "load.loadJSON",
           "wait"    : { "delay": 3000 }, 
           "data"    : "login_CID.wsagger.json", 
-          "keysOut" : "login_CID",
-          "expected": { }
+          "expected": { "login_CID": "{{!login_CID}}" }
         },
 
         { 
           "action"  : "call.callWsagger",
           "wait"    : { "delay": 30000 }, 
           "data"    : "{{login_CID}}",
-          "expected": { "doer.socket_io": {} },
-          "keysOut" : [ "doer.socket_io" ]
+          "expected": { "doer.socket_io" : {} },
+          "dataOut" : { "doer.socket_io" : "{{doer.socket_io}}" }
         },
 
         {
