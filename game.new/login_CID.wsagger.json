@@ -42,8 +42,11 @@
             "data": { 
               "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
               "query": {}
-            }         
-          }
+            },
+            "dataOut" : {"CID_rest": "{{CID_rest}}", "CID_node": "{{CID_node}}"}
+          },
+          
+          "dataOut" : {"CID_rest": "{{CID_rest}}", "CID_node": "{{CID_node}}"}
         },
 
         { 

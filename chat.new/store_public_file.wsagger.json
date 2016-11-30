@@ -30,22 +30,48 @@
 
    "scenarios": [
        {
-          "name": "change user role",
+          "name": "block open group",
           "parameters": [
-             { "in": "formData", "name": "userId",  "description": "", "dataType": "string", "default_in": "3"}
           ],
-          "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}], 
-               "waitForResponse": { "delay": 3000, "data": [["connected", {}]] }
+          "data": [
+             { 
+                "action": "http.request",
+                "data": {
+                   "method": "POST", 
+                   "host": "{{REST.host}}", 
+                   "port": "{{REST.port}}", 
+                   "path": "{{REST.path}}/v1/user/login", 
+                   "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+                   "queryData":"username={{user.username}}&password={{user.password}}"
+                },          
+                "expected": { "result": { "token": "{{!token}}"}},
+                "wait": {"delay": 5000} 
              },
 
-             { "action": "request", "data": ["createGroup", {"type": "closed"}], 
-               "waitForResponse": { "delay": 3000, "data": [["newGroup",  {"id": "{{!groupId}}"}]] }
+             {
+                "action": "socket_io.connect",           
+                "data": { 
+                   "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+                   "query": { "query": "token={{token}}" }
+                },
+                "expected": [[ "connected", {}]],
+                "wait": {"delay": 3000}
              },
 
-             { "action": "request", "data": ["requestForJoin", {"groupId": "{{groupId}}", "messageText": "!!!"}], 
-               "waitForResponse": { "delay": 3000, "data": [["requestAccepted",  {"groupId": "{{groupId}}", "messageText": "!!!"}]] }
+             {
+                "action"  : "load.loadFile",
+                "data"    : "png/0.png", 
+                "dataOut" : "data", 
+                "wait"    : { "delay": 3000 }
+             },
+
+             {
+                "action"  : "socket_io.emit",
+                "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953, "messageType": "group", "messageTypeId": "0" }, "{{data}}"],
+                "expected": [[ "fileIsStored", { } ]], 
+                "wait"    : { "delay": 3000 }
              }
+
           ]
        }
     ]

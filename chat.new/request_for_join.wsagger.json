@@ -33,31 +33,47 @@
           "name": "block open group",
           "parameters": [
           ],
-          "flow": [
-             { "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username={{username}}&password={{password}}"}],
-               "wait": { "delay": 3000, "expected": [["connected", {}]] }
+          "data": [
+             { 
+                "action": "http.request",
+                "data": {
+                   "method": "POST", 
+                   "host": "{{REST.host}}", 
+                   "port": "{{REST.port}}", 
+                   "path": "{{REST.path}}/v1/user/login", 
+                   "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+                   "queryData":"username={{user.username}}&password={{user.password}}"
+                },          
+                "expected": { "result": { "token": "{{!token}}"}},
+                "wait": {"delay": 5000} 
              },
 
-             { "action": "request", "data": ["createGroup", {"name": "{{groupName}}", "type": "open"}],
-               "wait": { "delay": 3000, "expected": [["newGroup",  {"id": "{{!groupId}}", "name": "{{groupName}}"}]] }
+             {
+                "action": "socket_io.connect",
+                "data": { 
+                   "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+                   "query": { "query": "token={{token}}" }
+                },
+                "expected": [[ "connected", {}]],
+                "wait": {"delay": 3000}
              },
 
-             { "action": "request", "data": ["blockGroup", {"groupId": "{{groupId}}", "reason": "reason"}],
-               "wait": { "delay": 3000, "expected": [["groupIsBlocked",  {"groupId": "{{groupId}}", "reason": "reason"}]] }
+             { 
+                "action": "socket_io.emit", 
+                "data": ["createGroup", {"type": "closed"}], 
+                "expected": [["newGroup",  {"id": "{{!groupId}}"}]],
+                "wait": { "delay": 3000 }
              },
 
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"],
-               "wait": { "delay": 3000, "expected": [["serverError",  {"type": "group is blocked"}]] }
-             },
-
-             { "action": "request", "data": ["unblockGroup", {"groupId": "{{groupId}}", "reason": "reason"}],
-               "wait": { "delay": 3000, "expected": [["groupIsUnblocked",  {"groupId": "{{groupId}}", "reason": "reason"}]] }
-             },
-
-             { "action": "request", "data": ["changeGroup", "{{groupId}}"],
-               "wait": { "delay": 3000, "expected": [["joinedTo",  {"groupId": "{{groupId}}"}]] }
+             { 
+                "action": "socket_io.emit", 
+                "data": ["requestForJoin", {"groupId": "{{groupId}}", "messageText": "!!!"}], 
+                "expected": [
+                   ["requestAccepted",  {"groupId": "{{groupId}}", "messageText": "!!!"}], 
+                   ["requestForJoin",   {"groupId": "{{groupId}}", "messageText": "!!!"}]
+                ], 
+                "wait": { "delay": 3000 }
              }
-
           ]
        }
     ]

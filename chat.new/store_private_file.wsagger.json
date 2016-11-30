@@ -61,16 +61,29 @@
              {
                 "action"  : "load.loadFile",
                 "data"    : "png/0.png", 
-                "keysOut" : "data", 
+                "dataOut" : "data", 
                 "wait"    : { "delay": 3000 }
              },
 
              {
                 "action"  : "socket_io.emit",
-                "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953 }, "{{data}}"],
-                "expected": [[ "fileIsStored", { } ]], 
+                "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953, "messageType": "user", "messageTypeId": "0" }, "{{data}}"],
+                "expected": [[ "fileIsStored", { "url": "{{!url}}", "path": "{{!path}}" } ]], 
                 "wait"    : { "delay": 3000 }
+             },
+
+             { 
+                "action": "http.request",
+                "data": {
+                   "method": "GET", 
+                   "host": "{{REST.host}}", 
+                   "port": "{{REST.port}}", 
+                   "path": "{{REST.path}}{{path}}", 
+                   "headers": {"Authorization": "Bearer {{token}}"}
+                },          
+                "wait": {"delay": 5000} 
              }
+
 
           ]
        }

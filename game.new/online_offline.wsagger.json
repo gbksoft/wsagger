@@ -7,8 +7,9 @@
   },
 
   "REST_" : {
-    "dev": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
-    "loc": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" }
+    "dev":  { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
+    "loc":  { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
+    "loc2": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" }
   },
   
   "user_" : {
@@ -18,7 +19,8 @@
   
   "server_" : {
     "dev":  { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
-    "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
+    "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" },
+    "loc2": { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28788", "path": "/front_space" }
   },
 
   "scenarios": [
@@ -32,15 +34,14 @@
           "action"  : "load.loadJSON",
           "wait"    : { "delay": 3000 }, 
           "data"    : "login_CID.wsagger.json", 
-          "expected": { "login_CID": "{{!login_CID}}" }
+          "dataOut" : "login_CID"
         },
 
         { 
           "action"  : "call.callWsagger",
           "wait"    : { "delay": 30000 }, 
           "data"    : "{{login_CID}}",
-          "expected": { "doer.socket_io" : {} },
-          "dataOut" : { "doer.socket_io" : "{{doer.socket_io}}" }
+          "expected": { "doer.socket_io" : "{{!doer.socket_io}}" }
         },
 
         {
