@@ -3,11 +3,11 @@ var fs    = require('fs'),
     https = require('https')
 ;
 
-var SSL_KEY_PATH  = "/data/home/user/0/game/auth/key";
-var SSL_CERT_PATH = "/data/home/user/0/game/auth/crt";
+// var SSL_KEY_PATH  = "/data/home/user/0/game/auth/key";
+// var SSL_CERT_PATH = "/data/home/user/0/game/auth/crt";
 
-var ssl_key  = fs.readFileSync(SSL_KEY_PATH);
-var ssl_cert = fs.readFileSync(SSL_CERT_PATH);
+// var ssl_key  = fs.readFileSync(SSL_KEY_PATH);
+// var ssl_cert = fs.readFileSync(SSL_CERT_PATH);
 
 function restQuery(method, proto, host, port, queryPath, queryData, headers, callback) {
 
@@ -26,8 +26,8 @@ function restQuery(method, proto, host, port, queryPath, queryData, headers, cal
    if (proto == 'https://') {
       http_ = https;
       options.rejectUnauthorized = false;
-      options.key                = ssl_key;
-      options.cert               = ssl_cert;
+      // options.key                = ssl_key;
+      // options.cert               = ssl_cert;
 
    } else {
       http_ = http;

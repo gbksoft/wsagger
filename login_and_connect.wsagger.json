@@ -6,6 +6,8 @@
       "title": "GBKSOFT chat API"
    },
 
+   "name": "login_and_connect",
+
    "REST_" : {
       "loc":  { "proto": "http://", "host": "localhost",                    "port": "28780", "path": "/rest" },
       "dev":  { "proto": "http://", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/rest" },
@@ -28,11 +30,8 @@
        "petr":       { "username": "petr",     "password": "" }
    },
 
-   "scenarios": [
-       {
-          "name": "block open group",
-          "parameters": [
-          ],
+   "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "user.username", "user.password", "server.proto", "server.host",  "server.port", "server.path"], 
+
           "data": [
              { 
                 "action": "http.request",
@@ -44,37 +43,21 @@
                    "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
                    "queryData":"username={{user.username}}&password={{user.password}}"
                 },          
-                "expected": { "result": { "token": "{{!token}}"}},
+                "expected": { "result": { "id": "{{!userId}}", "token": "{{!token}}"}},
                 "wait": {"delay": 5000} 
              },
 
              {
-                "action": "socket_io.connect",
+                "action": "socket_io.connect",           
                 "data": { 
                    "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
                    "query": { "query": "token={{token}}" }
                 },
-                "expected": [[ "connected", {}]],
-                "wait": {"delay": 3000}
-             },
-
-             { 
-                "action": "socket_io.emit", 
-                "data": ["createGroup", {"type": "closed"}], 
-                "expected": [["newGroup",  {"id": "{{!groupId}}"}]],
-                "wait": { "delay": 3000 }
-             },
-
-             { 
-                "action": "socket_io.emit", 
-                "data": ["requestForJoin", {"groupId": "{{groupId}}", "messageText": "!!!"}], 
-                "expected": [
-                   ["requestAccepted",  {"groupId": "{{groupId}}", "messageText": "!!!"}], 
-                   ["requestForJoin",   {"groupId": "{{groupId}}", "messageText": "!!!"}]
-                ], 
-                "wait": { "delay": 3000 }
+                "wait": {"delay": 3000},
+                "expected": [[ "connected", {}]]
              }
-          ]
-       }
-    ]
+
+          ],
+          
+          "dataOut": [ "doer.socket_io", "userId" ]
 }

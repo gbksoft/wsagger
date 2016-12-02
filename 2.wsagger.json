@@ -31,42 +31,27 @@
   },
 
   "parameters_": [
-    { "name": "messageText", "in": "2_send_message_messageText" }
   ],
 
-      "data": [
+  "data": [
 
         { 
           "action": "exec.execAsync",
-          "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "server.proto", "server.host",  "server.port", "server.path"], 
           "data"  : [
-            { 
-              "action"  : "call.callWsaggerFile",
-              "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
-              "wait"    : { "delay": 30000 }, 
-              "expected": { "doer.socket_io": {} },
-              "dataOut" : [ "doer.socket_io", "userId" ]
-            },
-
             {
-              "action"  : "process.emit",
-              "data"    : ["slaveIsReady", { "slaveUserId": "{{userId}}" }]
-            },
+              "action"  : "process.sendToParent",
+              "data"    : ["slaveIsReady", { "slaveUserId": "1" }]
+            }
           
-            { 
-              "action"  : "socket_io.expect",
-              "wait"    : { "delay": 5000 },
-              "expected": [[ "messageUser", { "messageText": "{{!messageTextReceived}}" }]] 
-            } 
-          ],          
-          "dataOut" : [ "messageTextReceived" ]
+          ]          
+
         },
 
         { 
           "action"  : "process.expect",
-          "wait"    : { "delay": 30000 }, 
-          "expected": [{ "slaveIsReady": { "slaveUserId": "{{!slaveUserId}}" }}]
+          "wait"    : { "delay": 300000 }, 
+          "expected": [{ "slaveIsReady": { "slaveUserId": "1" }}]
         }
 
-      ]
+  ]
 }

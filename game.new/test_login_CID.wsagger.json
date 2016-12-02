@@ -7,19 +7,26 @@
   },
 
   "REST_" : {
-    "dev": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" },
-    "loc": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net", "port": "443", "path": "/rest" }
+    "dev":  { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net",  "port": "443", "path": "/rest" },
+    "test": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net",  "port": "443", "path": "/rest" },    
+    "live": { "proto": "https:", "host": "gambling-game-api.live.gbksoft.net", "port": "443", "path": "/rest" },
+    "loc":  { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net",  "port": "443", "path": "/rest" },
+    "loc2": { "proto": "https:", "host": "gambling-game-api.dev.gbksoft.net",  "port": "443", "path": "/rest" }
   },
   
   "user_" : {
-    "fenix":      { "username": "stalker.fenix@gmail.com", "password": "123456", "id": "1"},
-    "devgbksoft": { "username": "devgbksoft@gmail.com",    "password": "123456", "id": "4"}
+    "fenix":  { "username": "stalker.fenix@gmail.com",  "password": "123456", "id": "1"},
+    "geralt": { "username": "stalker.geralt@gmail.com", "password": "123456", "id": "2"}
   },
   
   "server_" : {
-    "dev":  { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net", "port": "28790", "path": "/front_space" },
-    "loc":  { "proto": "socket.io", "host": "127.0.0.1",                          "port": "28780", "path": "/front_space" }
+    "dev":  { "proto": "socket.io", "host": "gambling-game-node.dev.gbksoft.net",  "port": "28790", "path": "/front_space" },
+    "test": { "proto": "socket.io", "host": "gambling-game-node.test.gbksoft.net", "port": "28791", "path": "/front_space" },
+    "live": { "proto": "socket.io", "host": "gambling-game-node.live.gbksoft.net", "port": "28792", "path": "/front_space" },
+    "loc":  { "proto": "socket.io", "host": "127.0.0.1",                           "port": "28780", "path": "/front_space" },
+    "loc2": { "proto": "socket.io", "host": "127.0.0.1",                           "port": "28788", "path": "/front_space" }
   },
+
 
   "scenarios": [
     {
@@ -32,7 +39,7 @@
           "action"  : "load.loadJSON",
           "wait"    : { "delay": 3000 }, 
           "data"    : "login_CID.wsagger.json", 
-          "keysOut" : "login_CID",
+          "dataOut" : "login_CID",
           "expected": { }
         },
 
@@ -42,7 +49,7 @@
           "wait"    : { "delay": 30000 }, 
           "data"    :  "{{login_CID}}",
           "expected": { "doer.socket_io": {} },
-          "keysOut" : [ "doer.socket_io" ]
+          "dataOut" : "doer.socket_io"
         }
       
       ]

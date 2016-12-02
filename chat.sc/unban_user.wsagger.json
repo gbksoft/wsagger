@@ -47,7 +47,7 @@
              },
 
              {
-               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password=guest"}],
+               "action": "login_and_connect", "data": [{"path": "/v1/user/login", "queryData": "username=guest&password="}],
                "wait": { "delay": 3000, "expected": [["connected"]]  }
              }
           ]
