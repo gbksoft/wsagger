@@ -34,39 +34,74 @@
     { "name": "messageText", "in": "2_send_message_messageText" }
   ],
 
-      "data": [
+  "data": [
 
+    { 
+      "action"    : "ipc.serve",
+      "data"      : "test_channel",
+      "expected"  : [["message", { "slaveIsReady": "{{!slaveUserId}}" }]],
+      "waitAsync" : { "delay": 3000 }
+    },
+
+    { 
+      "action": "exec.execAsync",
+      "data"  : [
         { 
-          "action": "exec.execAsync",
-          "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "server.proto", "server.host",  "server.port", "server.path"], 
-          "data"  : [
-            { 
-              "action"  : "call.callWsaggerFile",
-              "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
-              "wait"    : { "delay": 30000 }, 
-              "expected": { "doer.socket_io": {} },
-              "dataOut" : [ "doer.socket_io", "userId" ]
-            },
-
-            {
-              "action"  : "process.emit",
-              "data"    : ["slaveIsReady", { "slaveUserId": "{{userId}}" }]
-            },
-          
-            { 
-              "action"  : "socket_io.expect",
-              "wait"    : { "delay": 5000 },
-              "expected": [[ "messageUser", { "messageText": "{{!messageTextReceived}}" }]] 
-            } 
-          ],          
-          "dataOut" : [ "messageTextReceived" ]
+          "action"  : "call.callWsaggerFile",
+          "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
+          "wait"    : { "delay": 30000 }, 
+          "expected": { "doer.socket_io": {} },
+          "dataOut" : [ "doer.socket_io", "userId" ]
         },
 
+        {
+          "action"  : "ipc.send",
+          "data"    : ["test_channel", {"slaveIsReady": "{{userId}}" }]
+        },
+          
         { 
-          "action"  : "process.expect",
-          "wait"    : { "delay": 30000 }, 
-          "expected": [{ "slaveIsReady": { "slaveUserId": "{{!slaveUserId}}" }}]
+          "action"  : "socket_io.expect",
+          "wait"    : { "delay": 5000 },
+          "expected": [[ "messageUser", { "messageText": "{{!messageTextReceived}}" }]] 
+        }, 
+
+        {
+          "action"  : "ipc.send",
+          "data"    : ["test_channel", {"messageTextReceived": "{{messageTextReceived}}" }],
+          "wait"    : { "delay": 3000 }
         }
 
       ]
+    
+    },
+
+    { 
+      "wait"    : { "delay": 3000 } 
+    },
+
+    { 
+      "action"    : "ipc.serve",
+      "data"      : "test_channel",
+      "expected"  : [["message", { "messageTextReceived": "{{!messageText}}" }]],
+      "waitAsync" : { "delay": 3000 }
+    },
+
+    { 
+      "action"  : "call.callWsaggerFile",
+      "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
+      "wait"    : { "delay": 30000 }, 
+      "expected": { "doer.socket_io": {} },
+      "dataOut" : [ "doer.socket_io", "userId" ]
+    },
+
+    { 
+      "action"  : "socket_io.emit",
+      "data"    : ["sendMessage", {"type": "user", "recipientId": "{{slaveUserId}}", "messageText": "{{messageText}}"}],
+      "wait"    : { "delay": 5000 },
+      "expected": [[ "messageUser", { "messageText": "{{!messageText}}" }]] 
+    } 
+
+
+  ]
+
 }

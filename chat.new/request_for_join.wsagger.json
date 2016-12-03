@@ -28,44 +28,27 @@
        "petr":       { "username": "petr",     "password": "" }
    },
 
-   "scenarios": [
-       {
-          "name": "block open group",
-          "parameters": [
-          ],
-          "data": [
-             { 
-                "action": "http.request",
-                "data": {
-                   "method": "POST", 
-                   "host": "{{REST.host}}", 
-                   "port": "{{REST.port}}", 
-                   "path": "{{REST.path}}/v1/user/login", 
-                   "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
-                   "queryData":"username={{user.username}}&password={{user.password}}"
-                },          
-                "expected": { "result": { "token": "{{!token}}"}},
-                "wait": {"delay": 5000} 
-             },
+   "name": "block open group",
+  
+   "data": [
 
-             {
-                "action": "socket_io.connect",
-                "data": { 
-                   "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
-                   "query": { "query": "token={{token}}" }
-                },
-                "expected": [[ "connected", {}]],
-                "wait": {"delay": 3000}
-             },
+      { 
+              "action"  : "call.callWsaggerFile",
+              "data"    : [ "./login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
+              "wait"    : { "delay": 30000 }, 
+              "expected": { "doer.socket_io": {} },
+              "dataOut" : [ "doer.socket_io", "userId" ]
+      },
 
-             { 
+      { 
                 "action": "socket_io.emit", 
                 "data": ["createGroup", {"type": "closed"}], 
                 "expected": [["newGroup",  {"id": "{{!groupId}}"}]],
                 "wait": { "delay": 3000 }
-             },
+      },
 
-             { 
+
+      { 
                 "action": "socket_io.emit", 
                 "data": ["requestForJoin", {"groupId": "{{groupId}}", "messageText": "!!!"}], 
                 "expected": [
@@ -73,8 +56,19 @@
                    ["requestForJoin",   {"groupId": "{{groupId}}", "messageText": "!!!"}]
                 ], 
                 "wait": { "delay": 3000 }
-             }
-          ]
-       }
-    ]
+      },
+
+
+      {
+        "action": "socket_io.emit", 
+        "data": ["changeGroup", "{{groupId}}"],
+        "wait": { "delay": 3000 },
+        "expected": [
+           ["joinedTo",       { "groupId": "{{groupId}}", "role": "owner" }],
+           ["historySpecial", { "type":"group", "typeId":"{{groupId}}", "messages":[{}] }]
+        ] 
+      }
+
+   ]
+
 }
