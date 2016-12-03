@@ -1,0 +1,28 @@
+{
+  "wsagger": "1.0.0",
+
+  "name": "connect to socket.io without token",
+  
+  "keysIn":  ["REST.host", "REST.port", "REST.path", "server.host", "server.port", "server.path", "user.username", "user.password"],
+  "dataOut": ["doer.socket_io"],
+          
+  "data": {
+        //  "action": "exec.execSync",            
+        //  "wait": {"delay": 7000}, 
+          // "expected": { "CID_node": "{{!CID_node}}", "CID_rest": "{{!CID_rest}}" },
+          // "data": { 
+            "action": "socket_io.connect",           
+            "wait": {"delay": 3000}, 
+            "expected": [[ "CID", {"CID_rest": "{{!CID_rest}}", "CID_node": "{{!CID_node}}"}]],
+            "data": { 
+              "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+              "query": {}
+            }         
+
+          // }
+
+        // }
+  }  
+
+}
+

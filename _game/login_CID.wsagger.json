@@ -1,0 +1,69 @@
+{
+  "wsagger": "1.0.0",
+
+  "name": "login/connect test",
+
+  "keysIn":  ["REST.proto", "REST.host", "REST.port", "REST.path", "user.username", "user.password", "server.proto", "server.host", "server.port", "server.path"],
+  "dataOut": ["doer.socket_io"],
+          
+  "data": [
+
+        { 
+          "action": "exec.execSync",            
+          "wait": {"delay": 7000}, 
+          "expected": { "CID_node": "{{!CID_node}}", "CID_rest": "{{!CID_rest}}" },
+          "data": { 
+            "action": "socket_io.connect",           
+            "wait": {"delay": 3000}, 
+            "expected": [[ "CID", {"CID_rest": "{{!CID_rest}}", "CID_node": "{{!CID_node}}"}]],
+            "data": { 
+              "url": "{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}",            
+              "query": {}
+            },
+            "dataOut" : {"CID_rest": "{{CID_rest}}", "CID_node": "{{CID_node}}"}
+          },
+          
+          "dataOut" : {"CID_rest": "{{CID_rest}}", "CID_node": "{{CID_node}}"}
+        },
+
+        { 
+          "action": "https.request",           
+          "data": {
+            "method": "POST", 
+            "host": "{{REST.host}}", 
+            "port": "{{REST.port}}", 
+            "path": "{{REST.path}}/v1/users/login", 
+            "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+            "queryData":"email={{user.username}}&password={{user.password}}"
+          },          
+          "wait": {"delay": 5000},           
+          "expected": { "result": { "accessToken": {"token": "{{!token}}"}}}
+        },
+
+        { 
+          "action": "https.request",           
+          "data": {
+            "method": "POST", 
+            "host": "{{REST.host}}", 
+            "port": "{{REST.port}}", 
+            "path": "{{REST.path}}/v1/connections", 
+            "headers": {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer {{token}}"},
+            "queryData":"{\"connection_id\": \"{{CID_rest}}\"}"
+          },          
+          "wait": { "delay": 5000 },
+          "expected": { "code": 200 }
+        },
+
+       	{
+          "action": "socket_io.connect",           
+          "wait": {"delay": 3000}, 
+          "expected": [[ "connectedTo", {}]],
+          "data": { 
+            "url": "{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}",            
+            "query": { "query": "token={{CID_node}}{{token}}" }
+          }         
+        }
+      ]
+
+}
+

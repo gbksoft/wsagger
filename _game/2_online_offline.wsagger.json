@@ -1,0 +1,43 @@
+{
+  "wsagger": "1.0.0",
+
+  "name": "Gambling game online/offline test",
+
+  "data": [
+
+    { 
+      "action"  : "call.callWsaggerFile",
+      "wait"    : { "delay": 30000 }, 
+      "data"    : ["login_CID.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "{{user.username}}", "{{user.password}}", "{{server.proto}}", "{{server.host}}", "{{server.port}}", "{{server.path}}"],
+      "expected": { "doer.socket_io" : "{{!doer.socket_io}}" },
+      "dataOut" : [ "doer.socket_io", "userId" ]
+    },
+
+    {
+      "action"  : "socket_io.emit",
+      "data"    : ["getUsersOnline", { "type": "facebook" }],
+      "wait"    : { "delay": 3000 },
+      "expected": [[ "usersOnline", { "type": "facebook", "userIds": "{{!facebookFriends}}" } ]]
+    },
+
+    {
+      "action": "socket_io.expect",
+      "expected": [[ "usersOnline", {} ], [ "usersOffline", {} ]],
+      "waitAsync": { "delay": 3000000 }
+    },
+
+    { 
+      "action": "exec.execAsync",
+      "data"  : [
+        { 
+          "action"  : "call.callWsaggerFile",
+          "wait"    : { "delay": 30000 }, 
+          "data"    : ["login_CID.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "stalker.geralt@gmail.com", "123456", "{{server.proto}}", "{{server.host}}", "{{server.port}}", "{{server.path}}"],
+          "expected": { "doer.socket_io" : "{{!doer.socket_io}}" },
+          "dataOut" : [ "doer.socket_io", "userId" ]
+        }
+      ]
+    }
+
+  ]
+}

@@ -2,4 +2,4 @@
 _deploy
 node_modules
 *.log
-/nbproject/private/
+nbproject
