@@ -1,0 +1,35 @@
+{
+   "wsagger": "1.0.0",
+   "origin": {
+      "type": [
+         "swagger",
+         "2.0"
+      ],
+      "info": {
+         "title": "GAMBLING GAME API",
+         "version": "1.0.4",
+         "description": ""
+      }
+   },
+   "name": "Get profile identity of user",
+   "description": "Get profile identity of user. User token in header required.",
+   "data": [
+      {
+         "action": "https.request",
+         "data": {
+            "method": "GET",
+            "host": "{{REST.host}}",
+            "port": "{{REST.port}}",
+            "path": "/rest/v1/profile-identity",
+            "headers": {
+               "Content-Type": "application/json",
+               "Accept": "application/json"
+            },
+            "queryData": ""
+         },
+         "wait": {
+            "delay": 3000
+         }
+      }
+   ]
+}
