@@ -4,50 +4,68 @@
 
 "use strict";
 
-var fs       = require ('fs'),
-    jsonlint = require ('jsonlint')
+var fs          = require ('fs'),
+    jsonlint    = require ('jsonlint'),
+    querystring = require('querystring')
 ;    
 
-var origin = fs.readFileSync('0.json', 'utf8');
-
-// var result = JSON.stringify(prepare(jsonlint.parse(origin)));
-// var result = JSON.stringify(prepare(jsonlint.parse(origin)), null, 3);
-
+var origin   = fs.readFileSync('0.json', 'utf8');
 var prepared = prepare(jsonlint.parse(origin)); if (!prepared) return;
-var r        = convert(prepared);
+var r        = convert(prepared, {'REST.host': 'gambling-game-api.dev.gbksoft.net' });
 
 fs.writeFileSync('0.index.json', JSON.stringify(r.index, null, 3));
-for (var scenario of r.scenarios) fs.writeFileSync(scenario.key + '.wsagger.json', JSON.stringify(scenario, null, 3));
+for (var scenario of r.scenarios) fs.writeFileSync(scenario.url, JSON.stringify(scenario, null, 3));
 
-function convert(prepared) {
+
+//////////////////////////////////////////////////////////////////////
+
+function convert(prepared, options0) {
   var r = {index: {}, scenarios: []}, scenarioNum = 0, prefix = '0000'; 
   for (var ps of prepared.scenarios) {
-    var sn  = '' + ++scenarioNum;
-    var key = prefix.substr(sn.length) + sn + (ps.operationId ? '.' + ps.operationId : '');
-    r.index[key] = {tags: ps.tags};
+    var sn   = '' + ++scenarioNum;
+    var url  = prefix.substr(sn.length) + sn + (ps.operationId ? '.' + ps.operationId : '')  + '.wsagger.json';
+    var name = ps.summary ? ps.summary : url;
+
+    r.index[url] = {
+      tags: ps.tags,
+      name: name
+    };
 
     var sc = {
-      wsagger: "1.0.0", 
-      origin: { type: prepared.origin, info: prepared.info }, 
-      name: ps.summary,
-      description: ps.description,
-      data: []
+      wsagger    : "1.0.0", 
+      origin     : { type: prepared.origin, info: prepared.info }, 
+      name       : name,
+      data       : [],
+      url        : url,
+      parameters : []
     }; 
+
+    if (ps.description) { sc.description = ps.description; r.index[url].description = ps.description; }
 
     var d = {
       action: prepared.variants.schemes[0] + '.request',
       data: {
-        method: ps.method.toUpperCase(), 
-        host: "{{REST.host}}", 
-        port: "{{REST.port}}", 
-        path: prepared.parameters.basePath + ps.path, 
-        headers: {},
-        queryData: ''
+        method    : ps.method.toUpperCase(), 
+        host      : options0['REST.host'], 
+        path      : prepared.parameters.basePath + ps.path + '', 
+        headers   : {},
+        queryData : ''    
       },          
-      wait: {delay: 3000},     
+      wait: { delay: 3000 },
       // expected: { "result": { "accessToken": {"token": "{{!token}}"}}}
 
     };
+
+    var p_ = {};
+
+    for (var p of ps.parameters) { 
+      if (!(p.in in p_)) p_[p.in] = {};
+      convertParameter(p, sc.parameters, p_[p.in]); 
+    }
+
+    if (p_.path)  { d.data.path = d.data.path.replace(/\{[^}]*\}/g, (x) => { x.substr(1, x.length - 2); return (x in p_.path) ? p_.path[x] : '{' + x + '}'; }); }
+    if (p_.query) { d.data.path += '?' + querystring.stringify(p_.query); }
+    if (p_.body)  { d.data.queryData_ = p_.body; }
 
     if (ps.consumes && ps.consumes.length) d.data.headers['Content-Type'] = ps.consumes[0];
     if (ps.produces && ps.produces.length) d.data.headers['Accept']       = ps.produces[0];
@@ -122,7 +140,7 @@ function	preparePaths(paths, scenarios) {
           prepareParameters(array_(s0.parameters), scenario.parameters);
 
         } else if (key === 'responses') {
-          prepareResponses(s0.responses, scenario.responses);
+          prepareResponses(s0.responses, scenario.responses, path, method, key);
 
         } else {
           throw new Error(JSON.stringify({ error: 'bad key in /[[' + path + ']]/[[' + method + ']]/', key: key, value: s0[key] }));
@@ -136,26 +154,106 @@ function	preparePaths(paths, scenarios) {
   }
 }
 
+var simplyMovedKeys = ['type', 'enum', 'format', 'required', 'description', 'default'];
 
-function  prepareParameters(parameters0, parameters) {
+function convertParameter(p0, parameters, p__) {
+  var p = { name: p0.name }; 
+  for (var k of simplyMovedKeys.concat(['schema'])) { 
+    if (k in p0) { p[k] = p0[k]; } 
+  }  
+
+  parameters.push(p);
+  p__[p.name] = '{{' + p.name + '}}';
+   
+  // if (p0.in === 'body') 
+  // { "name": "messageText", "in": "2_send_message_messageText" }
+
+} 
+
+
+function prepareParameters(parameters0, parameters) {
   for (var p0 of parameters0) {
     var p = {};
     for (var key in p0) {
-      if (['in', 'name', 'type', 'enum', 'required', 'description', 'schema'].indexOf(key) >= 0) {
+      if (key === 'in') {
         p[key] = p0[key];
+      
+      } else if (simplyMovedKeys.indexOf(key) >= 0) {
+        p[key] = p0[key];
+
+      } else if (key === 'schema') {
+        prepareParameterSchema(p0.schema, (p.schema = {}, p0));
 
       } else {
         throw new Error(JSON.stringify({ error: 'bad key in parameter', parameter: p0, key: key, value: p0[key] }));
       
       } 
     }   
+
+    if (('schema' in p) && (('type' in p) || ('enum' in p))) {
+      throw new Error(JSON.stringify({ error: 'bad keys set (schema, type, enum) in parameter', parameter: p }));
+       
+    } else if (!('name' in p)) {
+      throw new Error(JSON.stringify({ error: 'no name in parameter', parameter: p }));
+
+    } elseif (!(('schema' in p) || ('type' in p) || ('enum' in p))) {
+      throw new Error(JSON.stringify({ error: 'no keys set (schema, type, enum) in parameter', parameter: p }));
+
+    }
+
     parameters.push(p);
   }
 }
 
+function prepareParameterSchema(schema0, schema, p0) {
+if (!(schema0 && (typeof schema0 === 'object'))) throw new Error(JSON.stringify({ error: 'bad parameter schema', parameter: p0 }));    
+  
+  for (var k in schema0) {
+    if ((k === 'properties') && schema0[k] && (typeof schema0[k] === 'object')) {
+      schema.properties = {};
+      for (var name in schema0.properties) {
+        var sch_ = schema0.properties[name];
+        if (sch_ && (typeof sch_ === 'object')) {
+          schema.properties[name] = {};
+          
+          for (var key in sch_) {
+            if (['type', 'enum', 'required', 'description', 'format'].indexOf(key) >= 0) {
+              schema.properties[name][key] = sch_[key];
 
-function prepareResponses(responses0, responses) {
-  if (!(responses && (typeof responses == 'object'))) throw new Error(JSON.stringify({ error: 'bad responses', responses: responses }));    
+            } else {
+              throw new Error(JSON.stringify({ error: 'bad key in parameter schema properties', parameter: p0, name: name, key: key }));
+      
+            } 
+          }
+
+        } else {
+          throw new Error(JSON.stringify({ error: 'bad object in parameter schema properties', schema: schema0, name: name }));
+        
+        }  
+      }
+
+    } else if ((k === "type") && (schema0[k] === 'object')) {
+
+    } else if (k === "$ref") {
+      schema[k] = schema0[k];
+
+    } else if (k === 'required') {
+      schema[k] = schema0[k];
+
+    } else if (['format'].indexOf(k) >= 0) {
+      schema[k] = schema0[k];
+
+
+    } else {
+      throw new Error(JSON.stringify({ error: 'bad key in parameter schema', schema: schema0, key: k }));
+
+    }
+  }
+}
+
+
+function prepareResponses(responses0, responses, path, method, key) {
+  if (!(responses0 && (typeof responses0 === 'object'))) throw new Error(JSON.stringify({ error: 'bad responses', path: path, method: method, key: key, responses: responses0 }));    
   
   for (var rk in responses0) {
     var r = {}, r0 = responses0[rk];
