@@ -33,8 +33,8 @@
             "host": "{{REST.host}}", 
             "port": "{{REST.port}}", 
             "path": "{{REST.path}}/v1/users/login", 
-            "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
-            "queryData":"email={{user.username}}&password={{user.password}}"
+            "headers": {"Content-Type": "application/json", "Accept": "application/json"},
+            "queryData":"{\"email\":\"{{user.username}}\", \"password\": \"{{user.password}}\"}"
           },          
           "wait": {"delay": 5000},           
           "expected": { "result": { "accessToken": {"token": "{{!token}}"}}}

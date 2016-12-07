@@ -9,12 +9,15 @@ var fs          = require ('fs'),
     querystring = require('querystring')
 ;    
 
+var simplyMovedKeys = ['name', 'type', 'enum', 'format', 'required', 'description', 'default'];
+
 var origin   = fs.readFileSync('0.json', 'utf8');
 var prepared = prepare(jsonlint.parse(origin)); if (!prepared) return;
 var r        = convert(prepared, {'REST.host': 'gambling-game-api.dev.gbksoft.net' });
 
 fs.writeFileSync('0.index.json', JSON.stringify(r.index, null, 3));
 for (var scenario of r.scenarios) fs.writeFileSync(scenario.url, JSON.stringify(scenario, null, 3));
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -60,10 +63,10 @@ function convert(prepared, options0) {
 
     for (var p of ps.parameters) { 
       if (!(p.in in p_)) p_[p.in] = {};
-      convertParameter(p, sc.parameters, p_[p.in]); 
+      (p.in === 'body' ? convertBodyParameter : convertParameter)(p, sc.parameters, p_[p.in]); 
     }
 
-    if (p_.path)  { d.data.path = d.data.path.replace(/\{[^}]*\}/g, (x) => { x.substr(1, x.length - 2); return (x in p_.path) ? p_.path[x] : '{' + x + '}'; }); }
+    if (p_.path)  { d.data.path = d.data.path.replace(/\{[^}]*\}/g, (x) => { x = x.substr(1, x.length - 2); return (x in p_.path) ? p_.path[x] : '{' + x + '}'; }); }
     if (p_.query) { d.data.path += '?' + querystring.stringify(p_.query); }
     if (p_.body)  { d.data.queryData_ = p_.body; }
 
@@ -154,11 +157,12 @@ function	preparePaths(paths, scenarios) {
   }
 }
 
-var simplyMovedKeys = ['type', 'enum', 'format', 'required', 'description', 'default'];
+function convertParameter(p0, parameters, p__) { 
 
-function convertParameter(p0, parameters, p__) {
   var p = { name: p0.name }; 
   for (var k of simplyMovedKeys.concat(['schema'])) { 
+    // ??? but other
+
     if (k in p0) { p[k] = p0[k]; } 
   }  
 
@@ -170,8 +174,33 @@ function convertParameter(p0, parameters, p__) {
 
 } 
 
+function convertBodyParameter(p0, parameters, p__) { 
+
+  if (p0.schema && (typeof p0.schema === 'object') && p0.schema.properties && (typeof p0.schema.properties === 'object')) {
+    var schema = p0.schema; delete p0.schema;
+    for (var p in schema.properties) {
+      var pp = schema.properties[p];
+      p0_ = p0;
+      for (var k of simplyMovedKeys.concat(['schema'])) { 
+        // ??? but other
+        
+        if (k in pp) { p0_[k] = pp[k]; } 
+        else         { delete p0_[k]; }
+
+      }  
+
+      p0_.name = p;                                                 // !!! on last step only
+      convertParameter(p0_, parameters, p__)
+    }
+
+  } else {
+     convertParameter(p0, parameters, p__)
+
+   }
+}
 
 function prepareParameters(parameters0, parameters) {
+
   for (var p0 of parameters0) {
     var p = {};
     for (var key in p0) {
@@ -182,7 +211,7 @@ function prepareParameters(parameters0, parameters) {
         p[key] = p0[key];
 
       } else if (key === 'schema') {
-        prepareParameterSchema(p0.schema, (p.schema = {}, p0));
+        prepareParameterSchema(p0.schema, p.schema = {}, p0);
 
       } else {
         throw new Error(JSON.stringify({ error: 'bad key in parameter', parameter: p0, key: key, value: p0[key] }));
@@ -196,7 +225,7 @@ function prepareParameters(parameters0, parameters) {
     } else if (!('name' in p)) {
       throw new Error(JSON.stringify({ error: 'no name in parameter', parameter: p }));
 
-    } elseif (!(('schema' in p) || ('type' in p) || ('enum' in p))) {
+    } else if (!(('schema' in p) || ('type' in p) || ('enum' in p))) {
       throw new Error(JSON.stringify({ error: 'no keys set (schema, type, enum) in parameter', parameter: p }));
 
     }
@@ -206,7 +235,7 @@ function prepareParameters(parameters0, parameters) {
 }
 
 function prepareParameterSchema(schema0, schema, p0) {
-if (!(schema0 && (typeof schema0 === 'object'))) throw new Error(JSON.stringify({ error: 'bad parameter schema', parameter: p0 }));    
+  if (!(schema0 && (typeof schema0 === 'object'))) throw new Error(JSON.stringify({ error: 'bad parameter schema', parameter: p0 }));    
   
   for (var k in schema0) {
     if ((k === 'properties') && schema0[k] && (typeof schema0[k] === 'object')) {
@@ -249,6 +278,7 @@ if (!(schema0 && (typeof schema0 === 'object'))) throw new Error(JSON.stringify(
 
     }
   }
+
 }
 
 
