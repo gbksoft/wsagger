@@ -22,10 +22,10 @@
 
    "user_" : {
        "pavlo":      { "username": "pavlo",    "password": "pavlo" },
-       "alexr":      { "username": "alexr",    "password": "alexr" },
-       "roman":      { "username": "roman",    "password": "roman" },
-       "olexandr":   { "username": "olexandr", "password": "olexandr" },
-       "petr":       { "username": "petr",     "password": "petr" }
+       "alexr":      { "username": "alexr",    "password": "" },
+       "roman":      { "username": "roman",    "password": "" },
+       "olexandr":   { "username": "olexandr", "password": "" },
+       "petr":       { "username": "petr",     "password": "" }
    },
 
    

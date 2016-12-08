@@ -6,55 +6,34 @@
       "title": "GBKSOFT chat API"
    },
 
-   "REST_" : {
-      "loc":  { "proto": "http://", "host": "localhost",                    "port": "28780", "path": "/rest" },
-      "dev":  { "proto": "http://", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/rest" },
-      "test": { "proto": "http://", "host": "chat-nodejs.test.gbksoft.net", "port": "28782", "path": "/rest" },
-      "live": { "proto": "http://", "host": "chat-nodejs.live.gbksoft.net", "port": "28783", "path": "/rest" }
-   },
+   "name": "store private file",
 
-   "server_" : {
-      "loc":  { "proto": "socket.io", "host": "127.0.0.1",                    "port": "28780", "path": "/front_space" },
-      "dev":  { "proto": "socket.io", "host": "chat-nodejs.dev.gbksoft.net",  "port": "28781", "path": "/front_space" },
-      "test": { "proto": "socket.io", "host": "chat-nodejs.test.gbksoft.net", "port": "28782", "path": "/front_space" },
-      "live": { "proto": "socket.io", "host": "chat-nodejs.live.gbksoft.net", "port": "28783", "path": "/front_space" }
-   },
+   "data": [
 
-   "user_" : {
-       "pavlo":      { "username": "pavlo",    "password": "pavlo" },
-       "alexr":      { "username": "alexr",    "password": "" },
-       "roman":      { "username": "roman",    "password": "" },
-       "olexandr":   { "username": "olexandr", "password": "" },
-       "petr":       { "username": "petr",     "password": "" }
-   },
-
-   "name": "block open group",
-
-          "data": [
-            { 
-              "action"  : "call.callWsaggerFile",
-              "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
-              "wait"    : { "delay": 30000 }, 
-              "expected": { "doer.socket_io": {} },
-              "dataOut" : [ "doer.socket_io", "userId" ]
-            },
+      { 
+        "action"  : "call.callWsaggerFile",
+        "data"    : [ "login_and_connect.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "alexr", "", "{{server.proto}}", "{{server.host}}",  "{{server.port}}", "{{server.path}}" ],
+        "wait"    : { "delay": 30000 }, 
+        "expected": { "doer.socket_io": {} },
+        "dataOut" : [ "doer.socket_io", "userId", "token" ]
+      },
 
 
-             {
-                "action"  : "load.loadFile",
-                "data"    : "png/0.png", 
-                "dataOut" : "data", 
-                "wait"    : { "delay": 3000 }
-             },
+      {
+        "action"  : "load.loadFile",
+        "data"    : "png/0.png", 
+        "dataOut" : "data", 
+        "wait"    : { "delay": 3000 }
+      },
 
-             {
+      {
                 "action"  : "socket_io.emit",
                 "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953, "messageType": "user", "messageTypeId": "0" }, "{{data}}"],
-                "expected": [[ "fileIsStored", { "url": "{{!url}}", "path": "{{!path}}" } ]], 
+                "expected": [[ "fileIsStored", { "url": "{{!url}}", "path": "{{!path}}", "preview": { "url": "{{!urlPreview}}" }} ]], 
                 "wait"    : { "delay": 3000 }
-             },
+      },
 
-             { 
+      { 
                 "action": "http.request",
                 "data": {
                    "method": "GET", 
@@ -64,8 +43,6 @@
                    "headers": {"Authorization": "Bearer {{token}}"}
                 },          
                 "wait": {"delay": 5000} 
-             }
-
-
-          ]
+      }
+   ]
 }
