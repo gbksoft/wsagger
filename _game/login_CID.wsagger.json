@@ -14,7 +14,7 @@
           "expected": { "CID_node": "{{!CID_node}}", "CID_rest": "{{!CID_rest}}" },
           "data": { 
             "action": "socket_io.connect",           
-            "wait": {"delay": 3000}, 
+            "wait": {"delay": 5000}, 
             "expected": [[ "CID", {"CID_rest": "{{!CID_rest}}", "CID_node": "{{!CID_node}}"}]],
             "data": { 
               "url": "{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}",            
@@ -36,7 +36,7 @@
             "headers": {"Content-Type": "application/json", "Accept": "application/json"},
             "queryData":"{\"email\":\"{{user.username}}\", \"password\": \"{{user.password}}\"}"
           },          
-          "wait": {"delay": 5000},           
+          "wait": {"delay": 7000},           
           "expected": { "result": { "accessToken": {"token": "{{!token}}"}}}
         },
 
@@ -50,13 +50,13 @@
             "headers": {"Content-Type": "application/json", "Accept": "application/json", "Authorization": "Bearer {{token}}"},
             "queryData":"{\"connection_id\": \"{{CID_rest}}\"}"
           },          
-          "wait": { "delay": 5000 },
+          "wait": { "delay": 7000 },
           "expected": { "code": 200 }
         },
 
        	{
           "action": "socket_io.connect",           
-          "wait": {"delay": 3000}, 
+          "wait": {"delay": 5000}, 
           "expected": [[ "connectedTo", {}]],
           "data": { 
             "url": "{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}",            

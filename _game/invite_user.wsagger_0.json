@@ -1,0 +1,50 @@
+{
+  "wsagger": "1.0.0",
+
+  "name": "random invite",
+          
+  "data": [
+  
+    { 
+      "action": "exec.execSync",
+      "data"  : [
+        { 
+          "action"  : "call.callWsaggerFile",
+          "wait"    : { "delay": 3000 }, 
+          "data"    : ["login_CID.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "user1@example.com", "123123q", "{{server.proto}}", "{{server.host}}", "{{server.port}}", "{{server.path}}"],
+          "expected": { "doer.socket_io" : "{{!doer.socket_io}}" },
+          "dataOut" : [ "doer.socket_io", "userId" ]
+        },
+
+        {
+          "action"  : "socket_io.emit",
+          "data"    : ["inviteUser", {"type": "free", "rate": 0, "opponentId": 60}],
+          "wait"    : { "delay": 3000 },
+          "expected": [[ "gameInitialized", {"opponentId": 60, "gameId": "{{!gameId}}", "type": "free", "rate": 0} ]],
+          "dataOut": [ "gameId" ]
+        
+        }
+
+      ],
+
+      "dataOut": [ "gameId" ]    
+    },
+
+    { 
+      "action"  : "call.callWsaggerFile",
+      "wait"    : { "delay": 3000 }, 
+      "data"    : ["login_CID.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "user2@example.com", "123123q", "{{server.proto}}", "{{server.host}}", "{{server.port}}", "{{server.path}}"],
+      "expected": { "doer.socket_io" : "{{!doer.socket_io}}" },
+      "dataOut" : [ "doer.socket_io", "userId" ]
+    },
+
+    {
+      "action"  : "socket_io.emit",
+      "data"    : ["startGame", {"opponentId": 59, "gameId": "{{gameId}}"}],
+      "wait"    : { "delay": 3000 },
+      "expected": [[ "gameStarted", {"opponentId": 59, "gameId": "{{gameId}}"} ]]
+    }
+  
+  ]
+}
+
