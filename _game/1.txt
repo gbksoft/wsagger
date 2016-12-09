@@ -1,5 +1,5 @@
 
-882699 STEP  1 
+185574 STEP  1 
 
  { action: 'exec.execSync',
   data: 
@@ -16,9 +16,9 @@
   dataOut: [ 'gameId' ],
   num: 1 }
 
-882699 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\",\"user.username\":\"user1@example.com\",\"user.password\":\"123123q\",\"user.id\":\"59\"},\"data\":[{\"action\":\"call.callWsaggerFile\",\"wait\":{\"delay\":3000},\"data\":[\"login_CID.wsagger.json\",\"https\",\"gambling-game-api.dev.gbksoft.net\",443,\"/rest\",\"user1@example.com\",\"123123q\",\"http\",\"127.0.0.1\",\"28780\",\"/front_space\"],\"expected\":{\"doer.socket_io\":\"{{!doer.socket_io}}\"},\"dataOut\":[\"doer.socket_io\",\"userId\"]},{\"action\":\"socket_io.emit\",\"data\":[\"inviteUser\",{\"type\":\"free\",\"rate\":0,\"opponentId\":60}],\"wait\":{\"delay\":3000},\"expected\":[[\"gameInitialized\",{\"opponentId\":60,\"gameId\":\"{{!gameId}}\",\"type\":\"free\",\"rate\":0}]],\"dataOut\":[\"gameId\"]}]}"
+185574 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\",\"user.username\":\"user1@example.com\",\"user.password\":\"123123q\",\"user.id\":\"59\"},\"data\":[{\"action\":\"call.callWsaggerFile\",\"wait\":{\"delay\":3000},\"data\":[\"login_CID.wsagger.json\",\"https\",\"gambling-game-api.dev.gbksoft.net\",443,\"/rest\",\"user1@example.com\",\"123123q\",\"http\",\"127.0.0.1\",\"28780\",\"/front_space\"],\"expected\":{\"doer.socket_io\":\"{{!doer.socket_io}}\"},\"dataOut\":[\"doer.socket_io\",\"userId\"]},{\"action\":\"socket_io.emit\",\"data\":[\"inviteUser\",{\"type\":\"free\",\"rate\":0,\"opponentId\":60}],\"wait\":{\"delay\":3000},\"expected\":[[\"gameInitialized\",{\"opponentId\":60,\"gameId\":\"{{!gameId}}\",\"type\":\"free\",\"rate\":0}]],\"dataOut\":[\"gameId\"]}]}"
 execSync (data): 
-882812 STEP  1 
+185688 STEP  1 
 
  { action: 'call.callWsaggerFile',
   wait: { delay: 3000 },
@@ -38,11 +38,11 @@ execSync (data):
   dataOut: [ 'doer.socket_io', 'userId' ],
   num: 1 }
 
-882812 setting wait timeout 1
+185688 setting wait timeout 1
 
 from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
 
-882812 out --> call.callWsaggerFile: { wsagger: '1.0.0',
+185688 out --> call.callWsaggerFile: { wsagger: '1.0.0',
   name: 'login/connect test',
   keysIn: 
    [ 'REST.proto',
@@ -84,7 +84,7 @@ from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
   '28780',
   '/front_space' ]
 
-882870 STEP  1 
+185746 STEP  1 
 
  { action: 'exec.execSync',
   wait: { delay: 7000 },
@@ -100,11 +100,11 @@ from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-882870 setting wait timeout 1
+185746 setting wait timeout 1
 
-882870 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"user.username\":\"user1@example.com\",\"user.password\":\"123123q\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\"},\"data\":[{\"action\":\"socket_io.connect\",\"wait\":{\"delay\":5000},\"expected\":[[\"CID\",{\"CID_rest\":\"{{!CID_rest}}\",\"CID_node\":\"{{!CID_node}}\"}]],\"data\":{\"url\":\"http://127.0.0.1:28780/front_space\",\"query\":{}},\"dataOut\":{\"CID_rest\":\"{{CID_rest}}\",\"CID_node\":\"{{CID_node}}\"}}]}"
+185746 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"user.username\":\"user1@example.com\",\"user.password\":\"123123q\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\"},\"data\":[{\"action\":\"socket_io.connect\",\"wait\":{\"delay\":5000},\"expected\":[[\"CID\",{\"CID_rest\":\"{{!CID_rest}}\",\"CID_node\":\"{{!CID_node}}\"}]],\"data\":{\"url\":\"http://127.0.0.1:28780/front_space\",\"query\":{}},\"dataOut\":{\"CID_rest\":\"{{CID_rest}}\",\"CID_node\":\"{{CID_node}}\"}}]}"
 execSync (data): 
-882930 STEP  1 
+185805 STEP  1 
 
  { action: 'socket_io.connect',
   wait: { delay: 5000 },
@@ -113,36 +113,24 @@ execSync (data):
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-882930 setting wait timeout 1
+185805 setting wait timeout 1
 
-882930 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space', query: {} }
-222222222222 { action: 'socket_io.connect',
-  wait: { delay: 5000 },
-  expected: [ [ 'CID', [Object] ] ],
-  data: 
-   { url: 'http://127.0.0.1:28780/front_space',
-     query: 
-      { path: '/socket.io',
-        hostname: '127.0.0.1',
-        secure: false,
-        port: '28780' } },
-  dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
-  num: 1 }
+185805 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space', query: {} }
 
-882930 <-- in: socket_io CID {"CID_node":"12829345451450156767","CID_rest":"522151148946355307"}
+185805 <-- in: socket_io CID {"CID_node":"12829345451450156767","CID_rest":"522151148946355307"}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-882930 !!! SUCCESS !!!
+185805 !!! SUCCESS !!!
 
 
-882930 store  522151148946355307  -->  CID_rest
+185805 store  522151148946355307  -->  CID_rest
 
-882930 store  12829345451450156767  -->  CID_node
+185805 store  12829345451450156767  -->  CID_node
 
-882930finishRunNode:
+185805finishRunNode:
 
-882870 <-- in exec.execSync: { CID_rest: '522151148946355307',
+185746 <-- in exec.execSync: { CID_rest: '522151148946355307',
   CID_node: '12829345451450156767' } object 
 from step: { action: 'exec.execSync',
   wait: { delay: 7000 },
@@ -156,11 +144,11 @@ from step: { action: 'exec.execSync',
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-882870 store  522151148946355307  -->  CID_rest
+185746 store  522151148946355307  -->  CID_rest
 
-882870 store  12829345451450156767  -->  CID_node
+185746 store  12829345451450156767  -->  CID_node
 
-882870 STEP  2 
+185746 STEP  2 
 
  { action: 'https.request',
   data: 
@@ -176,9 +164,9 @@ from step: { action: 'exec.execSync',
   expected: { result: { accessToken: [Object] } },
   num: 2 }
 
-882870 setting wait timeout 2
+185746 setting wait timeout 2
 
-882870 out --> https.request: https 
+185746 out --> https.request: https 
  { method: 'POST',
   hostname: 'gambling-game-api.dev.gbksoft.net',
   path: '/rest/v1/users/login',
@@ -189,52 +177,8 @@ from step: { action: 'exec.execSync',
   port: 443,
   rejectUnauthorized: false } 
  {"email":"user1@example.com", "password": "123123q"}
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/users/login',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'wsagger' },
-     queryData: '{"email":"user1@example.com", "password": "123123q"}' },
-  wait: { delay: 7000 },
-  expected: { result: { accessToken: [Object] } },
-  num: 2 }
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/users/login',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'wsagger' },
-     queryData: '{"email":"user1@example.com", "password": "123123q"}' },
-  wait: { delay: 7000 },
-  expected: { result: { accessToken: [Object] } },
-  num: 2 }
-222222222222 { action: 'call.callWsaggerFile',
-  wait: { delay: 3000 },
-  data: 
-   [ 'https',
-     'gambling-game-api.dev.gbksoft.net',
-     443,
-     '/rest',
-     'user1@example.com',
-     '123123q',
-     'http',
-     '127.0.0.1',
-     '28780',
-     '/front_space' ],
-  expected: { 'doer.socket_io': '{{!doer.socket_io}}' },
-  dataOut: [ 'doer.socket_io', 'userId' ],
-  num: 1 }
 
-882870 <-- in https.request: { code: 200,
+185746 <-- in https.request: { code: 200,
   status: 'success',
   result: 
    { id: 59,
@@ -261,7 +205,7 @@ from step: { action: 'https.request',
   expected: { result: { accessToken: [Object] } },
   num: 2 }
 
-882870 STEP  3 
+185746 STEP  3 
 
  { action: 'https.request',
   data: 
@@ -278,9 +222,9 @@ from step: { action: 'https.request',
   expected: { code: 200 },
   num: 3 }
 
-882870 setting wait timeout 3
+185746 setting wait timeout 3
 
-882870 out --> https.request: https 
+185746 out --> https.request: https 
  { method: 'POST',
   hostname: 'gambling-game-api.dev.gbksoft.net',
   path: '/rest/v1/connections',
@@ -292,23 +236,8 @@ from step: { action: 'https.request',
   port: 443,
   rejectUnauthorized: false } 
  {"connection_id": "522151148946355307"}
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/connections',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer 41878e7f37b2d3c7b95027efd10077837586e45ab1a4752390189b89a42347d259_edy9ciUr5kh5Qu8NhVgtiobpW700ZwLViTOUy79TpMDHzpuknLqgq2PiCo-tK',
-        'User-Agent': 'wsagger' },
-     queryData: '{"connection_id": "522151148946355307"}' },
-  wait: { delay: 7000 },
-  expected: { code: 200 },
-  num: 3 }
 
-882870 <-- in https.request: { code: 200, status: 'success', result: [] } object 
+185746 <-- in https.request: { code: 200, status: 'success', result: [] } object 
 from step: { action: 'https.request',
   data: 
    { method: 'POST',
@@ -325,7 +254,7 @@ from step: { action: 'https.request',
   expected: { code: 200 },
   num: 3 }
 
-882870 STEP  4 
+185746 STEP  4 
 
  { action: 'socket_io.connect',
   wait: { delay: 5000 },
@@ -335,31 +264,19 @@ from step: { action: 'https.request',
      query: { query: 'token={{CID_node}}{{token}}' } },
   num: 4 }
 
-882870 setting wait timeout 4
+185746 setting wait timeout 4
 
-882870 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space',
+185746 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space',
   query: { query: 'token=1282934545145015676741878e7f37b2d3c7b95027efd10077837586e45ab1a4752390189b89a42347d259_edy9ciUr5kh5Qu8NhVgtiobpW700ZwLViTOUy79TpMDHzpuknLqgq2PiCo-tK' } }
-222222222222 { action: 'socket_io.connect',
-  wait: { delay: 5000 },
-  expected: [ [ 'connectedTo', {} ] ],
-  data: 
-   { url: 'http://127.0.0.1:28780/front_space',
-     query: 
-      { query: 'token=1282934545145015676741878e7f37b2d3c7b95027efd10077837586e45ab1a4752390189b89a42347d259_edy9ciUr5kh5Qu8NhVgtiobpW700ZwLViTOUy79TpMDHzpuknLqgq2PiCo-tK',
-        path: '/socket.io',
-        hostname: '127.0.0.1',
-        secure: false,
-        port: '28780' } },
-  num: 4 }
 
-882870 <-- in: socket_io connectedTo {"APIVersion":"Gambling.1.0.0","serverId":"1282934545","userId":59,"socketId":"/front_space#bHte6O_1yxR4XDjyAAAS"}
+185746 <-- in: socket_io connectedTo {"APIVersion":"Gambling.1.0.0","serverId":"1282934545","userId":59,"socketId":"/front_space#n-pKnslZ4utnbmQFAAAW"}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-882870 !!! SUCCESS !!!
+185746 !!! SUCCESS !!!
 
 
-882812 <-- in call.callWsaggerFile: { 'REST.proto': 'https',
+185688 <-- in call.callWsaggerFile: { 'REST.proto': 'https',
   'REST.host': 'gambling-game-api.dev.gbksoft.net',
   'REST.port': 443,
   'REST.path': '/rest',
@@ -415,7 +332,7 @@ onInputEvent: all expected is received!
         data: [],
         parameters: [Circular],
         doers: {},
-        id: '882870',
+        id: '185746',
         error: [Function: bound ],
         log: [Function: bound ],
         debug: [Function: bound ],
@@ -445,7 +362,7 @@ onInputEvent: all expected is received!
         subs: [Object],
         _callbacks: [Object],
         onevent: [Function],
-        id: 'bHte6O_1yxR4XDjyAAAS' } },
+        id: 'n-pKnslZ4utnbmQFAAAW' } },
   CID_rest: '522151148946355307',
   CID_node: '12829345451450156767',
   token: '41878e7f37b2d3c7b95027efd10077837586e45ab1a4752390189b89a42347d259_edy9ciUr5kh5Qu8NhVgtiobpW700ZwLViTOUy79TpMDHzpuknLqgq2PiCo-tK' } object 
@@ -466,7 +383,7 @@ from step: { action: 'call.callWsaggerFile',
   dataOut: [ 'doer.socket_io', 'userId' ],
   num: 1 }
 
-882812 store  socket_io_ {
+185688 store  socket_io_ {
   node_: 
    { [Function: lookup]
      managers: { 'http://127.0.0.1:28780': [Object] },
@@ -512,7 +429,7 @@ from step: { action: 'call.callWsaggerFile',
         CID_node: '12829345451450156767',
         token: '41878e7f37b2d3c7b95027efd10077837586e45ab1a4752390189b89a42347d259_edy9ciUr5kh5Qu8NhVgtiobpW700ZwLViTOUy79TpMDHzpuknLqgq2PiCo-tK' },
      doers: {},
-     id: '882870',
+     id: '185746',
      error: [Function: bound ],
      log: [Function: bound ],
      debug: [Function: bound ],
@@ -565,11 +482,11 @@ from step: { action: 'call.callWsaggerFile',
      subs: [ [Object], [Object], [Object] ],
      _callbacks: { '$connecting': [Object], '$connect': [Object], '$*': [Object] },
      onevent: [Function],
-     id: 'bHte6O_1yxR4XDjyAAAS' } }  -->  doer.socket_io
+     id: 'n-pKnslZ4utnbmQFAAAW' } }  -->  doer.socket_io
 
-882812 store  undefined  -->  userId
+185688 store  undefined  -->  userId
 
-882812 STEP  2 
+185688 STEP  2 
 
  { action: 'socket_io.emit',
   data: [ 'inviteUser', { type: 'free', rate: 0, opponentId: 60 } ],
@@ -578,28 +495,22 @@ from step: { action: 'call.callWsaggerFile',
   dataOut: [ 'gameId' ],
   num: 2 }
 
-882812 setting wait timeout 2
+185688 setting wait timeout 2
 
-882812 out --> socket_io.emit: [ 'inviteUser', { type: 'free', rate: 0, opponentId: 60 } ]
-222222222222 { action: 'socket_io.emit',
-  data: [ 'inviteUser', { type: 'free', rate: 0, opponentId: 60 } ],
-  wait: { delay: 3000 },
-  expected: [ [ 'gameInitialized', [Object] ] ],
-  dataOut: [ 'gameId' ],
-  num: 2 }
+185688 out --> socket_io.emit: [ 'inviteUser', { type: 'free', rate: 0, opponentId: 60 } ]
 
-882812 <-- in: socket_io gameInitialized {"opponentId":60,"gameId":27,"type":"free","rate":0}
+185688 <-- in: socket_io gameInitialized {"opponentId":60,"gameId":28,"type":"free","rate":0}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-882812 !!! SUCCESS !!!
+185688 !!! SUCCESS !!!
 
 
-882812 store  27  -->  gameId
+185688 store  28  -->  gameId
 
-882812finishRunNode:
+185688finishRunNode:
 
-882699 <-- in exec.execSync: { gameId: 27 } object 
+185574 <-- in exec.execSync: { gameId: 28 } object 
 from step: { action: 'exec.execSync',
   data: 
    [ { action: 'call.callWsaggerFile',
@@ -616,9 +527,9 @@ from step: { action: 'exec.execSync',
   num: 1,
   expected: undefined }
 
-882699 store  27  -->  gameId
+185574 store  28  -->  gameId
 
-882699 STEP  2 
+185574 STEP  2 
 
  { action: 'call.callWsaggerFile',
   wait: { delay: 3000 },
@@ -638,11 +549,11 @@ from step: { action: 'exec.execSync',
   dataOut: [ 'doer.socket_io', 'userId' ],
   num: 2 }
 
-882699 setting wait timeout 2
+185574 setting wait timeout 2
 
 from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
 
-882699 out --> call.callWsaggerFile: { wsagger: '1.0.0',
+185574 out --> call.callWsaggerFile: { wsagger: '1.0.0',
   name: 'login/connect test',
   keysIn: 
    [ 'REST.proto',
@@ -684,7 +595,7 @@ from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
   '28780',
   '/front_space' ]
 
-884715 STEP  1 
+187429 STEP  1 
 
  { action: 'exec.execSync',
   wait: { delay: 7000 },
@@ -700,11 +611,11 @@ from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-884715 setting wait timeout 1
+187429 setting wait timeout 1
 
-884715 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"user.username\":\"user2@example.com\",\"user.password\":\"123123q\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\"},\"data\":[{\"action\":\"socket_io.connect\",\"wait\":{\"delay\":5000},\"expected\":[[\"CID\",{\"CID_rest\":\"{{!CID_rest}}\",\"CID_node\":\"{{!CID_node}}\"}]],\"data\":{\"url\":\"http://127.0.0.1:28780/front_space\",\"query\":{}},\"dataOut\":{\"CID_rest\":\"{{CID_rest}}\",\"CID_node\":\"{{CID_node}}\"}}]}"
+187429 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"user.username\":\"user2@example.com\",\"user.password\":\"123123q\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\"},\"data\":[{\"action\":\"socket_io.connect\",\"wait\":{\"delay\":5000},\"expected\":[[\"CID\",{\"CID_rest\":\"{{!CID_rest}}\",\"CID_node\":\"{{!CID_node}}\"}]],\"data\":{\"url\":\"http://127.0.0.1:28780/front_space\",\"query\":{}},\"dataOut\":{\"CID_rest\":\"{{CID_rest}}\",\"CID_node\":\"{{CID_node}}\"}}]}"
 execSync (data): 
-884800 STEP  1 
+187514 STEP  1 
 
  { action: 'socket_io.connect',
   wait: { delay: 5000 },
@@ -713,36 +624,24 @@ execSync (data):
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-884800 setting wait timeout 1
+187514 setting wait timeout 1
 
-884800 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space', query: {} }
-222222222222 { action: 'socket_io.connect',
-  wait: { delay: 5000 },
-  expected: [ [ 'CID', [Object] ] ],
-  data: 
-   { url: 'http://127.0.0.1:28780/front_space',
-     query: 
-      { path: '/socket.io',
-        hostname: '127.0.0.1',
-        secure: false,
-        port: '28780' } },
-  dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
-  num: 1 }
+187514 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space', query: {} }
 
-884800 <-- in: socket_io CID {"CID_node":"12829345451450156767","CID_rest":"522151148946355307"}
+187514 <-- in: socket_io CID {"CID_node":"12829345451450156767","CID_rest":"522151148946355307"}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-884800 !!! SUCCESS !!!
+187514 !!! SUCCESS !!!
 
 
-884800 store  522151148946355307  -->  CID_rest
+187514 store  522151148946355307  -->  CID_rest
 
-884800 store  12829345451450156767  -->  CID_node
+187514 store  12829345451450156767  -->  CID_node
 
-884800finishRunNode:
+187514finishRunNode:
 
-884715 <-- in exec.execSync: { CID_rest: '522151148946355307',
+187429 <-- in exec.execSync: { CID_rest: '522151148946355307',
   CID_node: '12829345451450156767' } object 
 from step: { action: 'exec.execSync',
   wait: { delay: 7000 },
@@ -756,11 +655,11 @@ from step: { action: 'exec.execSync',
   dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
   num: 1 }
 
-884715 store  522151148946355307  -->  CID_rest
+187429 store  522151148946355307  -->  CID_rest
 
-884715 store  12829345451450156767  -->  CID_node
+187429 store  12829345451450156767  -->  CID_node
 
-884715 STEP  2 
+187429 STEP  2 
 
  { action: 'https.request',
   data: 
@@ -776,9 +675,9 @@ from step: { action: 'exec.execSync',
   expected: { result: { accessToken: [Object] } },
   num: 2 }
 
-884715 setting wait timeout 2
+187429 setting wait timeout 2
 
-884715 out --> https.request: https 
+187429 out --> https.request: https 
  { method: 'POST',
   hostname: 'gambling-game-api.dev.gbksoft.net',
   path: '/rest/v1/users/login',
@@ -789,68 +688,8 @@ from step: { action: 'exec.execSync',
   port: 443,
   rejectUnauthorized: false } 
  {"email":"user2@example.com", "password": "123123q"}
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/users/login',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'wsagger' },
-     queryData: '{"email":"user2@example.com", "password": "123123q"}' },
-  wait: { delay: 7000 },
-  expected: { result: { accessToken: [Object] } },
-  num: 2 }
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/users/login',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'User-Agent': 'wsagger' },
-     queryData: '{"email":"user2@example.com", "password": "123123q"}' },
-  wait: { delay: 7000 },
-  expected: { result: { accessToken: [Object] } },
-  num: 2 }
-222222222222 { action: 'call.callWsaggerFile',
-  wait: { delay: 3000 },
-  data: 
-   [ 'https',
-     'gambling-game-api.dev.gbksoft.net',
-     443,
-     '/rest',
-     'user2@example.com',
-     '123123q',
-     'http',
-     '127.0.0.1',
-     '28780',
-     '/front_space' ],
-  expected: { 'doer.socket_io': '{{!doer.socket_io}}' },
-  dataOut: [ 'doer.socket_io', 'userId' ],
-  num: 2 }
-222222222222 { action: 'call.callWsaggerFile',
-  wait: { delay: 3000 },
-  data: 
-   [ 'https',
-     'gambling-game-api.dev.gbksoft.net',
-     443,
-     '/rest',
-     'user2@example.com',
-     '123123q',
-     'http',
-     '127.0.0.1',
-     '28780',
-     '/front_space' ],
-  expected: { 'doer.socket_io': '{{!doer.socket_io}}' },
-  dataOut: [ 'doer.socket_io', 'userId' ],
-  num: 2 }
 
-884715 <-- in https.request: { code: 200,
+187429 <-- in https.request: { code: 200,
   status: 'success',
   result: 
    { id: 60,
@@ -877,7 +716,7 @@ from step: { action: 'https.request',
   expected: { result: { accessToken: [Object] } },
   num: 2 }
 
-884715 STEP  3 
+187429 STEP  3 
 
  { action: 'https.request',
   data: 
@@ -894,9 +733,9 @@ from step: { action: 'https.request',
   expected: { code: 200 },
   num: 3 }
 
-884715 setting wait timeout 3
+187429 setting wait timeout 3
 
-884715 out --> https.request: https 
+187429 out --> https.request: https 
  { method: 'POST',
   hostname: 'gambling-game-api.dev.gbksoft.net',
   path: '/rest/v1/connections',
@@ -908,23 +747,8 @@ from step: { action: 'https.request',
   port: 443,
   rejectUnauthorized: false } 
  {"connection_id": "522151148946355307"}
-222222222222 { action: 'https.request',
-  data: 
-   { method: 'POST',
-     host: 'gambling-game-api.dev.gbksoft.net',
-     port: 443,
-     path: '/rest/v1/connections',
-     headers: 
-      { 'Content-Type': 'application/json',
-        Accept: 'application/json',
-        Authorization: 'Bearer 2fe4116c5a6104aa0c1f2fac68efc1e8f45223f57c846037ed0b6103063cf62360_bvd4c_HsacCiFdTkyre3j5OexI2NlPoNrnNWJ33-2kK6yjH8ewfq5E4l40u-9',
-        'User-Agent': 'wsagger' },
-     queryData: '{"connection_id": "522151148946355307"}' },
-  wait: { delay: 7000 },
-  expected: { code: 200 },
-  num: 3 }
 
-884715 <-- in https.request: { code: 200, status: 'success', result: [] } object 
+187429 <-- in https.request: { code: 200, status: 'success', result: [] } object 
 from step: { action: 'https.request',
   data: 
    { method: 'POST',
@@ -941,7 +765,7 @@ from step: { action: 'https.request',
   expected: { code: 200 },
   num: 3 }
 
-884715 STEP  4 
+187429 STEP  4 
 
  { action: 'socket_io.connect',
   wait: { delay: 5000 },
@@ -951,31 +775,19 @@ from step: { action: 'https.request',
      query: { query: 'token={{CID_node}}{{token}}' } },
   num: 4 }
 
-884715 setting wait timeout 4
+187429 setting wait timeout 4
 
-884715 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space',
+187429 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space',
   query: { query: 'token=128293454514501567672fe4116c5a6104aa0c1f2fac68efc1e8f45223f57c846037ed0b6103063cf62360_bvd4c_HsacCiFdTkyre3j5OexI2NlPoNrnNWJ33-2kK6yjH8ewfq5E4l40u-9' } }
-222222222222 { action: 'socket_io.connect',
-  wait: { delay: 5000 },
-  expected: [ [ 'connectedTo', {} ] ],
-  data: 
-   { url: 'http://127.0.0.1:28780/front_space',
-     query: 
-      { query: 'token=128293454514501567672fe4116c5a6104aa0c1f2fac68efc1e8f45223f57c846037ed0b6103063cf62360_bvd4c_HsacCiFdTkyre3j5OexI2NlPoNrnNWJ33-2kK6yjH8ewfq5E4l40u-9',
-        path: '/socket.io',
-        hostname: '127.0.0.1',
-        secure: false,
-        port: '28780' } },
-  num: 4 }
 
-884715 <-- in: socket_io connectedTo {"APIVersion":"Gambling.1.0.0","serverId":"1282934545","userId":60,"socketId":"/front_space#xuB17ISwL2G5JqosAAAU"}
+187429 <-- in: socket_io connectedTo {"APIVersion":"Gambling.1.0.0","serverId":"1282934545","userId":60,"socketId":"/front_space#Grd2w_3ru-mbW9aXAAAY"}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-884715 !!! SUCCESS !!!
+187429 !!! SUCCESS !!!
 
 
-882699 <-- in call.callWsaggerFile: { 'REST.proto': 'https',
+185574 <-- in call.callWsaggerFile: { 'REST.proto': 'https',
   'REST.host': 'gambling-game-api.dev.gbksoft.net',
   'REST.port': 443,
   'REST.path': '/rest',
@@ -1031,7 +843,7 @@ onInputEvent: all expected is received!
         data: [],
         parameters: [Circular],
         doers: {},
-        id: '884715',
+        id: '187429',
         error: [Function: bound ],
         log: [Function: bound ],
         debug: [Function: bound ],
@@ -1061,7 +873,7 @@ onInputEvent: all expected is received!
         subs: [Object],
         _callbacks: [Object],
         onevent: [Function],
-        id: 'xuB17ISwL2G5JqosAAAU' } },
+        id: 'Grd2w_3ru-mbW9aXAAAY' } },
   CID_rest: '522151148946355307',
   CID_node: '12829345451450156767',
   token: '2fe4116c5a6104aa0c1f2fac68efc1e8f45223f57c846037ed0b6103063cf62360_bvd4c_HsacCiFdTkyre3j5OexI2NlPoNrnNWJ33-2kK6yjH8ewfq5E4l40u-9' } object 
@@ -1082,7 +894,7 @@ from step: { action: 'call.callWsaggerFile',
   dataOut: [ 'doer.socket_io', 'userId' ],
   num: 2 }
 
-882699 store  socket_io_ {
+185574 store  socket_io_ {
   node_: 
    { [Function: lookup]
      managers: { 'http://127.0.0.1:28780': [Object] },
@@ -1128,7 +940,7 @@ from step: { action: 'call.callWsaggerFile',
         CID_node: '12829345451450156767',
         token: '2fe4116c5a6104aa0c1f2fac68efc1e8f45223f57c846037ed0b6103063cf62360_bvd4c_HsacCiFdTkyre3j5OexI2NlPoNrnNWJ33-2kK6yjH8ewfq5E4l40u-9' },
      doers: {},
-     id: '884715',
+     id: '187429',
      error: [Function: bound ],
      log: [Function: bound ],
      debug: [Function: bound ],
@@ -1181,11 +993,11 @@ from step: { action: 'call.callWsaggerFile',
      subs: [ [Object], [Object], [Object] ],
      _callbacks: { '$connecting': [Object], '$connect': [Object], '$*': [Object] },
      onevent: [Function],
-     id: 'xuB17ISwL2G5JqosAAAU' } }  -->  doer.socket_io
+     id: 'Grd2w_3ru-mbW9aXAAAY' } }  -->  doer.socket_io
 
-882699 store  undefined  -->  userId
+185574 store  undefined  -->  userId
 
-882699 STEP  3 
+185574 STEP  3 
 
  { action: 'socket_io.emit',
   data: [ 'startGame', { opponentId: 59, gameId: '{{gameId}}' } ],
@@ -1193,20 +1005,15 @@ from step: { action: 'call.callWsaggerFile',
   expected: [ [ 'gameStarted', [Object] ] ],
   num: 3 }
 
-882699 setting wait timeout 3
+185574 setting wait timeout 3
 
-882699 out --> socket_io.emit: [ 'startGame', { opponentId: 59, gameId: 27 } ]
-222222222222 { action: 'socket_io.emit',
-  data: [ 'startGame', { opponentId: 59, gameId: 27 } ],
-  wait: { delay: 3000 },
-  expected: [ [ 'gameStarted', [Object] ] ],
-  num: 3 }
+185574 out --> socket_io.emit: [ 'startGame', { opponentId: 59, gameId: 28 } ]
 
-882699 <-- in: socket_io gameStarted {"opponentId":59,"gameId":27,"game":{"id":27,"type":2}}
+185574 <-- in: socket_io gameStarted {"opponentId":59,"gameId":28,"game":{"id":28,"type":2}}
 onInputEvent: expected! 0 remains
 onInputEvent: all expected is received!
 
-882699 !!! SUCCESS !!!
+185574 !!! SUCCESS !!!
 
 
 Final: SUCCESS !!!

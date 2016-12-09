@@ -8,8 +8,8 @@
   },
   
   "user_" : {
-    "59": { "username": "user1@example.com", "password": "123123q", "id": "59"},
-    "60": { "username": "user2@example.com", "password": "123123q", "id": "60"}
+    "1": { "username": "user1@example.com", "password": "123123q", "id": "1"},
+    "2": { "username": "user2@example.com", "password": "123123q", "id": "2"}
   },
   
   "server_" : {

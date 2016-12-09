@@ -18,9 +18,9 @@
 
         {
           "action"  : "socket_io.emit",
-          "data"    : ["inviteUser", {"type": "free", "rate": 0, "opponentId": 60}],
+          "data"    : ["inviteUser", {"type": "free", "rate": 0, "opponentId": 2}],
           "wait"    : { "delay": 3000 },
-          "expected": [[ "gameInitialized", {"opponentId": 60, "gameId": "{{!gameId}}", "type": "free", "rate": 0} ]],
+          "expected": [[ "gameInitialized", {"opponentId": 2, "gameId": "{{!gameId}}", "type": "free", "rate": 0} ]],
           "dataOut": [ "gameId" ]
         
         }
@@ -40,9 +40,9 @@
 
     {
       "action"  : "socket_io.emit",
-      "data"    : ["startGame", {"opponentId": 59, "gameId": "{{gameId}}"}],
+      "data"    : ["startGame", {"opponentId": 1, "gameId": "{{gameId}}"}],
       "wait"    : { "delay": 3000 },
-      "expected": [[ "gameStarted", {"opponentId": 59, "gameId": "{{gameId}}"} ]]
+      "expected": [[ "gameStarted", {"opponent": {"id" : 1}, "gameId": "{{gameId}}"} ]]
     }
   
   ]
