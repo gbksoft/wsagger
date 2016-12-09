@@ -1,0 +1,25 @@
+{
+  "wsagger": "1.0.0",
+
+  "name": "invite user",
+          
+  "data": [
+  
+    { 
+      "action"  : "call.callWsaggerFile",
+      "wait"    : { "delay": 3000 }, 
+      "data"    : ["login_CID.wsagger.json", "{{REST.proto}}", "{{REST.host}}", "{{REST.port}}", "{{REST.path}}", "user2@example.com", "123123q", "{{server.proto}}", "{{server.host}}", "{{server.port}}", "{{server.path}}"],
+      "expected": { "doer.socket_io" : "{{!doer.socket_io}}" },
+      "dataOut" : [ "doer.socket_io", "userId" ]
+    },
+
+    {
+      "action"  : "socket_io.emit",
+      "data"    : ["startGame", {"opponentId": 59, "gameId": 21}],
+      "wait"    : { "delay": 3000 },
+      "expected": [[ "gameStarted", {"opponentId": 59, "gameId": 21} ]]
+    }
+  
+  ]
+}
+
