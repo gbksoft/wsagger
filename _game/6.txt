@@ -1,0 +1,440 @@
+
+968027 STEP  1 
+
+ { action: 'exec.execSync',
+  data: 
+   [ { action: 'call.callWsaggerFile',
+       wait: [Object],
+       data: [Object],
+       expected: [Object],
+       dataOut: [Object] },
+     { action: 'socket_io.emit',
+       data: [Object],
+       wait: [Object],
+       expected: [Object] },
+     { wait: [Object] } ],
+  num: 1 }
+
+968027 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\",\"user.username\":\"user1@example.com\",\"user.password\":\"123123q\",\"user.id\":\"1\"},\"data\":[{\"action\":\"call.callWsaggerFile\",\"wait\":{\"delay\":10000},\"data\":[\"login_CID.wsagger.json\",\"https\",\"gambling-game-api.dev.gbksoft.net\",443,\"/rest\",\"user2@example.com\",\"123123q\",\"http\",\"127.0.0.1\",\"28780\",\"/front_space\"],\"expected\":{\"doer.socket_io\":\"{{!doer.socket_io}}\"},\"dataOut\":[\"doer.socket_io\",\"userId\"]},{\"action\":\"socket_io.emit\",\"data\":[\"inviteRandom\",{\"type\":\"free\",\"rate\":0}],\"wait\":{\"delay\":3000},\"expected\":[[\"inviteRandomQueued\",{\"opponent\":{},\"gameId\":\"{{!gameId}}\",\"type\":\"free\",\"rate\":0}]]},{\"wait\":{\"delay\":3000}}]}" | tee 29820.log
+execSync (data): 
+968098 STEP  1 
+
+ { action: 'call.callWsaggerFile',
+  wait: { delay: 10000 },
+  data: 
+   [ 'login_CID.wsagger.json',
+     'https',
+     'gambling-game-api.dev.gbksoft.net',
+     443,
+     '/rest',
+     'user2@example.com',
+     '123123q',
+     'http',
+     '127.0.0.1',
+     '28780',
+     '/front_space' ],
+  expected: { 'doer.socket_io': '{{!doer.socket_io}}' },
+  dataOut: [ 'doer.socket_io', 'userId' ],
+  num: 1 }
+
+968098 setting wait timeout 1
+
+from file <-- : /data/home/user/0/wsagger/_game//login_CID.wsagger.json
+
+968098 out --> call.callWsaggerFile: { wsagger: '1.0.0',
+  name: 'login/connect test',
+  keysIn: 
+   [ 'REST.proto',
+     'REST.host',
+     'REST.port',
+     'REST.path',
+     'user.username',
+     'user.password',
+     'server.proto',
+     'server.host',
+     'server.port',
+     'server.path' ],
+  dataOut: [ 'doer.socket_io' ],
+  data: 
+   [ { action: 'exec.execSync',
+       wait: [Object],
+       expected: [Object],
+       data: [Object],
+       dataOut: [Object] },
+     { action: 'https.request',
+       data: [Object],
+       wait: [Object],
+       expected: [Object] },
+     { action: 'https.request',
+       data: [Object],
+       wait: [Object],
+       expected: [Object] },
+     { action: 'socket_io.connect',
+       wait: [Object],
+       expected: [Object],
+       data: [Object] } ] } [ 'https',
+  'gambling-game-api.dev.gbksoft.net',
+  443,
+  '/rest',
+  'user2@example.com',
+  '123123q',
+  'http',
+  '127.0.0.1',
+  '28780',
+  '/front_space' ]
+
+968156 STEP  1 
+
+ { action: 'exec.execSync',
+  wait: { delay: 7000 },
+  expected: { CID_node: '{{!CID_node}}', CID_rest: '{{!CID_rest}}' },
+  data: 
+   { action: 'socket_io.connect',
+     wait: { delay: 5000 },
+     expected: [ [Object] ],
+     data: 
+      { url: '{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}',
+        query: {} },
+     dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' } },
+  dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
+  num: 1 }
+
+968156 setting wait timeout 1
+
+968156 out --> exec.execSync:  WSAGGER_SCRIPT_PATH=/data/home/user/0/wsagger/_game/ /usr/bin/node lib/run.js --chain --debug "{\"parameters\":{\"REST.proto\":\"https\",\"REST.host\":\"gambling-game-api.dev.gbksoft.net\",\"REST.port\":443,\"REST.path\":\"/rest\",\"user.username\":\"user2@example.com\",\"user.password\":\"123123q\",\"server.proto\":\"http\",\"server.host\":\"127.0.0.1\",\"server.port\":\"28780\",\"server.path\":\"/front_space\"},\"data\":[{\"action\":\"socket_io.connect\",\"wait\":{\"delay\":5000},\"expected\":[[\"CID\",{\"CID_rest\":\"{{!CID_rest}}\",\"CID_node\":\"{{!CID_node}}\"}]],\"data\":{\"url\":\"http://127.0.0.1:28780/front_space\",\"query\":{}},\"dataOut\":{\"CID_rest\":\"{{CID_rest}}\",\"CID_node\":\"{{CID_node}}\"}}]}" | tee 29827.log
+execSync (data): 
+968216 STEP  1 
+
+ { action: 'socket_io.connect',
+  wait: { delay: 5000 },
+  expected: [ [ 'CID', [Object] ] ],
+  data: { url: 'http://127.0.0.1:28780/front_space', query: {} },
+  dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
+  num: 1 }
+
+968216 setting wait timeout 1
+
+968216 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space', query: {} }
+
+968216 <-- in: socket_io CID {"CID_node":"18171990191984421241","CID_rest":"0871220111912098941"}
+onInputEvent: expected! 0 remains
+onInputEvent: all expected is received!
+
+968216 !!! SUCCESS !!!
+
+
+968216SUCCESS !!!
+
+968216 store  0871220111912098941  -->  CID_rest
+
+968216 store  18171990191984421241  -->  CID_node
+
+FinishRunNode:
+
+968156 <-- in exec.execSync: { CID_rest: '0871220111912098941',
+  CID_node: '18171990191984421241' } object 
+from step: { action: 'exec.execSync',
+  wait: { delay: 7000 },
+  expected: { CID_node: '{{!CID_node}}', CID_rest: '{{!CID_rest}}' },
+  data: 
+   { action: 'socket_io.connect',
+     wait: { delay: 5000 },
+     expected: [ [Object] ],
+     data: { url: 'http://127.0.0.1:28780/front_space', query: {} },
+     dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' } },
+  dataOut: { CID_rest: '{{CID_rest}}', CID_node: '{{CID_node}}' },
+  num: 1 }
+
+968156 store  0871220111912098941  -->  CID_rest
+
+968156 store  18171990191984421241  -->  CID_node
+
+968156 STEP  2 
+
+ { action: 'https.request',
+  data: 
+   { method: 'POST',
+     host: '{{REST.host}}',
+     port: '{{REST.port}}',
+     path: '{{REST.path}}/v1/users/login',
+     headers: 
+      { 'Content-Type': 'application/json',
+        Accept: 'application/json' },
+     queryData: '{"email":"{{user.username}}", "password": "{{user.password}}"}' },
+  wait: { delay: 7000 },
+  expected: { result: { accessToken: [Object] } },
+  num: 2 }
+
+968156 setting wait timeout 2
+
+968156 out --> https.request: https 
+ { method: 'POST',
+  hostname: 'gambling-game-api.dev.gbksoft.net',
+  path: '/rest/v1/users/login',
+  headers: 
+   { 'Content-Type': 'application/json',
+     Accept: 'application/json',
+     'User-Agent': 'wsagger' },
+  port: 443,
+  rejectUnauthorized: false } 
+ {"email":"user2@example.com", "password": "123123q"}
+
+968156 <-- in https.request: { code: 200,
+  status: 'success',
+  result: 
+   { id: 2,
+     first_name: 'Edith',
+     last_name: 'Watkins',
+     email: 'user2@example.com',
+     avatar: null,
+     accessToken: 
+      { token: 'e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi',
+        expired_at: 1482307670,
+        device_id: null } } } object 
+from step: { action: 'https.request',
+  data: 
+   { method: 'POST',
+     host: 'gambling-game-api.dev.gbksoft.net',
+     port: 443,
+     path: '/rest/v1/users/login',
+     headers: 
+      { 'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'User-Agent': 'wsagger' },
+     queryData: '{"email":"user2@example.com", "password": "123123q"}' },
+  wait: { delay: 7000 },
+  expected: { result: { accessToken: [Object] } },
+  num: 2 }
+
+968156 STEP  3 
+
+ { action: 'https.request',
+  data: 
+   { method: 'POST',
+     host: '{{REST.host}}',
+     port: '{{REST.port}}',
+     path: '{{REST.path}}/v1/connections',
+     headers: 
+      { 'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer {{token}}' },
+     queryData: '{"connection_id": "{{CID_rest}}"}' },
+  wait: { delay: 7000 },
+  expected: { code: 200 },
+  num: 3 }
+
+968156 setting wait timeout 3
+
+968156 out --> https.request: https 
+ { method: 'POST',
+  hostname: 'gambling-game-api.dev.gbksoft.net',
+  path: '/rest/v1/connections',
+  headers: 
+   { 'Content-Type': 'application/json',
+     Accept: 'application/json',
+     Authorization: 'Bearer e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi',
+     'User-Agent': 'wsagger' },
+  port: 443,
+  rejectUnauthorized: false } 
+ {"connection_id": "0871220111912098941"}
+
+968156 <-- in https.request: { code: 200, status: 'success', result: [] } object 
+from step: { action: 'https.request',
+  data: 
+   { method: 'POST',
+     host: 'gambling-game-api.dev.gbksoft.net',
+     port: 443,
+     path: '/rest/v1/connections',
+     headers: 
+      { 'Content-Type': 'application/json',
+        Accept: 'application/json',
+        Authorization: 'Bearer e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi',
+        'User-Agent': 'wsagger' },
+     queryData: '{"connection_id": "0871220111912098941"}' },
+  wait: { delay: 7000 },
+  expected: { code: 200 },
+  num: 3 }
+
+968156 STEP  4 
+
+ { action: 'socket_io.connect',
+  wait: { delay: 5000 },
+  expected: [ [ 'connectedTo', {} ] ],
+  data: 
+   { url: '{{server.proto}}://{{server.host}}:{{server.port}}{{server.path}}',
+     query: { query: 'token={{CID_node}}{{token}}' } },
+  num: 4 }
+
+968156 setting wait timeout 4
+
+968156 out --> socket_io.connect: { url: 'http://127.0.0.1:28780/front_space',
+  query: { query: 'token=18171990191984421241e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi' } }
+
+968156 <-- in: socket_io connectedTo {"APIVersion":"Gambling.1.0.0","serverId":"1817199019","userId":2,"socketId":"/front_space#o6m8zEseMYx5bkKIAAAJ"}
+onInputEvent: expected! 0 remains
+onInputEvent: all expected is received!
+
+968156 !!! SUCCESS !!!
+
+
+968098 <-- in call.callWsaggerFile: { 'REST.proto': 'https',
+  'REST.host': 'gambling-game-api.dev.gbksoft.net',
+  'REST.port': 443,
+  'REST.path': '/rest',
+  'user.username': 'user2@example.com',
+  'user.password': '123123q',
+  'server.proto': 'http',
+  'server.host': '127.0.0.1',
+  'server.port': '28780',
+  'server.path': '/front_space',
+  'doer.exec': 
+   exec_ {
+     node_: 
+      { ChildProcess: [Object],
+        fork: [Function],
+        _forkChild: [Function],
+        exec: [Function],
+        execFile: [Function],
+        spawn: [Function],
+        spawnSync: [Function: spawnSync],
+        execFileSync: [Function: execFileSync],
+        execSync: [Function: execSync] },
+     execSync: [Function: execSync],
+     execAsync: [Function: execAsync] },
+  'doer.https': 
+   http_ {
+     proto: 'https',
+     node_: 
+      { Server: [Object],
+        createServer: [Function],
+        globalAgent: [Object],
+        Agent: [Object],
+        request: [Function],
+        get: [Function] },
+     request: [Function: request] },
+  'doer.socket_io': 
+   socket_io_ {
+     node_: 
+      { [Function: lookup]
+        managers: [Object],
+        protocol: 4,
+        connect: [Circular],
+        Manager: [Function: Manager],
+        Socket: [Function: Socket] },
+     connect: [Function: connect],
+     emit: [Function: emit],
+     expect: [Function: expect],
+     name: 'socket_io',
+     runner: 
+      { wsagger: '1.0.0',
+        name: 'login/connect test',
+        keysIn: [Object],
+        dataOut: [Object],
+        data: [],
+        parameters: [Circular],
+        doers: {},
+        id: '968156',
+        error: [Function: bound ],
+        log: [Function: bound ],
+        debug: [Function: bound ],
+        _run: [Function: _run],
+        _callback: [Function: _callback],
+        _finish: [Function: _finish],
+        _postFinish: [Function],
+        debugMode: true,
+        haveToWait: {},
+        stepNum: 4,
+        numWorkers: 0,
+        step: undefined },
+     expected: [],
+     stepNum: 4,
+     socket: 
+      Socket {
+        io: [Object],
+        nsp: '/front_space',
+        json: [Circular],
+        ids: 0,
+        acks: {},
+        receiveBuffer: [],
+        sendBuffer: [],
+        connected: true,
+        disconnected: false,
+        query: 'token=18171990191984421241e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi',
+        subs: [Object],
+        _callbacks: [Object],
+        onevent: [Function],
+        id: 'o6m8zEseMYx5bkKIAAAJ' } },
+  CID_rest: '0871220111912098941',
+  CID_node: '18171990191984421241',
+  token: 'e5b683c6bee379bbb0c509ed54354d396998efe66720a7d9a1faa64bf426afeb2_vSs_KahFHaNfpBgKMm3ybv0OxBQ4DS3N2fCV-KcXTGrwpWWz4FAzF7z-yZD9mi' } object 
+from step: { action: 'call.callWsaggerFile',
+  wait: { delay: 10000 },
+  data: 
+   [ 'https',
+     'gambling-game-api.dev.gbksoft.net',
+     443,
+     '/rest',
+     'user2@example.com',
+     '123123q',
+     'http',
+     '127.0.0.1',
+     '28780',
+     '/front_space' ],
+  expected: { 'doer.socket_io': '{{!doer.socket_io}}' },
+  dataOut: [ 'doer.socket_io', 'userId' ],
+  num: 1 }
+
+968098 store  doer.socket_io: {...}  -->  doer.socket_io
+
+968098 store  undefined  -->  userId
+
+968098 STEP  2 
+
+ { action: 'socket_io.emit',
+  data: [ 'inviteRandom', { type: 'free', rate: 0 } ],
+  wait: { delay: 3000 },
+  expected: [ [ 'inviteRandomQueued', [Object] ] ],
+  num: 2 }
+
+968098 setting wait timeout 2
+
+968098 out --> socket_io.emit: [ 'inviteRandom', { type: 'free', rate: 0 } ]
+
+968098 <-- in: socket_io inviteRandomQueued {"gameId":51,"type":"free","rate":0}
+onInputEvent: checkData failed??? [ 'inviteRandomQueued',
+  { opponent: {}, gameId: '{{!gameId}}', type: 'free', rate: 0 } ]
+
+968098 !!! wait timeout 2 !!!! [ [ 'inviteRandomQueued',
+    { opponent: {}, gameId: '{{!gameId}}', type: 'free', rate: 0 } ] ]
+
+968098 !!! wait timeout 2 !!!! failed
+
+968098 ??? FAIL ???
+
+
+968098FAIL ???
+
+FinishRunNode:
+
+968027 <-- in exec.execSync: {} object 
+from step: { action: 'exec.execSync',
+  data: 
+   [ { action: 'call.callWsaggerFile',
+       wait: [Object],
+       data: [Object],
+       expected: [Object],
+       dataOut: [Object] },
+     { action: 'socket_io.emit',
+       data: [Object],
+       wait: [Object],
+       expected: [Object] },
+     { wait: [Object] } ],
+  num: 1,
+  expected: undefined }
+
+968027 !!! SUCCESS !!!
+
+
+968027SUCCESS !!!
+
+Final!
