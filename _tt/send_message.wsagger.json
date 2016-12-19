@@ -1,0 +1,37 @@
+{
+  "wsagger": "0.0.3",
+  "info": {
+    "description": "GBKSOFT chat API",
+    "version": "1.1.0",
+    "title": "GBKSOFT chat API"
+  },
+
+  "name": "send user message",
+
+  "parameters_": [
+    { "name": "messageText", "in": "2_send_message_messageText" }
+  ],
+
+  "data": [
+
+    {
+      "action": "socket_io.connect",           
+      "data": { 
+        "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+        "query": { "query": "token=123" }
+      },
+      "wait": {"delay": 3000},
+      "expected": [[ "connectedTo", {}]]
+    },
+
+    { 
+      "action"  : "socket_io.emit",
+      "data"    : ["sendMessage", {"type": "user", "recipientId": "{{slaveUserId}}", "messageText": "{{messageText}}"}],
+      "wait"    : { "delay": 15000 },
+      "expected": [[ "messageUser", { "messageText": "{{!messageText}}" }]] 
+    } 
+
+
+  ]
+
+}

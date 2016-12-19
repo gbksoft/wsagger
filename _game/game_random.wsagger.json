@@ -38,8 +38,8 @@
       "data"    : ["inviteRandom", {"type": "free", "rate": 0}],
       "wait"    : { "delay": 80000 },
       "expected": [
-        [ "gameStarted",  {"opponent": {}, "gameId": "{{!gameId}}", "type": "free", "rate": 0} ],
-        [ "roundStarted", {"opponent": {}, "gameId": "{{!gameId}}", "type": "free", "rate": 0} ]
+        [ "gameStarted",  {"gameId": "{{!gameId}}"} ],
+        [ "roundStarted", {"gameId": "{{!gameId}}", "roundId": 1} ]
       ]
     },
 
@@ -47,7 +47,7 @@
       "action"  : "socket_io.emit",
       "data"    : ["gameAction", {"gameId": "{{gameId}}", "roundId": 1, "action": 3}],
       "wait"    : { "delay": 10000 },
-      "expected": [[ "roundStarted", {} ]]
+      "expected": [[ "roundStarted", {"gameId": "{{!gameId}}", "roundId": 1} ]]
     }
 
   ]

@@ -1,0 +1,17 @@
+{
+
+   "REST_" : {
+      "loc":  { "proto": "http://", "host": "localhost",                                    "port": "28890", "path": "/rest" },
+      "dev":  { "proto": "http://", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/rest" }
+   },
+
+   "server_" : {
+      "loc":  { "proto": "http://", "host": "localhost",                                    "port": "28890", "path": "/front_space" },
+      "dev":  { "proto": "http://", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/front_space" }
+   },
+
+   "user_" : {
+   }
+
+}
+

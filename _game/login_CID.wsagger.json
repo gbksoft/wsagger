@@ -37,7 +37,7 @@
             "queryData":"{\"email\":\"{{user.username}}\", \"password\": \"{{user.password}}\"}"
           },          
           "wait": {"delay": 7000},           
-          "expected": { "result": { "accessToken": {"token": "{{!token}}"}}}
+          "expected": { "parsed": {"result": { "accessToken": {"token": "{{!token}}"}}}}
         },
 
         { 
@@ -51,7 +51,7 @@
             "queryData":"{\"connection_id\": \"{{CID_rest}}\"}"
           },          
           "wait": { "delay": 7000 },
-          "expected": { "code": 200 }
+          "expected": { "parsed": { "code": 200 }}
         },
 
        	{
