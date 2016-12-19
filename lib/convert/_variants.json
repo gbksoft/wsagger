@@ -1,16 +1,89 @@
 {
-  "REST_" : {
-    "dev":  { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" },
-    "test": { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" },    
-    "live": { "proto": "https", "host": "gambling-game-api.live.gbksoft.net", "port": 443, "path": "/rest" },
-    "loc":  { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" },
-    "loc2": { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" }
-  },
-  
-  "user_" : {
-    "1": { "username": "user1@example.com", "password": "123123q", "id": "1"},
-    "1": { "username": "user2@example.com", "password": "123123q", "id": "1"}
-  } 
-
+   "REST_": {
+      "dev": {
+         "proto": "https",
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "port": 443,
+         "path": "/rest"
+      },
+      "test": {
+         "proto": "https",
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "port": 443,
+         "path": "/rest"
+      },
+      "live": {
+         "proto": "https",
+         "host": "gambling-game-api.live.gbksoft.net",
+         "port": 443,
+         "path": "/rest"
+      },
+      "loc": {
+         "proto": "https",
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "port": 443,
+         "path": "/rest"
+      },
+      "loc2": {
+         "proto": "https",
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "port": 443,
+         "path": "/rest"
+      },
+      "gambling-game-api.dev.gbksoft.net": {
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "path": "/rest"
+      },
+      "gambling-game-api.dev.gbksoft.net0": {
+         "host": "gambling-game-api.dev.gbksoft.net",
+         "path": "/rest"
+      }
+   },
+   "user_": {
+      "1": {
+         "username": "user1@example.com",
+         "password": "123123q",
+         "id": "1"
+      },
+      "2": {
+         "username": "user2@example.com",
+         "password": "123123q",
+         "id": "2"
+      }
+   },
+   "server_": {
+      "dev": {
+         "proto": "http",
+         "host": "gambling-game-node.dev.gbksoft.net",
+         "port": "28790",
+         "path": "/front_space"
+      },
+      "test": {
+         "proto": "http",
+         "host": "gambling-game-node.test.gbksoft.net",
+         "port": "28791",
+         "path": "/front_space"
+      },
+      "live": {
+         "proto": "http",
+         "host": "gambling-game-node.live.gbksoft.net",
+         "port": "28792",
+         "path": "/front_space"
+      },
+      "loc": {
+         "proto": "http",
+         "host": "127.0.0.1",
+         "port": "28780",
+         "path": "/front_space"
+      },
+      "loc2": {
+         "proto": "http",
+         "host": "127.0.0.1",
+         "port": "28788",
+         "path": "/front_space"
+      }
+   },
+   "proto": [
+      "https"
+   ]
 }
-
