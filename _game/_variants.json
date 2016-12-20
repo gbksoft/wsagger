@@ -1,4 +1,6 @@
 {
+  "wsagger": "variants",
+  
   "REST_" : {
     "dev":  { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" },
     "test": { "proto": "https", "host": "gambling-game-api.dev.gbksoft.net",  "port": 443, "path": "/rest" },    

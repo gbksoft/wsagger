@@ -1,4 +1,5 @@
 {
+  "wsagger": "variants",
 
    "REST_" : {
       "loc":  { "proto": "http://", "host": "localhost",                    "port": "28780", "path": "/rest" },
