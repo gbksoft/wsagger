@@ -8,8 +8,6 @@
 <body>
     <!-- LEFT PANEL -->
     <div id="titulus" class="container-fluid">
-        <div id="variants"></div>
-
         <form action="" id="jsonloader" class="row" name="json-load">
                     <div class="col-xs-12 col-md-7 radio">
 
@@ -24,29 +22,37 @@
 
                     </div>
 
-                    <div class="col-xs-12 col-md-3 show-if-json-text">
-                        <!-- load JSON -->
+                    <div class="col-xs-12 col-md-3 show-if-json-http">
                         <input class="submit btn btn-success btn-block" type="submit" value="Load JSON">
                     </div>
                     <div class="col-xs-12 col-md-3 show-if-json-file">
-                        <!-- WSagger File Input -->
                         <span class="btn btn-success btn-block btn-file">
                             Choose JSON File <input type="file">
                         </span>
                     </div>
-                    <div class="col-xs-12 col-md-7 show-if-json-text">
-                        <!-- WSagger URL -->
+                    
+                    <div class="col-xs-12 col-md-7 show-if-json-http">
                         <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
                         <span class="feedback"></span>
                     </div>
+                    <div class="col-xs-12 col-md-7 show-if-json-file">
+                        <b><font color=blue><div id="filename"></div></font></b>
+                        <span class="feedback"></span>
+                    </div>
+
         </form>
+        &nbsp;
 
-
-        <div class="data-part">
-            <div id="data">
-                <!-- container for Wsagger data -->
-            </div>
+        <div class="data-part"><div class="method panel panel-info">
+        <h5 class="method_header panel-heading"><span id="page_menu"></span></h5>
+        
+        <div class="method_body" id="method__body">
+           <div id="Variants"></div>
+           <div id="Scenario"></div>
+           <div id="Scenarios_tree"></div>
         </div>
+
+        </div></div>
 
 
     </div>
@@ -109,7 +115,10 @@
 <script src="http://cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script>
 <script src="http://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="lib/in_browser/load.js"></script>
+<script src="lib/runner.js"></script>
+<script src="lib/http_.js"></script>
+
+<script src="lib/in_browser/init.js"></script>
 <script src="lib/in_browser/data_part.js"></script>
 <script src="lib/in_browser/flow_part.js"></script>
 <script src="lib/in_browser/jsonlint.js"></script>

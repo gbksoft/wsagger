@@ -35,7 +35,7 @@
     {
       "expected" : [
         [ "messageAdd",  { "messageId": "{{messageId}}", "preview": {"contentType": "image/jpeg"} } ]
- 
+
       ], 
       "wait" : { "delay": 30000 }
 

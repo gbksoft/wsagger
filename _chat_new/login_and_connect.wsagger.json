@@ -1,16 +1,35 @@
 {
-   "wsagger": "0.0.3",
-   "info": {
+  "wsagger": "0.0.3",
+  "info": {
       "description": "GBKSOFT chat API",
       "version": "1.1.0",
       "title": "GBKSOFT chat API"
-   },
+  },
 
-   "name": "login_and_connect",
+  "name": "login_and_connect",
 
-   "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "user.username", "user.password", "server.proto", "server.host",  "server.port", "server.path"], 
+  "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "user.username", "user.password", "server.proto", "server.host",  "server.port", "server.path"], 
 
-          "data": [
+  "parameters": [
+    {
+      "in":"body",
+      "name":"user.username",
+      "type":"string",
+      "required":true,
+      "description":"user login or email"
+    },
+    
+    {
+      "in":"body",
+      "name":"user.password",
+      "type":"string",
+      "required":true,
+      "description":"user password"
+    } 
+
+  ],
+
+  "data": [
              { 
                 "action": "http.request",
                 "data": {
@@ -21,7 +40,7 @@
                    "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
                    "queryData":"username={{user.username}}&password={{user.password}}"
                 },          
-                "expected": { "result": { "id": "{{!userId}}", "token": "{{!token}}"}},
+                "expected": { "parsed": {"result": { "id": "{{!userId}}", "token": "{{!token}}"}}},
                 "wait": {"delay": 5000} 
              },
 
@@ -35,7 +54,7 @@
                 "expected": [[ "connected", {}]]
              }
 
-          ],
+  ],
           
-          "dataOut": [ "doer.socket_io", "userId" ]
+  "dataOut": [ "doer.socket_io", "userId" ]
 }

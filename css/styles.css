@@ -141,7 +141,7 @@ pre {
 /* -----------------------------------*/
 
 .container-fluid {
-    margin-top: 1vh;
+    /* margin-top: 1vh; */
 }
 
 #titulus {
@@ -157,7 +157,7 @@ pre {
 
 /* -------->>> METHOD BLOCK <<<-------*/
 
-.method__header {
+.method_header {
     width: 100%;
     margin-top: 0;
 }
@@ -166,12 +166,12 @@ pre {
     margin-right: 5px;
 }
 
-.method__body {
+.method_body {
     margin-left: 10px;
     margin-right: 10px;
 }
 
-.method__details button {
+.method_details button {
     margin: 0 0 1% 70%;
     width: 20%;
     font-size: 14px;
@@ -191,7 +191,7 @@ pre {
     display: inline-block;
 }
 
-.method__descr {
+.method_descr {
 
 }
 
@@ -300,13 +300,13 @@ pre {
     display: block;
 }
 
-.show-if-json-text, .show-if-json-file, #nav {
+.show-if-json-http, .show-if-json-file, #nav {
     display: none;
     margin: 5px 10px 10px 0;
     padding: 0;
 }
 
-.show-if-json-text input {
+.show-if-json-http input {
     margin: 0;
 }
 
@@ -377,7 +377,7 @@ pre {
 
 .user-container {
     position: fixed;
-    top: 10vh;
+    top: 1vh; 
 }
 
 .filters label {

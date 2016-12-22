@@ -1,16 +1,18 @@
 {
 
    "REST_" : {
-      "loc":  { "proto": "http://", "host": "localhost",                                    "port": "28890", "path": "/rest" },
-      "dev":  { "proto": "http://", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/rest" }
+      "loc":  { "proto": "https", "host": "tickertocker-php-backend.ory.gbksoft.net",  "port": "443", "path": "/api" },
+      "dev":  { "proto": "https", "host": "tickertocker-php-backend.dev.gbksoft.net",  "port": "443", "path": "/api" }
    },
 
    "server_" : {
-      "loc":  { "proto": "http://", "host": "localhost",                                    "port": "28890", "path": "/front_space" },
-      "dev":  { "proto": "http://", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/front_space" }
+      "loc":  { "proto": "http", "host": "localhost",                                    "port": "28890", "path": "/front_space" },
+      "dev":  { "proto": "http", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/front_space" }
    },
 
    "user_" : {
+      "1"  : { "username": "admin@example.com", "password": "DjhjuYtDuflf'!"}
+
    }
 
 }
