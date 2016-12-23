@@ -1,0 +1,1318 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "API for project",
+        "version": "1.0.0",
+        "title": "API"
+    },
+    "basePath": "/api/v1",
+    "tags": [
+        {
+            "name": "Category User",
+            "description": "User on site"
+        },
+        {
+            "name": "Status New",
+            "description": "New methods"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/user": {
+            "get": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "description": "List of items with pagination(in headers) and filters",
+                "summary": "Get User list",
+                "operationId": "get-user-list",
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "type": "integer",
+                        "description": "Page number"
+                    }, {
+                        "in": "query",
+                        "name": "per-page",
+                        "type": "integer",
+                        "description": "Items Per Page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Create User",
+                "operationId": "user-create",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Name"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Email"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "type": "string",
+                        "required": true,
+                        "description": "Password"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password_repeat",
+                        "type": "string",
+                        "required": true,
+                        "description": "Password Repeat"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status201"
+                                },
+                                {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/settings": {
+            "get": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Get User Model Settings",
+                "description": "Return array of model constants",
+                "operationId": "get-user-settings",
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }
+                            ]
+                        }
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/{id}": {
+            "get": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Get User by id",
+                "operationId": "get-user-by-id",
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true,
+                        "description": "User ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Update User",
+                "operationId": "user-update",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "type": "integer",
+                        "required": true,
+                        "description": "User ID"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "username",
+                        "type": "string",
+                        "required": true,
+                        "description": "User Name"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+
+        },
+        "/user/login": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "User login",
+                "operationId": "user-login",
+                "consumes": [
+                    "application/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "email",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "type": "string",
+                        "required": true,
+                        "description": "Minimum 6 characters"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/userAuth"
+                                        }
+                                    }
+                                }
+
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/logout": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "User login",
+                "operationId": "user-login",
+                "consumes": [
+                    "application/form-data"
+                ],
+                "produces": [
+                    "application/json", "text/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status204"
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/current": {
+            "get": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Get current identity user",
+                "operationId": "user-current",
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                },
+                                {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/reset-password": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Reset user password(step1)",
+                "description": "Reset user password(step1) - send link to email",
+                "operationId": "resetPassword",
+                "produces": ["application/json", "application/xml"],
+                "parameters": [{
+                        "in": "formData",
+                        "name": "email",
+                        "description": "The email for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/user/set-new-password": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Reset user password(step2)",
+                "description": "Reset user password(step2) - set new password by token",
+                "operationId": "setPassword",
+                "produces": ["application/json", "application/xml"],
+                "parameters": [
+                    {
+                        "in": "formData",
+                        "name": "password_reset_token",
+                        "description": "token recieved from email",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "password",
+                        "description": "new user password",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "formData",
+                        "name": "confirm_password",
+                        "description": "confirm new user password",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }, {
+                                    "properties": {
+                                        "result": {
+                                            "$ref": "#/definitions/user"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    "400": {
+                        "schema": {
+                            "$ref": "#/definitions/status400"
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "schema": {
+                            "$ref": "#/definitions/status401"
+                        },
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "schema": {
+                            "$ref": "#/definitions/status403"
+                        },
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "schema": {
+                            "$ref": "#/definitions/status404"
+                        },
+                        "description": "Not Found"
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    },
+                    "500": {
+                        "schema": {
+                            "$ref": "#/definitions/status500"
+                        },
+                        "description": "Internal Server Error"
+                    },
+                    "503": {
+                        "schema": {
+                            "$ref": "#/definitions/status503"
+                        },
+                        "description": "Service Unavailable"
+                    }
+                }
+            }
+        },
+        "/users/extend-expiration": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Extend user expiration time",
+                "operationId": "extend-expiration",
+                "produces": ["application/json", "application/xml"],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Ok",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/users/send-sms": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Send sms",
+                "operationId": "send-sms",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status204"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/users/confirm-phone": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Phone reconfirmation",
+                "operationId": "reconfirm-phone",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "in": "formData",
+                        "description": "key taken from confirmation sms",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                   "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "description": "error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status422",
+                                    "description": "Unprocessable Entity"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/users/send-email": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Send email",
+                "operationId": "send-email",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "204": {
+                        "description": "No content",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status204"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "description": "error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status422",
+                                    "description": "Unprocessable Entity"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/users/send-email": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Send email",
+                "operationId": "send-email",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "schema": {
+                            "$ref": "#/definitions/status422"
+                        },
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/users/confirm-email": {
+            "post": {
+                "tags": [
+                    "Status New",
+                    "Category User"
+                ],
+                "summary": "Email confirmation",
+                "operationId": "confirm-email",
+                "consumes": [
+                    "application/form-data",
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json",
+                    "text/xml"
+                ],
+                "parameters": [
+                    {
+                        "name": "key",
+                        "type": "string",
+                        "in": "formData",
+                        "description": "key taken from confirmation email",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status200"
+                                }
+                            ]
+                        }
+                    },
+                    "422": {
+                        "description": "error",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/status422",
+                                    "description": "Unprocessable Entity"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        }        
+    },
+    "securityDefinitions": {
+    },
+    "definitions": {
+        "responseModel": {
+            "type": "object",
+            "required": [
+                "code",
+                "status",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "result": {
+                    "type": "object"
+                }
+            }
+        },
+        "validateError": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string",
+                    "example": "user_id"
+                },
+                "message": {
+                    "type": "string",
+                    "example": "User ID must be an integer."
+                }
+            }
+        },
+        "status200": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "200 OK",
+                    "properties": {
+                        "code": {
+                            "example": "200"
+                        },
+                        "status": {
+                            "example": "success"
+                        }
+                    }
+                }
+            ]
+        },
+        "status201": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "201 Created",
+                    "properties": {
+                        "code": {
+                            "example": "201"
+                        },
+                        "status": {
+                            "example": "success"
+                        },
+                        "message": {
+                            "example": "Created"
+                        }
+                    }
+                }
+            ]
+        },
+        "status204": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "204 No Response",
+                    "properties": {
+                        "code": {
+                            "example": "204"
+                        },
+                        "status": {
+                            "example": "success"
+                        },
+                        "message": {
+                            "example": "No Response"
+                        }
+                    }
+                }
+            ]
+        },
+        "status400": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "400 Bad Request",
+                    "properties": {
+                        "code": {
+                            "example": "400"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Bad Request"
+                        }
+                    }
+                }
+            ]
+        },
+        "status401": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "401 Unauthorized",
+                    "properties": {
+                        "code": {
+                            "example": "401"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Unauthorized"
+                        }
+                    }
+                }
+            ]
+        },
+        "status403": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "403 Forbidden",
+                    "properties": {
+                        "code": {
+                            "example": "403"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Forbidden"
+                        }
+                    }
+                }
+            ]
+        },
+        "status404": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "404 Not Found",
+                    "properties": {
+                        "code": {
+                            "example": "404"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Not Found"
+                        }
+                    }
+                }
+            ]
+        },
+        "status422": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "422 Unprocessable Entity",
+                    "properties": {
+                        "code": {
+                            "example": "422"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Unprocessable Entity"
+                        },
+                        "result": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/validateError"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        "status500": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                }, {
+                    "title": "500 Internal Server Error",
+                    "properties": {
+                        "code": {
+                            "example": "500"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Internal Server Error"
+                        }
+                    }
+                }
+            ]
+        },
+        "status503": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/responseModel"
+                },
+                {
+                    "title": "503 Service Unavailable",
+                    "properties": {
+                        "code": {
+                            "example": "503"
+                        },
+                        "status": {
+                            "example": "error"
+                        },
+                        "message": {
+                            "example": "Service Unavailable"
+                        }
+                    }
+                }]
+        },
+        "user": {
+            "type": "object",
+            "title": "User identity model",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "username": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "integer"
+                },
+                "status": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,529 @@
+{
+   "wsagger": "1.0.0",
+   "origin": {
+      "type": [
+         "swagger",
+         "2.0"
+      ],
+      "info": {
+         "description": "API for project",
+         "version": "1.0.0",
+         "title": "API"
+      }
+   },
+   "name": "Create User",
+   "data": [
+      {
+         "action": "call.callWsaggerFile",
+         "data": [
+            "./login.wsagger.json",
+            "{{REST.proto}}",
+            "{{REST.host}}",
+            "{{REST.port}}",
+            "{{REST.path}}",
+            "{{user.username}}",
+            "{{user.password}}"
+         ],
+         "wait": {
+            "delay": 3000
+         },
+         "expected": {
+            "token": "{{!token}}"
+         }
+      },
+      {
+         "action": "http_.request",
+         "data": [
+            "{{REST.proto}}",
+            {
+               "method": "POST",
+               "host": "{{REST.host}}",
+               "path": "/api/v1/user",
+               "headers": {
+                  "Content-Type": "{{Content-Type}}",
+                  "Accept": "{{Accept}}",
+                  "Authorization": "Bearer {{token}}"
+               },
+               "queryData": ""
+            }
+         ],
+         "wait": {
+            "delay": 3000
+         },
+         "expected": {}
+      }
+   ],
+   "scPath": "0002.user-create.wsagger.json",
+   "_variants": {
+      "Content-Type": [
+         "application/form-data",
+         "multipart/form-data"
+      ],
+      "Accept": [
+         "application/json",
+         "text/xml"
+      ],
+      "REST_": {
+         "loc": {
+            "proto": "https",
+            "host": "tickertocker-php-backend.ory.gbksoft.net",
+            "port": "443",
+            "path": "/api"
+         },
+         "dev": {
+            "proto": "https",
+            "host": "tickertocker-php-backend.dev.gbksoft.net",
+            "port": "443",
+            "path": "/api"
+         },
+         "gambling-game-api.dev.gbksoft.net": {
+            "host": "gambling-game-api.dev.gbksoft.net",
+            "path": "/api/v1"
+         }
+      },
+      "server_": {
+         "loc": {
+            "proto": "http",
+            "host": "localhost",
+            "port": "28890",
+            "path": "/front_space"
+         },
+         "dev": {
+            "proto": "http",
+            "host": "tickertocker-nodejs-backend.dev.gbksoft.net",
+            "port": "28890",
+            "path": "/front_space"
+         }
+      },
+      "user_": {
+         "1": {
+            "username": "admin@example.com",
+            "password": "DjhjuYtDuflf'!"
+         }
+      },
+      "proto": [
+         "http"
+      ]
+   },
+   "parameters_": [
+      {
+         "name": "username",
+         "type": "string",
+         "required": true,
+         "description": "User Name"
+      },
+      {
+         "name": "email",
+         "type": "string",
+         "required": true,
+         "description": "User Email"
+      },
+      {
+         "name": "password",
+         "type": "string",
+         "required": true,
+         "description": "Password"
+      },
+      {
+         "name": "password_repeat",
+         "type": "string",
+         "required": true,
+         "description": "Password Repeat"
+      }
+   ],
+   "responses": {
+      "201": {
+         "description": "Created",
+         "schema": {
+            "allOf": [
+               {
+                  "allOf": [
+                     {
+                        "type": "object",
+                        "required": [
+                           "code",
+                           "status",
+                           "message"
+                        ],
+                        "properties": {
+                           "code": {
+                              "type": "string"
+                           },
+                           "status": {
+                              "type": "string"
+                           },
+                           "message": {
+                              "type": "string"
+                           },
+                           "result": {
+                              "type": "object"
+                           }
+                        }
+                     },
+                     {
+                        "title": "201 Created",
+                        "properties": {
+                           "code": {
+                              "example": "201"
+                           },
+                           "status": {
+                              "example": "success"
+                           },
+                           "message": {
+                              "example": "Created"
+                           }
+                        }
+                     }
+                  ]
+               },
+               {
+                  "properties": {
+                     "result": {
+                        "type": "object",
+                        "title": "User identity model",
+                        "properties": {
+                           "id": {
+                              "type": "integer",
+                              "format": "int64"
+                           },
+                           "username": {
+                              "type": "string"
+                           },
+                           "email": {
+                              "type": "string"
+                           },
+                           "role": {
+                              "type": "integer"
+                           },
+                           "status": {
+                              "type": "integer"
+                           },
+                           "created_at": {
+                              "type": "integer"
+                           }
+                        }
+                     }
+                  }
+               }
+            ]
+         }
+      },
+      "400": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "400 Bad Request",
+                  "properties": {
+                     "code": {
+                        "example": "400"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Bad Request"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Bad Request"
+      },
+      "401": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "401 Unauthorized",
+                  "properties": {
+                     "code": {
+                        "example": "401"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Unauthorized"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Unauthorized"
+      },
+      "403": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "403 Forbidden",
+                  "properties": {
+                     "code": {
+                        "example": "403"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Forbidden"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Forbidden"
+      },
+      "404": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "404 Not Found",
+                  "properties": {
+                     "code": {
+                        "example": "404"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Not Found"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Not Found"
+      },
+      "422": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "422 Unprocessable Entity",
+                  "properties": {
+                     "code": {
+                        "example": "422"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Unprocessable Entity"
+                     },
+                     "result": {
+                        "type": "array",
+                        "items": {
+                           "type": "object",
+                           "properties": {
+                              "field": {
+                                 "type": "string",
+                                 "example": "user_id"
+                              },
+                              "message": {
+                                 "type": "string",
+                                 "example": "User ID must be an integer."
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Unprocessable Entity"
+      },
+      "500": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "500 Internal Server Error",
+                  "properties": {
+                     "code": {
+                        "example": "500"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Internal Server Error"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Internal Server Error"
+      },
+      "503": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "503 Service Unavailable",
+                  "properties": {
+                     "code": {
+                        "example": "503"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Service Unavailable"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Service Unavailable"
+      }
+   }
+}

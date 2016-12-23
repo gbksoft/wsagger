@@ -1,0 +1,237 @@
+{
+   "wsagger": "1.0.0",
+   "origin": {
+      "type": [
+         "swagger",
+         "2.0"
+      ],
+      "info": {
+         "description": "API for project",
+         "version": "1.0.0",
+         "title": "API"
+      }
+   },
+   "name": "Get User Model Settings",
+   "data": [
+      {
+         "action": "call.callWsaggerFile",
+         "data": [
+            "./login.wsagger.json",
+            "{{REST.proto}}",
+            "{{REST.host}}",
+            "{{REST.port}}",
+            "{{REST.path}}",
+            "{{user.username}}",
+            "{{user.password}}"
+         ],
+         "wait": {
+            "delay": 3000
+         },
+         "expected": {
+            "token": "{{!token}}"
+         }
+      },
+      {
+         "action": "http_.request",
+         "data": [
+            "{{REST.proto}}",
+            {
+               "method": "GET",
+               "host": "{{REST.host}}",
+               "path": "/api/v1/user/settings",
+               "headers": {
+                  "Accept": "{{Accept}}",
+                  "Authorization": "Bearer {{token}}"
+               },
+               "queryData": ""
+            }
+         ],
+         "wait": {
+            "delay": 3000
+         },
+         "expected": {}
+      }
+   ],
+   "scPath": "0003.get-user-settings.wsagger.json",
+   "_variants": {
+      "Accept": [
+         "application/json",
+         "text/xml"
+      ],
+      "REST_": {
+         "loc": {
+            "proto": "https",
+            "host": "tickertocker-php-backend.ory.gbksoft.net",
+            "port": "443",
+            "path": "/api"
+         },
+         "dev": {
+            "proto": "https",
+            "host": "tickertocker-php-backend.dev.gbksoft.net",
+            "port": "443",
+            "path": "/api"
+         },
+         "gambling-game-api.dev.gbksoft.net": {
+            "host": "gambling-game-api.dev.gbksoft.net",
+            "path": "/api/v1"
+         }
+      },
+      "server_": {
+         "loc": {
+            "proto": "http",
+            "host": "localhost",
+            "port": "28890",
+            "path": "/front_space"
+         },
+         "dev": {
+            "proto": "http",
+            "host": "tickertocker-nodejs-backend.dev.gbksoft.net",
+            "port": "28890",
+            "path": "/front_space"
+         }
+      },
+      "user_": {
+         "1": {
+            "username": "admin@example.com",
+            "password": "DjhjuYtDuflf'!"
+         }
+      },
+      "proto": [
+         "http"
+      ]
+   },
+   "parameters_": [],
+   "responses": {
+      "200": {
+         "description": "OK",
+         "schema": {
+            "allOf": [
+               {
+                  "allOf": [
+                     {
+                        "type": "object",
+                        "required": [
+                           "code",
+                           "status",
+                           "message"
+                        ],
+                        "properties": {
+                           "code": {
+                              "type": "string"
+                           },
+                           "status": {
+                              "type": "string"
+                           },
+                           "message": {
+                              "type": "string"
+                           },
+                           "result": {
+                              "type": "object"
+                           }
+                        }
+                     },
+                     {
+                        "title": "200 OK",
+                        "properties": {
+                           "code": {
+                              "example": "200"
+                           },
+                           "status": {
+                              "example": "success"
+                           }
+                        }
+                     }
+                  ]
+               }
+            ]
+         }
+      },
+      "500": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "500 Internal Server Error",
+                  "properties": {
+                     "code": {
+                        "example": "500"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Internal Server Error"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Internal Server Error"
+      },
+      "503": {
+         "schema": {
+            "allOf": [
+               {
+                  "type": "object",
+                  "required": [
+                     "code",
+                     "status",
+                     "message"
+                  ],
+                  "properties": {
+                     "code": {
+                        "type": "string"
+                     },
+                     "status": {
+                        "type": "string"
+                     },
+                     "message": {
+                        "type": "string"
+                     },
+                     "result": {
+                        "type": "object"
+                     }
+                  }
+               },
+               {
+                  "title": "503 Service Unavailable",
+                  "properties": {
+                     "code": {
+                        "example": "503"
+                     },
+                     "status": {
+                        "example": "error"
+                     },
+                     "message": {
+                        "example": "Service Unavailable"
+                     }
+                  }
+               }
+            ]
+         },
+         "description": "Service Unavailable"
+      }
+   },
+   "description": "Return array of model constants"
+}

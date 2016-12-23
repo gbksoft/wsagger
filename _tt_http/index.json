@@ -1,0 +1,112 @@
+{
+   "wsagger": "index",
+   "0001.get-user-list.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Get User list",
+      "description": "List of items with pagination(in headers) and filters"
+   },
+   "0002.user-create.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Create User"
+   },
+   "0003.get-user-settings.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Get User Model Settings",
+      "description": "Return array of model constants"
+   },
+   "0004.get-user-by-id.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Get User by id"
+   },
+   "0005.user-update.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Update User"
+   },
+   "login.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "User login"
+   },
+   "0007.user-login.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "User login"
+   },
+   "0008.user-current.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Get current identity user"
+   },
+   "0009.resetPassword.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Reset user password(step1)",
+      "description": "Reset user password(step1) - send link to email"
+   },
+   "0010.setPassword.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Reset user password(step2)",
+      "description": "Reset user password(step2) - set new password by token"
+   },
+   "0011.extend-expiration.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Extend user expiration time"
+   },
+   "0012.send-sms.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Send sms"
+   },
+   "0013.reconfirm-phone.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Phone reconfirmation"
+   },
+   "0014.send-email.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Send email"
+   },
+   "0015.confirm-email.wsagger.json": {
+      "tags": [
+         "Status New",
+         "Category User"
+      ],
+      "name": "Email confirmation"
+   }
+}

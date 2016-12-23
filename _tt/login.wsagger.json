@@ -24,9 +24,7 @@
    
       "expected": { "parsed": {"result": { "id": "{{!userId}}", "token": "{{!token}}"}}},
       "wait": {"delay": 5000} 
-    }
-
-  
+    } 
   ],
           
   "dataOut": [ "token" ]

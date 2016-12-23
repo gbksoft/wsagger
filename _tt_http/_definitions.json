@@ -1,0 +1,275 @@
+{
+   "responseModel": {
+      "type": "object",
+      "required": [
+         "code",
+         "status",
+         "message"
+      ],
+      "properties": {
+         "code": {
+            "type": "string"
+         },
+         "status": {
+            "type": "string"
+         },
+         "message": {
+            "type": "string"
+         },
+         "result": {
+            "type": "object"
+         }
+      }
+   },
+   "validateError": {
+      "type": "object",
+      "properties": {
+         "field": {
+            "type": "string",
+            "example": "user_id"
+         },
+         "message": {
+            "type": "string",
+            "example": "User ID must be an integer."
+         }
+      }
+   },
+   "status200": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "200 OK",
+            "properties": {
+               "code": {
+                  "example": "200"
+               },
+               "status": {
+                  "example": "success"
+               }
+            }
+         }
+      ]
+   },
+   "status201": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "201 Created",
+            "properties": {
+               "code": {
+                  "example": "201"
+               },
+               "status": {
+                  "example": "success"
+               },
+               "message": {
+                  "example": "Created"
+               }
+            }
+         }
+      ]
+   },
+   "status204": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "204 No Response",
+            "properties": {
+               "code": {
+                  "example": "204"
+               },
+               "status": {
+                  "example": "success"
+               },
+               "message": {
+                  "example": "No Response"
+               }
+            }
+         }
+      ]
+   },
+   "status400": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "400 Bad Request",
+            "properties": {
+               "code": {
+                  "example": "400"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Bad Request"
+               }
+            }
+         }
+      ]
+   },
+   "status401": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "401 Unauthorized",
+            "properties": {
+               "code": {
+                  "example": "401"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Unauthorized"
+               }
+            }
+         }
+      ]
+   },
+   "status403": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "403 Forbidden",
+            "properties": {
+               "code": {
+                  "example": "403"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Forbidden"
+               }
+            }
+         }
+      ]
+   },
+   "status404": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "404 Not Found",
+            "properties": {
+               "code": {
+                  "example": "404"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Not Found"
+               }
+            }
+         }
+      ]
+   },
+   "status422": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "422 Unprocessable Entity",
+            "properties": {
+               "code": {
+                  "example": "422"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Unprocessable Entity"
+               },
+               "result": {
+                  "type": "array",
+                  "items": {
+                     "$ref": "#/definitions/validateError"
+                  }
+               }
+            }
+         }
+      ]
+   },
+   "status500": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "500 Internal Server Error",
+            "properties": {
+               "code": {
+                  "example": "500"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Internal Server Error"
+               }
+            }
+         }
+      ]
+   },
+   "status503": {
+      "allOf": [
+         {
+            "$ref": "#/definitions/responseModel"
+         },
+         {
+            "title": "503 Service Unavailable",
+            "properties": {
+               "code": {
+                  "example": "503"
+               },
+               "status": {
+                  "example": "error"
+               },
+               "message": {
+                  "example": "Service Unavailable"
+               }
+            }
+         }
+      ]
+   },
+   "user": {
+      "type": "object",
+      "title": "User identity model",
+      "properties": {
+         "id": {
+            "type": "integer",
+            "format": "int64"
+         },
+         "username": {
+            "type": "string"
+         },
+         "email": {
+            "type": "string"
+         },
+         "role": {
+            "type": "integer"
+         },
+         "status": {
+            "type": "integer"
+         },
+         "created_at": {
+            "type": "integer"
+         }
+      }
+   }
+}
