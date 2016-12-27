@@ -1,0 +1,29 @@
+.panel {
+
+}
+
+.panel-success {
+  > .panel-heading {
+    background: #89bf04;
+    color: #436600;
+    font-weight: bold;
+    b {
+      color: #fff;
+    }
+    a {
+      color: #436600;
+    }
+  }
+}
+
+.method_body {
+  #Variants,
+  #Scenario,
+  #Expectations,
+  #Scenarios_tree {
+    &[style*="hidden"] {
+      display: none;
+    }
+  }
+
+}
