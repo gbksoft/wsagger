@@ -199,12 +199,6 @@ pre {
 /* -------->>> RIGHT PANEL <<<--------*/
 /* -----------------------------------*/
 
-#argumentum {
-    max-height: 100%;
-    width: 70%;
-    float: left;
-}
-
 /* show/hide messages according to checkboxes in Filters */
 #argumentum.hide-red li.red,
 #argumentum.hide-gray li.gray,
@@ -274,11 +268,6 @@ pre {
     width: 80%;
 }
 
-#jsonloader .form-check-inline span {
-    margin-left: 1px;
-    margin-right: 20px;
-}
-
 #jsonloader .feedback {
     float: left;
     clear: both;
@@ -302,7 +291,6 @@ pre {
 
 .show-if-json-http, .show-if-json-file, #nav {
     display: none;
-    margin: 5px 10px 10px 0;
     padding: 0;
 }
 
@@ -372,29 +360,14 @@ pre {
 /* ------------>>> FLOW <<<-----------*/
 
 .tabs-content div.user-info span {
-    color: blue;
+    color: #89bf04;
 }
-
-.user-container {
-    position: fixed;
-    top: 1vh; 
-}
-
 .filters label {
     font-weight: 500;
     margin-right: 6px;
     cursor: pointer;
 }
 
-ul#socketLog {
-    overflow: scroll;
-    height: 80vh;
-}
-
-#socketLog li {
-    padding: 5px 10px;
-}
-
 #socketLog li:nth-child(odd) {
-    background: #dcf3ff;
+    background: #f5f5f5;
 }
