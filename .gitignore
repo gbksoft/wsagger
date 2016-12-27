@@ -3,3 +3,4 @@ _deploy
 node_modules
 *.log
 nbproject
+.idea

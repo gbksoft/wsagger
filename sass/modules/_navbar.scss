@@ -1,0 +1,13 @@
+.navbar {
+  &-green {
+    background-color: #89bf04;
+  }
+}
+.navbar-brand {
+  color: #fff;
+  font-weight: bold;
+}
+.navbar-text {
+  color: darken(#547f00, 5%);
+  font-weight: bold;
+}
