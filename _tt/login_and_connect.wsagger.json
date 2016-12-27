@@ -6,6 +6,26 @@
     "title": "GBKSOFT chat API"
   },
 
+  "_variants": {
+
+   "REST_" : {
+      "loc":  { "proto": "https", "host": "tickertocker-php-backend.ory.gbksoft.net",  "port": "443", "path": "/api" },
+      "dev":  { "proto": "https", "host": "tickertocker-php-backend.dev.gbksoft.net",  "port": "443", "path": "/api" }
+   },
+
+   "server_" : {
+      "loc":  { "proto": "http", "host": "localhost",                                    "port": "28890", "path": "/front_space" },
+      "dev":  { "proto": "http", "host": "tickertocker-nodejs-backend.dev.gbksoft.net",  "port": "28890", "path": "/front_space" }
+   },
+
+   "user_" : {
+      "1"  : { "username": "admin@example.com", "password": "DjhjuYtDuflf'!"}
+
+   }
+
+  },
+
+
   "name": "login and connect",
 
   "keysIn": ["REST.proto", "REST.host", "REST.port", "REST.path", "user.username", "user.password", "server.proto", "server.host",  "server.port", "server.path"], 

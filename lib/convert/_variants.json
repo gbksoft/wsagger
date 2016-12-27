@@ -1,4 +1,5 @@
 {
+   "wsagger": "variants",
 
    "REST_" : {
       "loc":  { "proto": "https", "host": "tickertocker-php-backend.ory.gbksoft.net",  "port": "443", "path": "/api" },

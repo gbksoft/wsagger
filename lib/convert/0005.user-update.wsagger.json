@@ -44,7 +44,10 @@
                   "Accept": "{{Accept}}",
                   "Authorization": "Bearer {{token}}"
                },
-               "queryData": ""
+               "queryData": "",
+               "queryData_": {
+                  "username": "{{username}}"
+               }
             }
          ],
          "wait": {
