@@ -1,0 +1,5 @@
+   "server_" : {
+      "loc":  { "proto": "http", "host": "localhost",                         "port": "28890", "path": "/front_space" },
+      "dev":  { "proto": "http", "host": "tickertocker-node.dev.gbksoft.net", "port": "28890", "path": "/front_space" }
+   },
+

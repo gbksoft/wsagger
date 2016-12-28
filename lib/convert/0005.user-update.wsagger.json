@@ -14,21 +14,33 @@
    "name": "Update User",
    "data": [
       {
-         "action": "call.callWsaggerFile",
+         "action": "http_.request",
          "data": [
-            "./login.wsagger.json",
             "{{REST.proto}}",
-            "{{REST.host}}",
-            "{{REST.port}}",
-            "{{REST.path}}",
-            "{{user.username}}",
-            "{{user.password}}"
+            {
+               "method": "POST",
+               "host": "{{REST.host}}",
+               "path": "/api/v1/user/login",
+               "headers": {
+                  "Content-Type": "application/form-data",
+                  "Accept": "application/json"
+               },
+               "queryData": "",
+               "queryData_": {
+                  "email": "{{user.username}}",
+                  "password": "{{user.password}}"
+               }
+            }
          ],
          "wait": {
             "delay": 3000
          },
          "expected": {
-            "token": "{{!token}}"
+            "parsed": {
+               "result": {
+                  "token": "{{!token}}"
+               }
+            }
          }
       },
       {
@@ -56,7 +68,6 @@
          "expected": {}
       }
    ],
-   "scPath": "0005.user-update.wsagger.json",
    "_variants": {
       "Content-Type": [
          "application/form-data",
@@ -66,6 +77,7 @@
          "application/json",
          "text/xml"
       ],
+      "wsagger": "variants",
       "REST_": {
          "loc": {
             "proto": "https",
@@ -75,27 +87,13 @@
          },
          "dev": {
             "proto": "https",
-            "host": "tickertocker-php-backend.dev.gbksoft.net",
+            "host": "tickertocker-php-backend.ory.gbksoft.net",
             "port": "443",
             "path": "/api"
          },
          "gambling-game-api.dev.gbksoft.net": {
             "host": "gambling-game-api.dev.gbksoft.net",
             "path": "/api/v1"
-         }
-      },
-      "server_": {
-         "loc": {
-            "proto": "http",
-            "host": "localhost",
-            "port": "28890",
-            "path": "/front_space"
-         },
-         "dev": {
-            "proto": "http",
-            "host": "tickertocker-nodejs-backend.dev.gbksoft.net",
-            "port": "28890",
-            "path": "/front_space"
          }
       },
       "user_": {

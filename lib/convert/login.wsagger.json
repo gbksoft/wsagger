@@ -23,7 +23,7 @@
                "path": "/api/v1/user/login",
                "headers": {
                   "Content-Type": "application/form-data",
-                  "Accept": "{{Accept}}"
+                  "Accept": "application/json"
                },
                "queryData": "",
                "queryData_": {
@@ -44,12 +44,12 @@
          }
       }
    ],
-   "scPath": "login.wsagger.json",
    "_variants": {
       "Accept": [
          "application/json",
          "text/xml"
       ],
+      "wsagger": "variants",
       "REST_": {
          "loc": {
             "proto": "https",
@@ -59,27 +59,13 @@
          },
          "dev": {
             "proto": "https",
-            "host": "tickertocker-php-backend.dev.gbksoft.net",
+            "host": "tickertocker-php-backend.ory.gbksoft.net",
             "port": "443",
             "path": "/api"
          },
          "gambling-game-api.dev.gbksoft.net": {
             "host": "gambling-game-api.dev.gbksoft.net",
             "path": "/api/v1"
-         }
-      },
-      "server_": {
-         "loc": {
-            "proto": "http",
-            "host": "localhost",
-            "port": "28890",
-            "path": "/front_space"
-         },
-         "dev": {
-            "proto": "http",
-            "host": "tickertocker-nodejs-backend.dev.gbksoft.net",
-            "port": "28890",
-            "path": "/front_space"
          }
       },
       "user_": {
