@@ -1,12 +1,13 @@
 {
   "wsagger": "0.0.3",
   "info": {
-    "description": "GBKSOFT chat API",
-    "version": "1.1.0",
-    "title": "GBKSOFT chat API"
+      "description": "GBKSOFT chat API",
+      "version": "1.1.0",
+      "title": "GBKSOFT chat API"
   },
 
-  "name": "send user message",
+
+  "name": "send image url",
 
   "parameters_": [
     {
@@ -47,14 +48,27 @@
       "expected": [[ "connectedTo", {}]]
     },
 
-    { 
-      "action"  : "socket_io.emit",
-      "data"    : ["sendMessage", {"type": "user", "recipientId": "{{recipientId}}", "messageText": "{{messageText}}"}],
-      "wait"    : { "delay": 15000 },
-      "expected": [[ "messageUser", { "messageText": "{{messageText}}" }]] 
-    } 
+    {
+      "action"   : "socket_io.emit",
+      "data"     : ["sendMessage", {"type": "user", "recipientId": "2", "messageText": "!!!", "structuredData": "{\"url\": \"http://infomincer.net/i2/top_I.jpg\", \"contentType\": \"image/jpeg\"}"}],
 
+      "expected" : [
+        [ "messageUser", { "messageText": "!!!", "messageId": "{{!messageId}}" }]
+ 
+      ], 
+      "wait" : { "delay": 3000 }
+
+
+    },
+   
+    {
+      "expected" : [
+        [ "messageAdd",  { "messageId": "{{messageId}}", "preview": {"contentType": "image/png"} } ]
+
+      ], 
+      "wait" : { "delay": 30000 }
+
+    }
 
   ]
-
 }
