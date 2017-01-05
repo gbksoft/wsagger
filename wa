@@ -1,3 +1,0 @@
-#!/bin/bash
-
-node js/run_all.js $1 $2 $3
