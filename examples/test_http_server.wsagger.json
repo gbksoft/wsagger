@@ -16,6 +16,10 @@
 
   ],
 
+  "functions" : {
+    "isString": "(data) => { return typeof data === 'string'; }"
+  },
+
   "data": [
   
     { 
@@ -31,7 +35,7 @@
         }
       ],          
    
-      "expected": { "statusCode": 200 },
+      "expected": { "statusCode": 200, "status": "{{*isString}}" },
       "wait": {"delay": 5000} 
     }
 
