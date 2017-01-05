@@ -1,0 +1,39 @@
+{
+  "wsagger": "0.0.3",
+
+  "name": "test http connect (on status 200)",
+
+  "parameters_": [
+    {
+      "name": "host",
+      "description": "http host"
+    },
+
+    {
+      "name": "path",
+      "description": "http host path"
+    }
+
+  ],
+
+  "data": [
+  
+    { 
+      "action": "http_.request",
+      "data": [
+        
+        "http",
+        {
+          "method": "GET", 
+          "host"  : "{{host}}", 
+          "port"  : 80, 
+          "path"  : "{{path}}" 
+        }
+      ],          
+   
+      "expected": { "statusCode": 200 },
+      "wait": {"delay": 5000} 
+    }
+
+  ]
+}

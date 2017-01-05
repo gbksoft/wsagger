@@ -1,0 +1,120 @@
+.checkbox-tabs {
+  margin-bottom: 30px;
+  &__header {
+    font-size: 12px;
+    padding-right: 200px;
+    position: relative;
+  }
+  &__text {
+    font-weight: bold;
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-width: 200px;
+    color: #436601;
+    padding: 5px 0;
+  }
+  &__body {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 0 4px 4px 4px;
+    border: 1px solid #d4d4d4;
+    .form-control {
+      &:focus {
+        box-shadow: none;
+        border-color: #89bf04;
+      }
+    }
+    .btn {
+      outline: none;
+    }
+    .btn-success {
+      background-color: #89bf04;
+      border-color: darken(#89bf04, 10%);
+    }
+  }
+  &__tab {
+    position: relative;
+    .alert {
+      margin: 15px 0 0;
+      padding: 7px 15px;
+      text-align: center;
+    }
+    .feedback {
+      display: none;
+    }
+    .feedback.success {
+      display: block;
+      float: none;
+      position: absolute;
+      top: 40px;
+      background: #dff0d8;
+      padding: 5px 10px;
+      border-radius: 3px;
+      border: 1px solid #d6e9c6;
+      color: #3c763d;
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -5px;
+        left: 10px;
+        width: 10px;
+        height: 10px;
+        border-top: 1px solid #d6e9c6;
+        border-right: 1px solid #d6e9c6;
+        background-color: #dff0d8;
+        transform: rotate(-45deg);
+      }
+    }
+    .feedback.error {
+      display: block;
+      float: none;
+      position: absolute;
+      bottom: -105%;
+      background: #e2a7a7;
+      padding: 5px 10px;
+      border-radius: 3px;
+      border: 1px solid #b98080;
+      color: #483030;
+      &:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -5px;
+        left: 10px;
+        width: 10px;
+        height: 10px;
+        border-top: 1px solid #b98080;
+        border-right: 1px solid #b98080;
+        background-color: #e2a7a7;
+        transform: rotate(-45deg);
+      }
+    }
+  }
+  &__button {
+    display: inline-block;
+    margin: 0 2px 0 0;
+    span {
+      display: inline-block;
+      padding: 5px 15px;
+      font-size: 14px;
+      text-transform: uppercase;
+      background-color: darken(#89bf04, 10%);
+      color: #fff;
+      outline: none;
+      transition: backround-color 0.2s linear;
+      border-radius: 4px 4px 0 0;
+      &:hover,
+      &:active {
+        background: #89bf04;
+      }
+    }
+    input {
+      display: none;
+    }
+    input:checked ~ span {
+      background: #89bf04;
+    }
+  }
+}

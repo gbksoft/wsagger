@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+    <title>WSagger</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <nav class="navbar navbar-green navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    WSAGGER
+                </a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <p class="navbar-text">
+                    Iнструментарій для тестування socket.io-серверів
+                </p>
+            </div>
+        </div>
+    </nav>
+    <main class="layout">
+        <aside class="layout__aside">
+            <form action="" id="jsonloader" class="row" name="json-load">
+
+                <div class="checkbox-tabs">
+                    <div class="checkbox-tabs__header">
+                        <label class="checkbox-tabs__button form-check-inline">
+                            <input class="form-check-input" type="radio" name="optradio" value="text" required checked>
+                            <span>remote JSON</span>
+                        </label>
+                        <label class="checkbox-tabs__button form-check-inline">
+                            <input class="form-check-input" type="radio" name="optradio" value="file" required>
+                            <span>local JSON</span>
+                        </label>
+                        <div class="checkbox-tabs__text" id="filename"></div>
+                    </div>
+                    <div class="checkbox-tabs__body">
+                        <div class="checkbox-tabs__tab show-if-json-http">
+                            <div class="input-group">
+                                <input type="text" class="form-control url" name="url" placeholder="Enter url for WSagger JSON file:">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="submit btn btn-success">Load JSON</button>
+                                </span>
+                            </div>
+                            <span class="feedback"></span>
+                        </div>
+                        <div class="checkbox-tabs__tab show-if-json-file">
+                            <span class="btn btn-success btn-block btn-file">
+                                Choose JSON File <input type="file">
+                            </span>
+                            <span class="feedback"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="data-part"><div class="method panel panel-success">
+                <h5 class="method_header panel-heading"><span id="page_menu"></span></h5>
+
+                <div class="method_body" id="method__body">
+                    <div id="Variants"></div>
+                    <div id="Scenario"></div>
+                    <div id="Expectations"></div>
+                    <div id="Scenarios_tree"></div>
+                </div>
+
+            </div></div>
+
+        </aside>
+        <section class="layout__content">
+            <div id="argumentum">
+
+                <div class="status-container">
+
+                    <div class="tabs-content flow-part active" id="tab-flow">
+
+                        <div class="user-container">
+                            <!-- <tr><td><b>Server:</b></td><td>&nbsp;</td><td><font color=blue><span id="serverId"></span></font></td></tr> -->
+
+                            <div class="user-info">
+                                <p>User id / name:
+                                    <span id="userId"></span>
+                                    <span>/</span>
+                                    <span id="userName"></span>
+                                </p>
+
+                                <p>Socket id:
+                                    <span id="socketId"></span>
+                                </p>
+                            </div>
+
+                            <!--
+                            <div class="filters">
+                                Show output for:&nbsp;
+                                <label>
+                                    <input type="checkbox" value="green" id="filter-response" checked>
+                                    <span class="green">Responses</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" value="brown" id="filter-request" checked>
+                                    <span class="brown">Requests</span>
+                                </label>
+                                <label>
+                                    <input type="checkbox" value="gray" id="filter-other" checked>
+                                    <span class="gray">Other</span>
+                                </label>
+                            </div>
+                            -->
+
+                        </div>
+
+                        <ul id="socketLog">
+                            <!-- container for output (messages) of Wsagger methods  -->
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+<script src="http://cdn.jsdelivr.net/socket.io-client/1.3.2/socket.io.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.jsdelivr.net/jquery.scrollto/2.1.2/jquery.scrollTo.min.js"></script>
+<script src="http://cdn.jsdelivr.net/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script src="lib/runner.js"></script>
+<script src="lib/http_.js"></script>
+<script src="lib/socket_io_.js"></script>
+
+<script src="lib/in_browser/init.js"></script>
+<script src="lib/in_browser/data_part.js"></script>
+<script src="lib/in_browser/flow_part.js"></script>
+<script src="lib/in_browser/jsonlint.js"></script>
+
+</body>
+</html>
+
+
+
