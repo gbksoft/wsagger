@@ -1,0 +1,45 @@
+{
+  "wsagger": "0.0.3",
+
+  "name": "test http connect (on status 200)",
+
+  "parameters_": [
+    {
+      "name": "host",
+      "description": "http host",
+      "defaultValue": "wsagger.dev.gbksoft.net"
+    },
+
+    {
+      "name": "path",
+      "description": "http host path",
+      "defaultValue": "/bad_path"
+    }
+
+  ],
+
+  "functions" : {
+    "isString": "(data) => { return typeof data === 'string'; }"
+  },
+
+  "data": [
+  
+    { 
+      "action": "http_.request",
+      "data": [
+        
+        "http",
+        {
+          "method": "GET", 
+          "host"  : "{{host}}", 
+          "port"  : 80, 
+          "path"  : "{{path}}" 
+        }
+      ],          
+   
+      "expected": { "statusCode": 404 },
+      "wait": {"delay": 5000} 
+    }
+
+  ]
+}

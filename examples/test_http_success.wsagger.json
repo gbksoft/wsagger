@@ -6,12 +6,14 @@
   "parameters_": [
     {
       "name": "host",
-      "description": "http host"
+      "description": "http host",
+      "defaultValue": "wsagger.dev.gbksoft.net"
     },
 
     {
       "name": "path",
-      "description": "http host path"
+      "description": "http host path",
+      "defaultValue": "/"
     }
 
   ],
@@ -35,7 +37,7 @@
         }
       ],          
    
-      "expected": { "statusCode": 200, "status": "{{*isString}}" },
+      "expected": { "statusCode": 200, "body": "{{*isString}}" },
       "wait": {"delay": 5000} 
     }
 
