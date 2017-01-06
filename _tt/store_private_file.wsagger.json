@@ -1,0 +1,74 @@
+{
+   "wsagger": "0.0.3",
+   "info": {
+      "description": "GBKSOFT chat API",
+      "version": "1.1.0",
+      "title": "GBKSOFT chat API"
+   },
+
+   "name": "store private file",
+
+   "data": [
+
+    { 
+      "action": "https.request",
+      "data": {
+        "method": "POST", 
+        "host": "{{REST.host}}", 
+        "port": "{{REST.port}}", 
+        "path": "{{REST.path}}/v1/user/login", 
+        "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+        "queryData":"email={{user.username}}&password={{user.password}}"
+      },          
+   
+      "expected": { "parsed": {"result": { "id": "{{!userId}}", "token": "{{!token}}"}}},
+      "wait": {"delay": 5000} 
+    },
+
+    {
+      "action": "socket_io.connect",           
+      "data": { 
+        "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+        "query": { "query": "token={{token}}" }
+      },
+      "wait": {"delay": 3000},
+      "expected": [[ "connectedTo", {}]]
+    },
+
+
+    {
+        "action"  : "load.loadFile",
+        "data"    : "png/0.png", 
+        "dataOut" : "data", 
+        "wait"    : { "delay": 3000 }
+    },
+
+    {
+                "action"  : "socket_io.emit",
+                "data"    : ["storeFile", { "fileName": "test.png", "contentType": "image/png", "contentLength": 40953, "messageType": "user", "messageTypeId": "0" }, "{{data}}"],
+                "expected": [[ "fileIsStored", { "url": "{{!url}}", "path": "{{!path}}", "preview": { "url": "{{!urlPreview}}" }} ]], 
+                "wait"    : { "delay": 3000 }
+    },
+
+    { 
+                "action": "http.request",
+                "data": {
+                   "method": "GET", 
+                   "host": "{{REST.host}}", 
+                   "port": "{{REST.port}}", 
+                   "path": "{{REST.path}}{{path}}", 
+                   "headers": {"Authorization": "Bearer {{token}}"}
+                },          
+                "wait": {"delay": 5000} 
+    },
+
+    {
+                "action"  : "socket_io.emit",
+                "data"    : ["removeFile", "{{url}}" ],
+                "expected": [[ "fileIsRemoved", "{{url}}"]], 
+                "wait"    : { "delay": 3000 }
+    }
+
+
+   ]
+}

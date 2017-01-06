@@ -1,0 +1,60 @@
+{
+  "wsagger": "0.0.3",
+  "info": {
+    "description": "GBKSOFT chat API",
+    "version": "1.1.0",
+    "title": "GBKSOFT chat API"
+  },
+
+  "name": "send user message",
+
+  "parameters_": [
+    {
+      "name"        : "messageText",
+      "defaultValue": "message text"
+    },
+
+    {
+      "name"        : "recipientId",
+      "defaultValue": 2
+    }
+  ],
+
+  "data": [
+
+    { 
+      "action": "https.request",
+      "data": {
+        "method": "POST", 
+        "host": "{{REST.host}}", 
+        "port": "{{REST.port}}", 
+        "path": "{{REST.path}}/v1/user/login", 
+        "headers": {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+        "queryData":"email={{user.username}}&password={{user.password}}"
+      },          
+   
+      "expected": { "parsed": {"result": { "id": "{{!userId}}", "token": "{{!token}}"}}},
+      "wait": {"delay": 5000} 
+    },
+
+    {
+      "action": "socket_io.connect",           
+      "data": { 
+        "url": "http://{{server.host}}:{{server.port}}{{server.path}}",            
+        "query": { "query": "token={{token}}" }
+      },
+      "wait": {"delay": 3000},
+      "expected": [[ "connectedTo", {}]]
+    },
+
+    { 
+      "action"  : "socket_io.emit",
+      "data"    : ["sendMessage", {"type": "user", "recipientId": "{{recipientId}}", "messageText": "{{messageText}}"}],
+      "wait"    : { "delay": 15000 },
+      "expected": [[ "messageUser", { "messageText": "{{messageText}}" }]] 
+    } 
+
+
+  ]
+
+}
