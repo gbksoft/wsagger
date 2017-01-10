@@ -3,7 +3,7 @@
 
   "name": "test http connect (on status 200)",
 
-  "parameters_": [
+  "parameters": [
     {
       "name": "host",
       "description": "http host",
