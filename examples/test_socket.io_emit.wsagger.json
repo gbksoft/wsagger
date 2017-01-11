@@ -1,0 +1,47 @@
+{
+  "wsagger": "0.0.3",
+
+  "name": "test socket.io-emit (on double echo)",
+
+  "parameters": [
+    {
+      "name": "host",
+      "defaultValue": "localhost"
+    },
+
+    {
+      "name": "port",
+      "defaultValue": 10002
+    },
+
+    {
+      "name": "path",
+      "defaultValue": "/"
+    }
+  ],
+
+
+  "data": [
+  
+    {
+      "action": "socket_io.connect",           
+      "data": { 
+        "url": "http://{{host}}:{{port}}{{path}}"
+      },
+      "wait": {"delay": 3000},
+      "expected": [[ "connectedTo", {}]]
+    },
+
+    {
+      "action": "socket_io.emit",
+      "data": [
+        "message",
+        { "aaa": "ccc" }
+      ],
+
+      "wait": {"delay": 3000},
+      "expected": [[ "message", { "aaa": "ccc" }], [ "message_", { "aaa": "ccc" }]]
+    }
+
+  ]
+}
