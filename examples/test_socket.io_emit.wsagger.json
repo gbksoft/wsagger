@@ -20,16 +20,19 @@
     }
   ],
 
-
   "data": [
   
     {
-      "action": "socket_io.connect",           
-      "data": { 
-        "url": "http://{{host}}:{{port}}{{path}}"
-      },
+      "action": "call.callWsaggerFile",           
+      "data": [
+        "test_socket.io_connect.wsagger.json",
+        "{{host}}",
+        "{{port}}",
+        "{{path}}"
+      ],
       "wait": {"delay": 3000},
-      "expected": [[ "connectedTo", {}]]
+      "expected": { "doer.socket_io": {} },
+      "dataOut" : [ "doer.socket_io" ]
     },
 
     {
@@ -45,6 +48,6 @@
       	[ "message_", { "aaa": "ccc" }]
       ]
     }
-
+  
   ]
 }

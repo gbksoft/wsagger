@@ -1,15 +1,4 @@
 {
-  "wsagger" : "variants",
-
-  "port"    : [
-  	  "10002", 
-  	  "10003"
-  	],
-
-   "user_" : {
-       "pavlo":  { "username": "pavlo",  "password": "pavlo" },
-       "guest":  { "username": "guest",  "password": "" }
-   }
-
+  "wsagger" : "variants"
 }
 

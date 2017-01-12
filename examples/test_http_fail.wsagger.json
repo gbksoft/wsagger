@@ -3,14 +3,6 @@
 
   "name": "test http connect (on status 200)",
 
-  "variants"    : {
-     "port": [
-      "10002", 
-      "10003"
-    ]
-
-  },
-
   "parameters": [
     {
       "name": "host",

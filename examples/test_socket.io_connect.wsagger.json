@@ -4,9 +4,9 @@
   "name": "test socket.io-connect (on 'connectedTo')",
 
   "variants": {
-    "server": {
-       "localhost:10002":  { "host": "localhost",  "port": 100002,  "path": "/" },
-       "localhost:10003":  { "host": "localhost",  "port": 100003,  "path": "/" }
+    "server_": {
+       "localhost:10002":  { "host": "localhost",  "port": 10002,  "path": "/" },
+       "localhost:10002/bad_path":  { "host": "localhost",  "port": 10002,  "path": "/bad_path" }
     }
   },
 
@@ -27,6 +27,7 @@
     }
   ],
 
+  "keysIn": ["server.host",  "server.port", "server.path"], 
 
   "data": [
   
@@ -39,5 +40,8 @@
       "expected": [[ "connectedTo", {}]]
     }
 
-  ]
+  ],
+
+  "dataOut": [ "doer.socket_io" ]
+
 }

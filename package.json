@@ -23,6 +23,6 @@
     "gulp-sourcemaps": "^1.9.1"
   },
   "scripts": {},
-  "author": "Pavlo Dzikovsky (GBK Soft)",
+  "author": "Pavlo Dzikovsky",
   "license": "MIT"
 }

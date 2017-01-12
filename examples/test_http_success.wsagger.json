@@ -7,13 +7,13 @@
     {
       "name": "host",
       "description": "http host",
-      "default": "infomincer.net"
+      "default": "api.github.com"
     },
 
     {
       "name": "path",
       "description": "http host path",
-      "default": "/"
+      "default": "/users/octocat/orgs"
     }
 
   ],
@@ -28,11 +28,10 @@
       "action": "http_.request",
       "data": [
         
-        "http",
+        "https",
         {
           "method": "GET", 
           "host"  : "{{host}}", 
-          "port"  : 80, 
           "path"  : "{{path}}" 
         }
       ],          

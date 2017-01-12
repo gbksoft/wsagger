@@ -2,7 +2,6 @@ var app = require('http').createServer()
 var io  = require('socket.io')(app);
 
 app.listen(10002); console.log ('listening on :10002')
-app.listen(10003); console.log ('listening on :10003')
 
 
 /*
