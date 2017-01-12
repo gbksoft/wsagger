@@ -6,17 +6,17 @@
   "parameters": [
     {
       "name": "host",
-      "defaultValue": "localhost"
+      "default": "localhost"
     },
 
     {
       "name": "port",
-      "defaultValue": 10002
+      "default": 10002
     },
 
     {
       "name": "path",
-      "defaultValue": "/"
+      "default": "/"
     }
   ],
 
@@ -40,7 +40,10 @@
       ],
 
       "wait": {"delay": 3000},
-      "expected": [[ "message", { "aaa": "ccc" }], [ "message_", { "aaa": "ccc" }]]
+      "expected": [
+      	[ "message", { "aaa": "ccc" }], 
+      	[ "message_", { "aaa": "ccc" }]
+      ]
     }
 
   ]

@@ -7,13 +7,13 @@
     {
       "name": "host",
       "description": "http host",
-      "defaultValue": "wsagger.dev.gbksoft.net"
+      "default": "infomincer.net"
     },
 
     {
       "name": "path",
       "description": "http host path",
-      "defaultValue": "/"
+      "default": "/"
     }
 
   ],

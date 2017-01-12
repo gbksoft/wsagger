@@ -3,20 +3,27 @@
 
   "name": "test socket.io-connect (on 'connectedTo')",
 
+  "variants": {
+    "server": {
+       "localhost:10002":  { "host": "localhost",  "port": 100002,  "path": "/" },
+       "localhost:10003":  { "host": "localhost",  "port": 100003,  "path": "/" }
+    }
+  },
+
   "parameters": [
     {
-      "name": "host",
-      "defaultValue": "localhost"
+      "name": "server.host",
+      "default": "localhost"
     },
 
     {
-      "name": "port",
-      "defaultValue": 10002
+      "name": "server.port",
+      "default": 10002
     },
 
     {
-      "name": "path",
-      "defaultValue": "/"
+      "name": "server.path",
+      "default": "/"
     }
   ],
 
@@ -26,7 +33,7 @@
     {
       "action": "socket_io.connect",           
       "data": { 
-        "url": "http://{{host}}:{{port}}{{path}}"
+        "url": "http://{{server.host}}:{{server.port}}{{server.path}}"
       },
       "wait": {"delay": 3000},
       "expected": [[ "connectedTo", {}]]

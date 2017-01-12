@@ -3,23 +3,31 @@
 
   "name": "test http connect (on status 200)",
 
+  "variants"    : {
+     "port": [
+      "10002", 
+      "10003"
+    ]
+
+  },
+
   "parameters": [
     {
       "name": "host",
       "description": "http host",
-      "defaultValue": "wsagger.dev.gbksoft.net"
+      "default": "abc.ru"
     },
 
     {
       "name": "path",
       "description": "http host path",
-      "defaultValue": "/bad_path"
+      "default": "/bad_path"
     }
 
   ],
 
   "functions" : {
-    "isString": "(data) => { return typeof data === 'string'; }"
+    "isString": "(data) => (typeof data === 'string')"
   },
 
   "data": [
