@@ -15,6 +15,7 @@
       flex: 1;
       overflow: auto;
       padding: 10px 15px;
+      position: relative;
       &::-webkit-scrollbar {
         width: 5px;
       }
