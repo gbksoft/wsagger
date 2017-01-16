@@ -112,7 +112,22 @@ Scripts:
 
 #### "functions" field - user functions 
 
-You can describe any JS-functions in the scenario. Each of them will be called with two parameters (data, context):
+In 'expected' object you can use function-handlers for corresponding data elements — it described as "{{*functionName}}".  
+
+In particular there are such predefined functions: 
+    
+    isString:   ((data) => (typeof data === 'string')),
+    isBoolean:  ((data) => (typeof data === 'boolean')),
+    isEmpty:    ((data) => ((data === null) || (data === undefined) || (data === ''))),
+    isNotEmpty: ((data) => ((data !== null) && (data !== undefined) && (data !== ''))),
+    isTrue:     ((data) => !!data),
+    isFalse:    ((data) => !data),
+    isNumber:   ((data) => (typeof data === 'number')),
+    isFunction: ((data) => (typeof data === 'function')),
+    isArray:    ((data) => (data instanceof Array)),
+    isObject:   ((data) => (data && (typeof data === 'object') && !(data instanceof Array))
+
+Also you can describe any JS-functions in the scenario. Each of them will be called with two parameters (data, context):
 
     data    — "current object"
     context — general scenario context
@@ -126,6 +141,9 @@ Example:
 
 In this case each element like "{{*isString}}" or "{{*inContext}}" in the “expected”-object will run corresponding verification of the object’s data.
 
+Functions described in scenario have priority over described above.
+
+
 #### "data" field 
 
     The object or list of objects ("scenario steps"), each of which may contain the following fields.
@@ -133,12 +151,15 @@ In this case each element like "{{*isString}}" or "{{*inContext}}" in the “exp
 #### "(data.)action" field
 
 Possible values:
-"http.request"
-"https.request"
-"http_.request"
-"socket_io.connect"
-"socket_io.emit"
-"socket_io.expect"
+
+* "http.request"
+* "https.request"
+* "http_.request"
+* "socket_io.connect"
+* "socket_io.emit"
+* "socket_io.expect"
+* "socket_io.disconnect"
+
 
 #### "(data.)data" field
 
@@ -218,6 +239,11 @@ An array, first element of which — event name, other — arguments for event h
 ###### (data.)data for socket_io.expect
 
 Any value for (data.)data for socket_io.expect is not necessary.
+
+
+###### (data.)data for socket_io.disconnect
+
+Any value for (data.)data for socket_io.disconnect is not necessary.
 
 
 ###### (data.)data for call.callWsaggerFile (calling subroutine from file)

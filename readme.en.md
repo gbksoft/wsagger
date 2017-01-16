@@ -1,3 +1,8 @@
+### 2016-01-16
+
+* Predefined functions are added.
+* socket_io.disconnect is added.
+
 ### State of the Project 
 
 The initial idea behind WSagger was to create a set of tools for testing Socket.io services. Over the course of development, the toolset has quickly grown to a full-scale project called WSagger. 

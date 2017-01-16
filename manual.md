@@ -125,7 +125,23 @@
 
 #### Поле functions — користувацькі функції
 
-В сценарії можна описувати довільні JS-функції, кожна з яких викликатиметься з двома параметрами (data, context):
+В структурі обʼєкта expected допустимо використовувати функції-обробники для відповідних елементів даних (до яких застосовується expected-шаблон) — це елементи виду "{{*functionName}}".  
+
+Зокрема, визначено наступні функції обробники: 
+    
+    isString:   ((data) => (typeof data === 'string')),
+    isBoolean:  ((data) => (typeof data === 'boolean')),
+    isEmpty:    ((data) => ((data === null) || (data === undefined) || (data === ''))),
+    isNotEmpty: ((data) => ((data !== null) && (data !== undefined) && (data !== ''))),
+    isTrue:     ((data) => !!data),
+    isFalse:    ((data) => !data),
+    isNumber:   ((data) => (typeof data === 'number')),
+    isFunction: ((data) => (typeof data === 'function')),
+    isArray:    ((data) => (data instanceof Array)),
+    isObject:   ((data) => (data && (typeof data === 'object') && !(data instanceof Array))
+
+
+Також в сценарії можна описувати довільні JS-функції, кожна з яких викликатиметься з двома параметрами (data, context):
     
     data    — "поточний обʼєкт" 
     context — загальний контекст
@@ -139,6 +155,8 @@
 
 В такому випадку кожен елемент виду "{{*isString}}" або "{{*inContext}}" в структурі expected робитиме вказану перевірку щодо відповідного обʼєкта даних.  
 
+Функції, визначені в сценарії, мають праоритет над однойменними функціями, описаними вище.
+
 
 #### Поле data
 
@@ -149,13 +167,14 @@
 
 Можливі значення:
 
-* http.request
-* https.request
-* http_.request
-* socket_io.connect
-* socket_io.emit
-* socket_io.expect
-* call.callWsaggerFile (працює тільки в консольному інтерфейсі)
+* "http.request"
+* "https.request"
+* "http_.request"
+* "socket_io.connect"
+* "socket_io.emit"
+* "socket_io.expect"
+* "socket_io.disconnect"
+* "call.callWsaggerFile" (працює тільки в консольному інтерфейсі)
 
 
 ##### Поле (data.)data
@@ -236,6 +255,11 @@
 
 
 ###### (data.)data для socket_io.expect
+
+Значення (data.)data для socket_io.expect не потрібне.
+
+
+###### (data.)data для socket_io.disconnect
 
 Значення (data.)data для socket_io.expect не потрібне.
 
