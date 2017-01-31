@@ -1,0 +1,28 @@
+{
+  "wsagger": "0.0.3",
+
+  "name": "ipc test",
+
+  "data": [
+
+    { 
+      "action"   : "ipc.serve",
+      "data"     : "test_channel1",
+      "expected" : [["message", { "slaveIsReady": "6" }]],
+      "wait"     : { "delay": 6000 },
+      "async"    : 1
+    },
+
+
+    { 
+      "action": "exec.execAsync",
+      "data"  : [
+        {
+          "action" : "ipc.send",
+          "data"   : ["test_channel1", {"slaveIsReady": "6" }],
+          "wait"   : { "delay": 1000 }
+        }
+      ]
+    }
+  ]
+}

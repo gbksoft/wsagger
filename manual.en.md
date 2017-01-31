@@ -146,7 +146,23 @@ Functions described in scenario have priority over described above.
 
 #### "data" field 
 
-    The object or list of objects ("scenario steps"), each of which may contain the following fields.
+    The object or list of objects each one describes one "scenario step" and may contain the following fields.
+
+
+#### "(data.)wait" field
+
+    { "delay": ... } — timeout time in milliseconds to finish the step.
+
+
+##### (data.)async field
+
+If this value is set then next step will be executed without waiting while this step will be finished.
+
+
+#### "(data.)expected" field
+
+The object or list of objects that should be obtained after scenario execution (for http_ - one object; for socket_io - may be a list of objects). You can run scenario in browser or in console with --debug argument to chek what scenario step really returns and describe "expected" in accordance to.
+
 
 #### "(data.)action" field
 
@@ -263,15 +279,6 @@ Field "dataOut" can be:
 * array  — list of the fields  to transfewr values directly;
 * object — keys of are interpreted as data object keys, values — as expressions to substituter into corresponding target object fields;
 * any other is interpreted as a field name of the target object in which entire transferred object will be assigned.
-
-
-#### "(data.)wait" field
-
-    { "delay": ... } — timeout time in milliseconds
-
-#### "(data.)expected" field
-
-The object or list of objects that should be obtained after scenario execution (for http_ - one object; for socket_io - may be a list of objects). You can run scenario in browser or in console with --debug argument to chek what scenario step really returns and describe "expected" in accordance to.
 
 
 #### Values exchange between scenario step and context

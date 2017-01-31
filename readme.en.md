@@ -1,3 +1,7 @@
+### 2016-01-31
+
+* IPC-doer is added.
+
 ### 2016-01-16
 
 * Predefined functions are added.
@@ -34,3 +38,12 @@ The initial idea behind WSagger was to create a set of tools for testing Socket.
 * [README ukrainian](./readme.md)
 * [ukrainian](./manual.md)   
 * [english](./manual.en.md)
+   
+
+### Examples
+
+* test_http_success.wsagger.json      — successful http-request
+* test_http_fail.wsagger.json         — unsuccessful http-request
+* test_ipc.wsagger.json               — IPC-communication
+* test_socket.io_connect.wsagger.json — socket.io-connect (first to have start socket.io server from ~/examples/socket-server)
+* test_socket.io_emit.wsagger.json    — socket.io-emit    (first to have start socket.io server from ~/examples/socket-server)

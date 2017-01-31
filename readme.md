@@ -1,5 +1,9 @@
 ## WSagger 
 
+### 2016-01-31
+
+* Додано обʼєкт для IPC-комунікацій.
+
 ### 2016-01-16
 
 * Додано набір стандартних функцій.
@@ -57,3 +61,11 @@
 * [README англійською](./readme.en.md)
 * [Англійською](./manual.en.md)
 
+
+### Приклади
+
+* test_http_success.wsagger.json      — тест успішного http-запиту
+* test_http_fail.wsagger.json         — тест невдалого http-запиту
+* test_ipc.wsagger.json               — тест IPC-комунікації
+* test_socket.io_connect.wsagger.json — тест socket.io-конекту (попередньо слід запустити тестовий сервер в ~/examples/socket-server)
+* test_socket.io_emit.wsagger.json    — тест socket.io-еміту   (попередньо слід запустити тестовий сервер в ~/examples/socket-server)
